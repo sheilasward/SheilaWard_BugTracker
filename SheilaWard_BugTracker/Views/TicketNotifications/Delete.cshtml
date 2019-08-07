@@ -1,0 +1,80 @@
+﻿@model SheilaWard_BugTracker.Models.TicketNotification
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>TicketNotification</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Recipient.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Recipient.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Sender.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sender.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ticket.OwnerUserId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ticket.OwnerUserId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Created)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Created)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Subject)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Subject)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NotificationBody)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NotificationBody)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsRead)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsRead)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
