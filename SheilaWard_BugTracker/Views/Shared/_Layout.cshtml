@@ -9,22 +9,22 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
 
     <!-- Font Awesome -->
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" media="screen" />
-    @*<link href="~/Content/font-awesome.min.css" rel="stylesheet" />*@
-
+    <link href="~/Content/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    @*<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" media="screen" />*@
+ 
     <!-- Ionicons -->
-    <link href="~/Content/ionicons.min.css" rel="stylesheet" />
-
+    <link href="~/Content/bower_components/Ionicons/css/ionicons.min.css" rel="stylesheet" />
+ 
     <!-- Theme style -->
-    <link href="~/Content/AdminLTE.min.css" rel="stylesheet" />
+    <link href="~/Content/dist/css/AdminLTE.min.css" rel="stylesheet" />
 
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
-    <link href="~/Content/_all-skins.min.css" rel="stylesheet" />
-
+    <link href="~/Content/dist/css/skins/_all-skins.min.css" rel="stylesheet" />
+    
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
     <![endif]-->
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <link href="~/Content/Site.css" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 
@@ -170,7 +170,7 @@
                                     <img src="@user.AvatarUrl" class="img-circle" alt="User Image">
 
                                     <p>
-                                        @user.FullName - Web Developer
+                                        @user.FullName - Administrator
                                         <small>Member since Nov. 2012</small>
                                     </p>
                                 </li>
@@ -254,8 +254,26 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="../../index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-                            <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
+                            <li>
+                                <a href="@Url.Action("UserIndex", "Admin")">
+                                    <i class="fa fa-circle-o"></i> User Index
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ManageUsers", "Admin")">
+                                    <i class="fa fa-circle-o"></i> Manage Users
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ManageRoles", "Admin")">
+                                    <i class="fa fa-circle-o"></i> Manage Roles
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ManageProjects", "Admin")">
+                                    <i class="fa fa-circle-o"></i> Manage Projects
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="treeview">
@@ -655,5 +673,6 @@
                 $('.sidebar-menu').tree()
             })</script>
         @RenderSection("scripts", required: false)
+    </div>
 </body>
 </html>

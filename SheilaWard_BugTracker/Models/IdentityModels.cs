@@ -55,13 +55,6 @@ namespace SheilaWard_BugTracker.Models
             return userIdentity;
         }
     }
-    public enum UserType
-    {
-        Admin,
-        Submitter,
-        ProjectManager,
-        Developer
-    }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

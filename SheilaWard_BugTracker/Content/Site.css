@@ -26,3 +26,7 @@ textarea {
 .sm-left-padding {
     padding-left: 10px;
 }
+
+.listBox {
+    width: 300px;
+}

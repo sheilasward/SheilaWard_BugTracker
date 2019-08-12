@@ -1,0 +1,62 @@
+﻿@using SheilaWard_BugTracker.ViewModels
+@using SheilaWard_BugTracker.Helpers
+@model IEnumerable<UserIndexViewModel>
+@{
+    ViewBag.Title = "ManageUsers";
+    var roleHelper = new UserRolesHelper();
+    var projectHelper = new ProjectsHelper();
+}
+
+<style>
+    .avatar {
+        max-height: 30px;
+        max-width: 30px;
+    }
+</style>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h2>User Index</h2>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <table class="table">
+        <tr>
+            <th>@Html.DisplayName("Avatar")</th>
+            <th>@Html.DisplayName("Name")</th>
+            <th>@Html.DisplayNameFor(model => model.Email)</th>
+            <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
+            <th></th>
+            <th>@Html.DisplayName("Role")</th>
+            @*<th>@Html.DisplayName("Projects")</th>*@
+            <th></th>
+        </tr>
+        @foreach (var user in Model)
+        {
+    <tr>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <td class="avatar"><img src="@user.AvatarUrl" class="img-responsive" /></td>
+            <td>@Html.DisplayFor(model => user.FullName)</td>
+            <td>@Html.DisplayFor(model => user.Email)</td>
+            <td>@Html.DisplayFor(model => user.PhoneNumber)</td>
+            <td>@Html.ActionLink("User Changes", "EditProfile", "Members", new { userId = user.Id }, null)</td> 
+            <td>@Html.DropDownList("CurrentRole", user.CurrentRole, "-- NONE --", htmlAttributes: new { @class = "form-control" })</td>
+            @*<td>@Html.ListBox("ProjectNames", user.CurrentProjects, htmlAttributes: new { @class = "form-control", @style = "max-width:600px; width:400px;" })</td>*@
+            <td><input type="submit" value="Assign" class="btn btn-default"></td>
+        }
+            </tr>
+                }
+            </table>
+
+            @*<td>
+                @Html.ActionLink("Manage Role", "ManageUserRole", "Admin", new { userId = user.Id }, null) |
+                @Html.ActionLink("Manage Projects", "ManageUserProjects", "Admin", new { userId = user.Id }, null)
+            </td>*@
+
+
+        @Html.ActionLink("Back To Dashboard", "Dashboard", "Home")
+    </section>

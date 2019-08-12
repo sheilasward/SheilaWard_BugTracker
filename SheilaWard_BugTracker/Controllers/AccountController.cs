@@ -61,6 +61,10 @@ namespace SheilaWard_BugTracker.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if(Request.IsAuthenticated)
+            {
+                return RedirectToAction("Dashboard", "Home");
+            }
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -74,7 +78,8 @@ namespace SheilaWard_BugTracker.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                ModelState.AddModelError("", "Model State is invalid.");
+                return RedirectToAction("Login", "Home");
             }
 
             // This doesn't count login failures towards account lockout
@@ -162,15 +167,8 @@ namespace SheilaWard_BugTracker.Controllers
                     DisplayName = model.DisplayName,
                     UserName = model.Email,
                     Email = model.Email,
-                    AvatarUrl = WebConfigurationManager.AppSettings["DefaultAvatar"]
+                    AvatarUrl = "/Avatars/default-user-icon-8.jpg"
                 };
-
-                if (ImageHelpers.IsWebFriendlyImage(model.Avatar))
-                {
-                    var fileName = Path.GetFileName(model.Avatar.FileName);
-                    model.Avatar.SaveAs(Path.Combine(Server.MapPath("~/Avatars/"), fileName));
-                    user.AvatarUrl = "/Avatars/" + fileName;
-                }
 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -413,6 +411,7 @@ namespace SheilaWard_BugTracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Login", "Home");
         }

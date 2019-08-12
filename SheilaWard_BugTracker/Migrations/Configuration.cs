@@ -62,6 +62,15 @@ namespace SheilaWard_BugTracker.Migrations
             userManager.AddToRole(adminId, "Admin");
             #endregion
 
+            #region Projects
+            context.Projects.AddOrUpdate(
+                p => p.Name,
+                    new Project { Name = "Coder Foundry Blog", Description = "Blog exercise", Created = DateTimeOffset.Now },
+                    new Project { Name = "Sheila Ward Portfolio", Description = "My Portfolio created during Coder Foundry", Created = DateTimeOffset.Now },
+                    new Project { Name = "Bug Tracker Project", Description = "System to track tickets in an IT system - can be bugs, or requests for enhancements or documentation", Created = DateTime.Now }
+            );
+            #endregion
+
             #region TicketPriorities
             context.TicketPriorities.AddOrUpdate(
                 t => t.Name,
