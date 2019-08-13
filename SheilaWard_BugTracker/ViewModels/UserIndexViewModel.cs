@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SheilaWard_BugTracker.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -25,6 +26,6 @@ namespace SheilaWard_BugTracker.ViewModels
 
         public IEnumerable<SelectListItem> CurrentRole { get; set; }
 
-        public IEnumerable<MultiSelectList> CurrentProjects { get; set; } 
+        public IEnumerable<SelectListItem> CurrentProjects { get; set; } 
     }
 }

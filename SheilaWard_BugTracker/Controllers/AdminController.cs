@@ -34,11 +34,46 @@ namespace SheilaWard_BugTracker.Controllers
             foreach (var user in users)
             {
                 user.CurrentRole = new SelectList(roles, "Name", "Name", roleHelper.ListUserRoles(user.Id).FirstOrDefault());
-                //user.CurrentProjects = new MultiSelectList(projects, "Id", "Name", projectHelper.ListUserProjects(user.Id));
+                user.CurrentProjects = new MultiSelectList(projects, "Id", "Name", projectHelper.ListUserProjects(user.Id).Select(u => u.Id));
             }
 
             return View(users);
         }
+
+        // POST: Admin
+        [HttpPost]
+        public ActionResult UserIndex(string userId, string CurrentRole, List<int> CurrentProjects)
+        {
+            if (CurrentRole != null)
+            {
+                // Remove user from whatever roles they occupy currently
+                roleHelper.RemoveUserFromRole(userId, CurrentRole);
+                // Then add them back to the selected role
+                roleHelper.AddUserToRole(userId, CurrentRole);
+            }
+
+ 
+            if (CurrentProjects != null)
+            {
+                // Remove user from whatever projects they occupy currently
+                foreach (var project in projectHelper.ListUserProjects(userId))
+                {
+                    projectHelper.RemoveUserFromProject(userId, project.Id);
+                }
+                // Then add them back to the selected role
+                foreach (var project in CurrentProjects) 
+                {
+                    projectHelper.AddUserToProject(userId, project);
+                }
+            }
+            return RedirectToAction("UserIndex");
+        }
+
+
+        
+
+
+
 
         public ActionResult ManageRoles()
         {
@@ -95,13 +130,14 @@ namespace SheilaWard_BugTracker.Controllers
             }).ToList();
 
             ViewBag.Users = new MultiSelectList(db.Users.ToList(), "Id", "FullNameWithEmail");
-            ViewBag.ProjectName = new SelectList(db.Projects.ToList(), "Name", "Name");
+            ViewBag.ProjectName = new MultiSelectList(db.Projects.ToList(), "Id", "Name");
 
             return View(users);
         }
 
         [HttpPost]
-        public ActionResult ManageProjects(List<string> users, int projectId)
+        [ValidateAntiForgeryToken]
+        public ActionResult ManageProjects(List<string> users, List<int> projectName)
         {
             if (users != null)
             {
@@ -111,14 +147,17 @@ namespace SheilaWard_BugTracker.Controllers
                     // Remove each of them from whatever role they occupy currently
                     foreach (var project in projectHelper.ListUserProjects(userId))
                     {
-                        projectHelper.RemoveUserFromProject(userId, projectId);
+                        projectHelper.RemoveUserFromProject(userId, project.Id);
                     }
-                    //// Then add them back to the selected role
-                    //if (projectId = null)
-                    //if (!int.IsNull(projectId))
-                    //{
-                    //    projectHelper.AddUserToProject(userId, projectId);
-                    //}
+                    //Then add them back to the selected project
+                    if (projectName != null)
+                    {
+                        foreach (var project in projectName)
+                        {
+                            projectHelper.AddUserToProject(userId, project);
+                        }
+                        
+                    }
                 }
             }
 

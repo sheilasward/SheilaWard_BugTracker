@@ -17,9 +17,13 @@ namespace SheilaWard_BugTracker.Controllers
 
         // GET: Members
         [Authorize]
-        public ActionResult EditProfile()
+        public ActionResult EditProfile(string userId)
         {
-            var userId = User.Identity.GetUserId();
+            if (string.IsNullOrEmpty(userId))
+            {
+                userId = User.Identity.GetUserId();
+            }
+
             var member = db.Users.Select(u => new UserProfileViewModel
             {
                 Id = u.Id,
@@ -55,7 +59,15 @@ namespace SheilaWard_BugTracker.Controllers
             }
 
             db.SaveChanges();
-            return RedirectToAction("Dashboard", "Home");
+            if (member.Id == User.Identity.GetUserId())
+            {
+                return RedirectToAction("Dashboard", "Home");
+            }
+            else
+            {
+                return RedirectToAction("UserIndex", "Admin");
+            }
+            
         }
     }
 }

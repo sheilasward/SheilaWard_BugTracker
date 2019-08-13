@@ -14,20 +14,21 @@
 <!-- Main content -->
 <section class="content">
 
+    @*@using (Html.BeginForm("ManageProjects", "Admin", FormMethod.Post, new { id = "projectId" }))*@
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
         <div class="row">
             <div class="col-md-offset-1 col-md-5">
                 <div class="form-group">
-                    @Html.ListBox("Users", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ListBox("Users", null, htmlAttributes: new { @class = "form-control", @style = "max-width:600px; width:500px;" })
                 </div>
             </div>
             <div class="col-md-offset-1 col-md-3">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            @Html.DropDownList("ProjectName", null, "-- Select Project --", htmlAttributes: new { @class = "form-control" })
+                             @Html.ListBox("ProjectName", null, htmlAttributes: new { @class = "form-control" })
                         </div>
                     </div>
                 </div>
@@ -55,7 +56,12 @@
                 <tr>
                     <td>@user.LastName, @user.FirstName</td>
                     <td>@Html.DisplayFor(modelItem => user.Email)</td>
-                    <td>@projHelper.ListUserProjects(user.Id).FirstOrDefault()</td>
+                    <td>
+                        @foreach (var proj in @projHelper.ListUserProjects(user.Id).Select(p => p.Name))
+                        {
+                            @proj <br />
+                        }
+                    </td>
                 </tr>
             }
         </table>

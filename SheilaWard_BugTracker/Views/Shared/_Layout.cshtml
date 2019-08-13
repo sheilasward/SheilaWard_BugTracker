@@ -1,4 +1,5 @@
 ﻿@using SheilaWard_BugTracker.Models;
+@using SheilaWard_BugTracker.Helpers;
 @using Microsoft.AspNet.Identity;
 <!DOCTYPE html>
 <html>
@@ -14,17 +15,17 @@
     <!-- Font Awesome -->
     <link href="~/Content/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     @*<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" media="screen" />*@
- 
+
     <!-- Ionicons -->
     <link href="~/Content/bower_components/Ionicons/css/ionicons.min.css" rel="stylesheet" />
- 
+
     <!-- Theme style -->
     <link href="~/Content/dist/css/AdminLTE.min.css" rel="stylesheet" />
 
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link href="~/Content/dist/css/skins/_all-skins.min.css" rel="stylesheet" />
-    
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -41,6 +42,9 @@
         var userId = User.Identity.GetUserId();
         var db = new ApplicationDbContext();
         var user = db.Users.Find(userId);
+        var roleHelper = new UserRolesHelper();
+        var userRole = @roleHelper.ListUserRoles(user.Id).FirstOrDefault();
+
 
     }
     <!-- Site wrapper -->
@@ -195,7 +199,7 @@
                                         <a href="@Url.Action("EditProfile", "Members")" class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
-                                       @if (Request.IsAuthenticated)
+                                        @if (Request.IsAuthenticated)
                                         {
                                             using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
                                             {
