@@ -67,8 +67,8 @@
                             @Html.CheckBoxFor(m => m.RememberMe)
 
                             @*<label>
-                                <input type="checkbox" name="RememberMe" value="true"> Remember Me
-                            </label>*@
+                            <input type="checkbox" name="RememberMe" value="true"> Remember Me
+                        </label>*@
                         </div>
                     </div>
                     <!-- /.col -->
@@ -78,7 +78,7 @@
                     <!-- /.col -->
                 </div>
             }
- 
+
             <div class="social-auth-links text-center">
                 <p>- OR -</p>
                 <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
@@ -92,7 +92,9 @@
             </div>
             <!-- /.social-auth-links -->
 
-            <a href="#">I forgot my password</a><br /><br />
+            @*<a href="#">I forgot my password</a><br /><br />*@
+
+            @Html.ActionLink("I forgot my password", "ForgotPassword", "Account")<br /><br />
             @Html.ActionLink("Register a new user", "Register")
 
         </div>
