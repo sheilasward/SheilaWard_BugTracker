@@ -21,7 +21,9 @@
 
 <!-- Main content -->
 <section class="content">
-
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
     <table class="table">
         <tr>
             <th>@Html.DisplayName("Avatar")</th>
@@ -61,11 +63,11 @@
         }
     </table>
 
-            @*<td>
-                @Html.ActionLink("Manage Role", "ManageUserRole", "Admin", new { userId = user.Id }, null) |
-                @Html.ActionLink("Manage Projects", "ManageUserProjects", "Admin", new { userId = user.Id }, null)
-            </td>*@
+    @*<td>
+            @Html.ActionLink("Manage Role", "ManageUserRole", "Admin", new { userId = user.Id }, null) |
+            @Html.ActionLink("Manage Projects", "ManageUserProjects", "Admin", new { userId = user.Id }, null)
+        </td>*@
 
 
-        @Html.ActionLink("Back To Dashboard", "Dashboard", "Home")
-    </section>
+    @Html.ActionLink("Back To Dashboard", "Dashboard", "Home")
+</section>

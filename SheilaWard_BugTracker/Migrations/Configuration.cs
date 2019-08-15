@@ -84,6 +84,7 @@ namespace SheilaWard_BugTracker.Migrations
 
             #region TicketStatuses
             context.TicketStatuses.AddOrUpdate(
+                t => t.Name,
                 new TicketStatus { Name = "Inactive", Description = "Has not been approved or has been tabled" },
                 new TicketStatus { Name = "Active/Unassigned", Description = "Manager has approved, but not assigned to developer" },
                 new TicketStatus { Name = "Active/Assigned", Description = "Developer is currently working on ticket" },
@@ -94,6 +95,7 @@ namespace SheilaWard_BugTracker.Migrations
 
             #region TicketTypes
             context.TicketTypes.AddOrUpdate(
+                t => t.Name,
                 new TicketType { Name = "Defect", Description = "There is a defect in the application code or logic" },
                 new TicketType { Name = "Documentation", Description = "There is a need for documentation/training on the application"},
                 new TicketType { Name = "Enhancement", Description = "There is a request for more functionality for the application"}

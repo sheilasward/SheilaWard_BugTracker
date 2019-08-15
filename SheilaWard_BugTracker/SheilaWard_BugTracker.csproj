@@ -7270,10 +7270,8 @@
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Members\EditProfile.cshtml" />
     <Content Include="Views\Admin\UserIndex.cshtml" />
-    <Content Include="Views\Admin\ManageRoles.cshtml" />
-    <Content Include="Views\Admin\ManageProjects.cshtml" />
-    <Content Include="Views\Admin\ManageUserRole.cshtml" />
-    <Content Include="Views\Admin\ManageUserProjects.cshtml" />
+    <Content Include="Views\Admin\OldManageRoles.cshtml" />
+    <Content Include="Views\Admin\OldManageProjects.cshtml" />
     <Content Include="Views\Shared\_AdminNavPartial.cshtml" />
     <Content Include="Views\Shared\_PMNavPartial.cshtml" />
     <Content Include="Views\Shared\_DevNavPartial.cshtml" />
