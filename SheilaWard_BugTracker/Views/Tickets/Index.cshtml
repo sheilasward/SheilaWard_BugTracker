@@ -4,6 +4,7 @@
     ViewBag.Title = "Index";
 }
 
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h2>List of Tickets</h2>
@@ -11,29 +12,31 @@
 
 <!-- Main content -->
 <section class="content">
-
     <p>
-        @Html.ActionLink("Create New", "Create")
+        @if (User.IsInRole("Submitter"))
+        {
+            @Html.ActionLink("Create New", "Create")
+        }
     </p>
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.AssignedToUser.FirstName)
+                @Html.DisplayName("Assigned To")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OwnerUser.FirstName)
+                @Html.DisplayName("Owner")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Project.Name)
+                @Html.DisplayName("Project")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TicketPriority.Name)
+                @Html.DisplayName("Priority")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TicketStatus.Name)
+                @Html.DisplayName("Status")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TicketType.Name)
+                @Html.DisplayName("Type")
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
@@ -78,18 +81,43 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Created)
+                    @item.Created.ToString("MM/dd/yyyy hh:mmtt")
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Updated)
                 </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                </td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id })
+                    </td>
+                }
+
             </tr>
         }
 
     </table>
 </section>
+
+@section scripts {
+    <script>
+        var msg = '@TempData["Message"]';
+        if (msg != "")
+        {
+            Swal.fire({
+                type: 'error',
+                title: 'AUTHORIZATION ERROR!',
+                text: msg
+            })
+        }
+    </script>
+}

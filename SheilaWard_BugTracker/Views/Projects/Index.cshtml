@@ -12,7 +12,10 @@
 <!-- Main content -->
 <section class="content">
     <p>
-        @Html.ActionLink("Create New", "Create")
+        @if (User.IsInRole("Admin") || User.IsInRole("Submitter"))
+        {
+            @Html.ActionLink("Create New", "Create")
+        }
     </p>
     <table class="table">
         <tr>

@@ -69,12 +69,6 @@ namespace SheilaWard_BugTracker.Controllers
             return RedirectToAction("UserIndex");
         }
 
-
-        
-
-
-
-
         public ActionResult ManageRoles()
         {
             var users = db.Users.Select(u => new UserProfileViewModel

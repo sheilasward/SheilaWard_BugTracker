@@ -2,13 +2,13 @@
 <ul class="sidebar-menu" data-widget="tree">
     <li class="header">SUBMITTER NAVIGATION</li>
     <li class="treeview">
-        <a href="#">
+        <a href="@Url.Action("Dashboard", "Home")">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-            <span class="pull-right-container">
+            @*<span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
-            </span>
+            </span>*@
         </a>
-        <ul class="treeview-menu">
+        @*<ul class="treeview-menu">
             <li>
                 <a href="@Url.Action("UserIndex", "Admin")">
                     <i class="fa fa-circle-o"></i> User Index
@@ -29,21 +29,18 @@
                     <i class="fa fa-circle-o"></i> Manage Projects
                 </a>
             </li>
-        </ul>
+        </ul>*@
     </li>
-    <li class="treeview">
+    <li class="treeview active">
         <a href="#">
-            <i class="fa fa-files-o"></i>
-            <span>Layout Options</span>
+            <i class="fa fa-user-o"></i>
+            <span>Submitter Activities</span>
             <span class="pull-right-container">
-                <span class="label label-primary pull-right">4</span>
+                <i class="fa fa-angle-left pull-right"></i>
             </span>
         </a>
         <ul class="treeview-menu">
-            <li><a href="../layout/top-nav.html"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
-            <li><a href="../layout/boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
-            <li><a href="../layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
-            <li><a href="../layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
+            <li><a href="@Url.Action("Index", "Tickets")"><i class="fa fa-circle-o"></i> Manage Tickets</a></li>
         </ul>
     </li>
     <li>

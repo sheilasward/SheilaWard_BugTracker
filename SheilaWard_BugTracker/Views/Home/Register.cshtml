@@ -41,7 +41,7 @@
 <body class="hold-transition register-page">
     <div class="register-box">
         <div class="register-logo">
-            <a href="../../index2.html"><b>MyCo </b>BugTrakker</a>
+            <b>MyCo </b>BugTrakker
         </div>
 
         <div class="register-box-body">
@@ -85,7 +85,7 @@
                     <div class="col-xs-8">
                         <div class="checkbox icheck">
                             <label>
-                                <input type="checkbox"> I agree to the <a href="#">terms</a>
+                                <input type="checkbox"> I agree to the <a href="#" id="terms">terms</a>
                             </label>
                         </div>
                     </div>
@@ -124,13 +124,33 @@
 
     <!-- iCheck -->
     <script src="~/Scripts/icheck.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <!-- Optional: include a polyfill for ES6 Promises for IE11 and Android browser -->
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
 
-    <script>$(function () {
-    $('input').iCheck({
-        checkboxClass: 'icheckbox_square-blue',
-        radioClass: 'iradio_square-blue',
-        increaseArea: '20%' /* optional */
-    });
-});</script>
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' /* optional */
+            })
+            $("#terms").click(function() {
+                Swal.fire({
+                    type: 'info',
+                    title: 'TERMS OF USE',
+                    html: 
+                        '<p>Last updated: 08/15/2019</p>' + 
+                        '<p>Please read these Terms of Use ("Terms", "Terms of Use") carefully before using the ' +
+                        '<a href="http://www.myBugTrakker.com">Bug Trakker</a> website operated by The BugTrakker Company ("us", "we", or "our"). </p>' +
+                        '<p>Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms.' +
+                        'These Terms apply to all visitors, users and others who access or use the Service.  By accessing or using the Service ' +
+                        'you agree to be bound by these Terms.</p>' +
+                        '<p>If you disagree with any part of the terms then you may not access the Service.</p>',
+                    showCloseButton: true
+                })
+            })
+        });
+    </script>
 </body>
 </html>

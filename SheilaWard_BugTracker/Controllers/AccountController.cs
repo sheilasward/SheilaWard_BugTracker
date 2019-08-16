@@ -95,7 +95,8 @@ namespace SheilaWard_BugTracker.Controllers
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
-
+                    TempData["Message"] = "PASSWORD OR USERNAME IS INCORRECT.";
+                    return RedirectToAction("Login", "Home");
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return RedirectToAction("Login", "Home");
@@ -295,16 +296,14 @@ namespace SheilaWard_BugTracker.Controllers
 
         //
         // GET: /Account/ResetPassword
-        [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
-            return code == null ? View("Error") : View();
+            return View();
         }
 
         //
         // POST: /Account/ResetPassword
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
@@ -329,7 +328,6 @@ namespace SheilaWard_BugTracker.Controllers
 
         //
         // GET: /Account/ResetPasswordConfirmation
-        [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
             return View();

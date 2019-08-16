@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -9,17 +10,35 @@ namespace SheilaWard_BugTracker.Models
     {
         // keys
         public int Id { get; set; }                    // Id number of the ticket
+
         public int ProjectId { get; set; }             // Foreign Key - Project the ticket belongs to
+
+        [Display(Name = "Type")]
         public int TicketTypeId { get; set; }          // Foreign Key - Type of ticket: Defect, Documentation, Enhancement
+
+        [Display(Name = "Priority")]
         public int? TicketPriorityId { get; set; }     // Foreign Key - Priority of ticket: Low, Medium, High, Urgent
+
+        [Display(Name = "Status")]
         public int TicketStatusId { get; set; }        // Foreign Key - Status of ticket: Inactive, Active/Unassigned, Active/Assigned, Completed, Archived
+
+        [Display(Name = "Owner")]
         public string OwnerUserId { get; set; }        // Foreign Key - Owner of Ticket (the Submitter who entered the ticket into the system?  Or the Project Manager it would be under?)
+
+        [Display(Name = "Assigned To")]
         public string AssignedToUserId { get; set; }  // Foreign Key - User that the Ticket is assigned to - what if this is null?
 
         // rest of db properties
+        [Display(Name = "Title")]
         public string Title { get; set; }              // Title of the ticket
+
+        [Display(Name = "Description")]
         public string Description { get; set; }        // Description of the ticket
+
+        [Display(Name = "Created")]
         public DateTimeOffset Created { get; set; }    // When the ticket was added into the system
+
+        [Display(Name = "Updated")]
         public DateTimeOffset? Updated { get; set; }   // Last time the ticket was updated in the system
 
         // nav properties - Parent

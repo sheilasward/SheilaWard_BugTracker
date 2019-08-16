@@ -65,10 +65,6 @@
                     <div class="col-xs-8">
                         <div class="checkbox icheck">
                             @Html.CheckBoxFor(m => m.RememberMe)
-
-                            @*<label>
-                            <input type="checkbox" name="RememberMe" value="true"> Remember Me
-                        </label>*@
                         </div>
                     </div>
                     <!-- /.col -->
@@ -92,8 +88,6 @@
             </div>
             <!-- /.social-auth-links -->
 
-            @*<a href="#">I forgot my password</a><br /><br />*@
-
             @Html.ActionLink("I forgot my password", "ForgotPassword", "Account")<br /><br />
             @Html.ActionLink("Register a new user", "Register")
 
@@ -110,13 +104,28 @@
     <!-- iCheck -->
     <script src="~/Scripts/icheck.min.js"></script>
 
-    <script>$(function () {
-    $('input').iCheck({
-        checkboxClass: 'icheckbox_square-blue',
-        radioClass: 'iradio_square-blue',
-        increaseArea: '20%' /* optional */
-    });
-});</script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <!-- Optional: include a polyfill for ES6 Promises for IE11 and Android browser -->
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' /* optional */
+            })
+            var msg = '@TempData["Message"]';
+            if (msg != "")
+            {
+                Swal.fire({
+                    type: 'error',
+                    title: 'LOGIN ERROR!',
+                    text: msg
+                })
+            }
+        })
+    </script>
 </body>
 </html>
 
