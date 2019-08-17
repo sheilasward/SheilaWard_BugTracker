@@ -294,12 +294,32 @@ namespace SheilaWard_BugTracker.Controllers
             return View();
         }
 
-        //
+
+        // Use this for a TRUE Forgotten Password - needs the ResetPassword View that is NOT in the Shared Layout
         // GET: /Account/ResetPassword
+        [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
-            return View();
+            return code == null ? View("Error") : View("ResetPassword");
         }
+
+
+        // Use this for a Password RESET - needs the ResetPassword View that is INSIDE of the Shared Layout
+        // GET: /Account/CustomResetPassword
+        public async Task<ActionResult> CustomPasswordResetAsync()
+        {
+            var userId = User.Identity.GetUserId();
+            var user = UserManager.FindById(userId);
+            var vm = new ResetPasswordViewModel
+            {
+
+                Code = await UserManager.GeneratePasswordResetTokenAsync(userId),
+                Email = user.Email
+
+            };
+            return View("CustomResetPassword", vm);
+        }
+
 
         //
         // POST: /Account/ResetPassword
@@ -332,6 +352,7 @@ namespace SheilaWard_BugTracker.Controllers
         {
             return View();
         }
+
 
         //
         // POST: /Account/ExternalLogin

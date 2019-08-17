@@ -44,11 +44,17 @@ namespace SheilaWard_BugTracker.Controllers
         [HttpPost]
         public ActionResult UserIndex(string userId, string CurrentRole, List<int> CurrentProjects)
         {
-            if (CurrentRole != null)
+            // Remove user from whatever roles they occupy currently
+            // roleHelper.RemoveUserFromRole(userId, roleHelper.ListUserRoles(userId).FirstOrDefault());
+
+            foreach (var role in roleHelper.ListUserRoles(userId))
             {
-                // Remove user from whatever roles they occupy currently
-                roleHelper.RemoveUserFromRole(userId, CurrentRole);
-                // Then add them back to the selected role
+                roleHelper.RemoveUserFromRole(userId, role);
+            }
+
+            if (!string.IsNullOrEmpty(CurrentRole))
+            {
+                 // Then add them back to the selected role
                 roleHelper.AddUserToRole(userId, CurrentRole);
             }
 
