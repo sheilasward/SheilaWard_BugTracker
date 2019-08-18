@@ -7282,6 +7282,7 @@
     <Content Include="Views\Account\ConfirmationSent.cshtml" />
     <Content Include="private.config" />
     <Content Include="Views\Account\CustomResetPassword.cshtml" />
+    <Content Include="Views\Account\CustomResetPasswordConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\bower_components\moment\moment.d.ts" />

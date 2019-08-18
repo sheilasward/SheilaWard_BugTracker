@@ -310,7 +310,7 @@ namespace SheilaWard_BugTracker.Controllers
         {
             var userId = User.Identity.GetUserId();
             var user = UserManager.FindById(userId);
-            var vm = new ResetPasswordViewModel
+            var vm = new CustomResetPasswordViewModel
             {
 
                 Code = await UserManager.GeneratePasswordResetTokenAsync(userId),
@@ -318,6 +318,39 @@ namespace SheilaWard_BugTracker.Controllers
 
             };
             return View("CustomResetPassword", vm);
+        }
+
+        //
+        // POST: /Account/CustomResetPassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CustomResetPassword(CustomResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            string id = User.Identity.GetUserId();
+            var user = UserManager.FindById(id);
+            if (!UserManager.CheckPassword(user, model.OldPassword))
+            {
+                ModelState.AddModelError("Password", "Old Password is incorrect");
+                return View(model);
+            }
+            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.NewPassword);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("CustomResetPasswordConfirmation", "Account");
+            }
+            AddErrors(result);
+            return View();
+        }
+
+        //
+        // GET: /Account/CustomResetPasswordConfirmation
+        public ActionResult CustomResetPasswordConfirmation()
+        {
+            return View();
         }
 
 
