@@ -188,6 +188,7 @@
     </Compile>
     <Compile Include="Helpers\CommonHelper.cs" />
     <Compile Include="Helpers\ImageHelpers.cs" />
+    <Compile Include="Helpers\LinkHelper.cs" />
     <Compile Include="Helpers\ProjectsHelper.cs" />
     <Compile Include="Helpers\TicketDecisionHelper.cs" />
     <Compile Include="Helpers\UserRolesHelper.cs" />

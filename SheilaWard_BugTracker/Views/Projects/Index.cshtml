@@ -12,9 +12,13 @@
 <!-- Main content -->
 <section class="content">
     <p>
-        @if (User.IsInRole("Admin") || User.IsInRole("Submitter"))
+        @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
         {
             @Html.ActionLink("Create New", "Create")
+            <div class="center-block">
+                <button id="myProj" class="btn btn-primary btn-flat active">My Projects</button>
+                <button id="allProj" class="btn btn-default btn-flat">All Projects</button>
+            </div>
         }
     </p>
     <table class="table">
@@ -53,3 +57,19 @@
 
     </table>
 </section>
+@section Scripts  {
+    <script>
+        $("#myProj").on("click", function () {
+            addClass("active");
+            addClass("btn-primary");
+            removeClass("btn-default");
+        });
+
+        $("#allProj").on("click", function () {
+            addClass("active");
+            addClass("btn-primary");
+            removeClass("btn-default");
+        });
+
+    </script>
+}

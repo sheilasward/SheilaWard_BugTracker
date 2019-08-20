@@ -4,46 +4,20 @@
     <li class="treeview">
         <a href="#">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+         </a>
+    </li>
+    <li class="treeview active">
+        <a href="#">
+            <i class="fa fa-files-o"></i>
+            <span>Project Manager Activities</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
             </span>
         </a>
         <ul class="treeview-menu">
-            <li>
-                <a href="@Url.Action("UserIndex", "Admin")">
-                    <i class="fa fa-circle-o"></i> User Index
-                </a>
-            </li>
-            <li>
-                <a href="@Url.Action("ManageUsers", "Admin")">
-                    <i class="fa fa-circle-o"></i> Manage Users
-                </a>
-            </li>
-            <li>
-                <a href="@Url.Action("ManageRoles", "Admin")">
-                    <i class="fa fa-circle-o"></i> Manage Roles
-                </a>
-            </li>
-            <li>
-                <a href="@Url.Action("ManageProjects", "Admin")">
-                    <i class="fa fa-circle-o"></i> Manage Projects
-                </a>
-            </li>
-        </ul>
-    </li>
-    <li class="treeview">
-        <a href="#">
-            <i class="fa fa-files-o"></i>
-            <span>Layout Options</span>
-            <span class="pull-right-container">
-                <span class="label label-primary pull-right">4</span>
-            </span>
-        </a>
-        <ul class="treeview-menu">
-            <li><a href="../layout/top-nav.html"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
-            <li><a href="../layout/boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
-            <li><a href="../layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
-            <li><a href="../layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
+            <li><a href="@Url.Action("Index", "Projects")"><i class="fa fa-circle-o"></i> Manage Projects</a></li>
+            <li><a href="@Url.Action("UserIndex", "Admin")"><i class="fa fa-circle-o"></i> Users</a></li>
+            <li><a href="@Url.Action("Index", "Tickets")"><i class="fa fa-circle-o"></i> Tickets</a></li>
         </ul>
     </li>
     <li>

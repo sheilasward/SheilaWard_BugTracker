@@ -42,7 +42,7 @@ namespace SheilaWard_BugTracker.Controllers
         }
 
         // GET: Tickets/Create
-        [Authorize(Roles = "Admin, Submitter")]
+        [Authorize(Roles = "Submitter")]
         public ActionResult Create()
         {
             var userId = User.Identity.GetUserId();

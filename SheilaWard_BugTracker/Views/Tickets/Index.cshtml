@@ -1,7 +1,9 @@
-﻿@model IEnumerable<SheilaWard_BugTracker.Models.Ticket>
+﻿@using SheilaWard_BugTracker.Helpers
+@model IEnumerable<SheilaWard_BugTracker.Models.Ticket>
 
 @{
     ViewBag.Title = "Index";
+    var LinkHelper = new LinkHelper();
 }
 
 
@@ -86,13 +88,15 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Updated)
                 </td>
-                @if (User.IsInRole("Admin"))
-                {
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                    </td>
+                
+                <td>
+                    @if (LinkHelper.UserCanEditTicket(item) != null)
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                    }
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) 
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
                 }
                 else
                 {

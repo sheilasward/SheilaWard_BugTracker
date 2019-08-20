@@ -14,6 +14,7 @@ namespace SheilaWard_BugTracker.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        [Authorize(Roles = "Admin, ProjectManager, Submitter, Developer")]
         // GET: Projects
         public ActionResult Index()
         {
