@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using SheilaWard_BugTracker.Helpers;
 using SheilaWard_BugTracker.Models;
 
 namespace SheilaWard_BugTracker.Controllers
@@ -16,9 +18,20 @@ namespace SheilaWard_BugTracker.Controllers
 
         [Authorize(Roles = "Admin, ProjectManager, Submitter, Developer")]
         // GET: Projects
-        public ActionResult Index()
+        public ActionResult Index(string proj)
         {
-            return View(db.Projects.ToList());
+            if (proj == "AllProjects")
+            {
+                TempData["activeTab"] = "All";
+                return View(db.Projects.ToList());
+            }
+            else
+            {
+                var userId = User.Identity.GetUserId();
+                var projHelper = new ProjectsHelper();
+                var projList = projHelper.ListUserProjects(userId);
+                return View(projList);
+            }
         }
 
         // GET: Projects/Details/5

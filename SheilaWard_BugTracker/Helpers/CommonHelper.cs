@@ -1,4 +1,5 @@
-﻿using SheilaWard_BugTracker.Models;
+﻿using Microsoft.AspNet.Identity;
+using SheilaWard_BugTracker.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

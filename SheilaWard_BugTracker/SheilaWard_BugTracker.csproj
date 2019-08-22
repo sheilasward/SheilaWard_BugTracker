@@ -6689,6 +6689,7 @@
     <Content Include="Scripts\icheck.min.js" />
     <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\jquery.slimscroll.min.js" />
+    <Content Include="Scripts\site.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -7284,6 +7285,8 @@
     <Content Include="private.config" />
     <Content Include="Views\Account\CustomResetPassword.cshtml" />
     <Content Include="Views\Account\CustomResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Admin\AssignUsers.cshtml" />
+    <Content Include="Views\Admin\AssignDevs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\bower_components\moment\moment.d.ts" />

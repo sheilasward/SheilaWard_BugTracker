@@ -75,6 +75,18 @@ namespace SheilaWard_BugTracker.Controllers
             return RedirectToAction("UserIndex");
         }
 
+        [Authorize(Roles ="Admin, ProjectManager")]
+        public ActionResult AssignUsers()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Admin, ProjectManager")]
+        public ActionResult AssignDevs()
+        {
+            return View();
+        }
+
         public ActionResult ManageRoles()
         {
             var users = db.Users.Select(u => new UserProfileViewModel

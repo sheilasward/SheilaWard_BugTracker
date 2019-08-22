@@ -4,6 +4,21 @@
     ViewBag.Title = "Index";
 }
 
+<style>
+    .color-info a {
+        background-color: #D2D6DE;
+        color: darkgray;
+        margin: 2px;
+    }
+
+    .color-info .active a {
+        background-color: #007BFF !important;
+        color: white;
+        margin: 2px;
+    }
+</style>
+
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h2>List of Projects</h2>
@@ -15,10 +30,24 @@
         @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
         {
             @Html.ActionLink("Create New", "Create")
-            <div class="center-block">
-                <button id="myProj" class="btn btn-primary btn-flat active">My Projects</button>
-                <button id="allProj" class="btn btn-default btn-flat">All Projects</button>
+
+            <div class="row">
+                <div class="col-md-2 text-center h4">
+                    <ul class="nav nav-pills nav-justified color-info">
+                        <li class="myProj">
+                            <a href="@Url.Action("Index", "Projects", new { proj = "MyProjects" })">My Projects</a>
+                        </li>
+                        <li class="allProj">
+                            <a href="@Url.Action("Index", "Projects", new { proj = "AllProjects" })">All Projects</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
+
+            @*<div class="center-block">
+                    <button id="myProj" class="btn btn-primary btn-flat active">My Projects</button>
+                    <button id="allProj" class="btn btn-default btn-flat">All Projects</button>
+                </div>*@
         }
     </p>
     <table class="table">
@@ -57,19 +86,17 @@
 
     </table>
 </section>
-@section Scripts  {
+
+@section Scripts {
+    @*@Scripts.Render("~/Scripts/site.js")*@
     <script>
-        $("#myProj").on("click", function () {
-            addClass("active");
-            addClass("btn-primary");
-            removeClass("btn-default");
-        });
-
-        $("#allProj").on("click", function () {
-            addClass("active");
-            addClass("btn-primary");
-            removeClass("btn-default");
-        });
-
+        if ("@TempData["activeTab"]" == "All") {
+            $('li.myProj').removeClass('active');
+            $('li.allProj').addClass('active');
+        }
+        else {
+            $('li.allProj').removeClass('active');
+            $('li.myProj').addClass('active');
+        }
     </script>
 }
