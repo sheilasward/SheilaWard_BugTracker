@@ -14,8 +14,8 @@
                 </span>
             </a>
             <ul class="treeview-menu">
-                <li><a href="@Url.Action("AssignUsers", "Admin")"><i class="fa fa-circle-o"></i> Assign to Projects</a></li>
-                <li><a href="@Url.Action("AssignDevs", "Admin")"><i class="fa fa-circle-o"></i> Assign to Tickets</a></li>
+                <li><a href="@Url.Action("AssignToProj", "Projects")"><i class="fa fa-circle-o"></i> Assign to Projects</a></li>
+                <li><a href="@Url.Action("AssignToTickets", "Tickets")"><i class="fa fa-circle-o"></i> Assign to Tickets</a></li>
             </ul>
         </li>
         <li class="treeview">
@@ -28,7 +28,20 @@
             <ul class="treeview-menu">
                 <li><a href="@Url.Action("Create", "Projects")"><i class="fa fa-circle-o"></i> Create New Project</a></li>
                 <li><a href="@Url.Action("Index", "Projects", new { proj = "MyProjects" })"><i class="fa fa-circle-o"></i> View/Manage Projects</a></li>
-                <li><a href="@Url.Action("AssignUsers", "Admin")"><i class="fa fa-circle-o"></i> Assign Users</a></li>
+                <li><a href="@Url.Action("AssignToProj", "Projects")"><i class="fa fa-circle-o"></i> Assign Users</a></li>
+            </ul>
+        </li>
+        <li class="treeview">
+            <a href="#">
+                <i class="fa fa-book"></i><span>Tickets</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a href="@Url.Action("Dashboard", "Tickets")"><i class="fa fa-circle-o"></i> Ticket Dashboard</a></li>
+                <li><a href="@Url.Action("Index", "Tickets", new { tkt = "MyTickets" })"><i class="fa fa-circle-o"></i> View/Manage Tickets</a></li>
+                <li><a href="@Url.Action("AssignToTkt", "Tickets")"><i class="fa fa-circle-o"></i> Assign Users to Tickets</a></li>
             </ul>
         </li>
         <li>

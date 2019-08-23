@@ -13,6 +13,7 @@ namespace SheilaWard_BugTracker.Models
         public string UserId { get; set; }      // Foreign Key - What User added this Attachment?
         
         // other properties
+        public string Title { get; set; }
         public string Description { get; set; }
         public DateTimeOffset Created { get; set; }
         public string AttachmentUrl { get; set; }

@@ -32,7 +32,7 @@
             @Html.ActionLink("Create New", "Create")
 
             <div class="row">
-                <div class="col-md-2 text-center h4">
+                <div class="col-md-2 text-center h5">
                     <ul class="nav nav-pills nav-justified color-info">
                         <li class="myProj">
                             <a href="@Url.Action("Index", "Projects", new { proj = "MyProjects" })">My Projects</a>
@@ -43,11 +43,6 @@
                     </ul>
                 </div>
             </div>
-
-            @*<div class="center-block">
-                    <button id="myProj" class="btn btn-primary btn-flat active">My Projects</button>
-                    <button id="allProj" class="btn btn-default btn-flat">All Projects</button>
-                </div>*@
         }
     </p>
     <table class="table">
@@ -66,22 +61,22 @@
 
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Created)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                </td>
-            </tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Created)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Assign", "AssignToProj", new { id = item.Id }) |
+            @Html.ActionLink("Archive", "Archive", new { id = item.Id }) 
+        </td>
+    </tr>
         }
 
     </table>

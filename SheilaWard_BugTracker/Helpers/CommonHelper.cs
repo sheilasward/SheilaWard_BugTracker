@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using SheilaWard_BugTracker.Enumerations;
 using SheilaWard_BugTracker.Models;
 using System;
 using System.Collections.Generic;
@@ -11,18 +12,22 @@ namespace SheilaWard_BugTracker.Helpers
     public abstract class CommonHelper
     {
         // protected means only my children who inherit from me can see these
-        protected static ApplicationDbContext db = new ApplicationDbContext();
-        protected static UserRolesHelper roleHelper = new UserRolesHelper();
-        protected static ProjectsHelper projectHelper = new ProjectsHelper();
-
+        protected ApplicationDbContext db = new ApplicationDbContext();
+        protected UserRolesHelper roleHelper = new UserRolesHelper();
+        protected ProjectsHelper projectHelper = new ProjectsHelper();
         protected ApplicationUser currentUser = null;
-        protected String currentRole = "";
+        protected SystemRole currentRole = SystemRole.None;
 
         protected CommonHelper()
         {
             var userId = HttpContext.Current.User.Identity.GetUserId();
-            this.currentUser = db.Users.Find(userId);
-            this.currentRole = roleHelper.ListUserRoles(this.currentUser.Id).FirstOrDefault();
+            if (userId != null)
+            {
+                currentUser = db.Users.Find(userId);
+                var stringRole = roleHelper.ListUserRoles(userId).FirstOrDefault();
+                currentRole = (SystemRole)Enum.Parse(typeof(SystemRole), stringRole);
+            }
+            
         }
     }
 }

@@ -60,10 +60,11 @@ namespace SheilaWard_BugTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,Created")] Project project)
+        public ActionResult Create([Bind(Include = "Id,Name,Description")] Project project)
         {
             if (ModelState.IsValid)
             {
+                project.Created = DateTimeOffset.Now;
                 db.Projects.Add(project);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -96,6 +97,7 @@ namespace SheilaWard_BugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                project.Updated = DateTimeOffset.Now;
                 db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -129,6 +131,43 @@ namespace SheilaWard_BugTracker.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: Projects/AssignToProj (Assign Users to Projects) - Admins and PMs can access this for all Users. 
+        [Authorize(Roles = "Admin, ProjectManager")]
+        public ActionResult AssignToProj()
+        {
+            return View();
+        }
+
+        // GET: Projects/Archive
+        [Authorize(Roles = "Admin, ProjectManager")]
+        public ActionResult Archive(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Project project = db.Projects.Find(id);
+            if (project == null)
+            {
+                return HttpNotFound();
+            }
+            return View(project);
+        }
+
+        // POST: Projects/Archive
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Archive([Bind(Include = "Id,Name,Description,Created,Updated")] Project project)
+        {
+            if (ModelState.IsValid)
+            {
+                project.Archived = DateTimeOffset.Now;
+                db.Entry(project).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(project);
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

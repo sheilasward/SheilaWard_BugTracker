@@ -43,30 +43,91 @@ namespace SheilaWard_BugTracker.Migrations
             #endregion
 
             #region Users
-            if (!context.Users.Any(r => r.UserName == "admin@myblog.com"))
+            if (!context.Users.Any(r => r.UserName == "sheila.ward@email.com"))
             {
                 userManager.Create(new ApplicationUser
                 {
-                    UserName = "admin@myblog.com",
-                    Email = "admin@myblog.com",
+                    UserName = "sheila.ward@email.com",
+                    Email = "sheila.ward@email.com",
                     FirstName = "Sheila",
                     LastName = "Ward",
-                    DisplayName = "Sheila Ward",
+                    DisplayName = "SSWard",
+                    AvatarUrl = "~/Images/default-user-icon-8.jpg"
+                }, "P@ssw0rd");
+            }
+            if (!context.Users.Any(r => r.UserName == "TShorter@mailinator.com"))
+            {
+                userManager.Create(new ApplicationUser
+                {
+                    UserName = "TShorter@mailinator.com",
+                    Email = "TShorter@mailinator.com",
+                    FirstName = "Teresa",
+                    LastName = "Shorter",
+                    DisplayName = "TShorter",
+                    AvatarUrl = "~/Images/default-user-icon-8.jpg"
+                }, "P@ssw0rd");
+            }
+            if (!context.Users.Any(r => r.UserName == "DRose@mailinator.com"))
+            {
+                userManager.Create(new ApplicationUser
+                {
+                    UserName = "DRose@mailinator.com",
+                    Email = "DRose@mailinator.com",
+                    FirstName = "Dave",
+                    LastName = "Rose",
+                    DisplayName = "DRose",
+                    AvatarUrl = "~/Images/default-user-icon-8.jpg"
+                }, "P@ssw0rd");
+            }
+            if (!context.Users.Any(r => r.UserName == "CTriplett@mailinator.com"))
+            {
+                userManager.Create(new ApplicationUser
+                {
+                    UserName = "CTriplett@mailinator.com",
+                    Email = "CTriplett@mailinator.com",
+                    FirstName = "Cynthia",
+                    LastName = "Triplett",
+                    DisplayName = "CCTriplett",
+                    AvatarUrl = "~/Images/default-user-icon-8.jpg"
+                }, "P@ssw0rd");
+            }
+            if (!context.Users.Any(r => r.UserName == "Sherri@Mailinator.com"))
+            {
+                userManager.Create(new ApplicationUser
+                {
+                    UserName = "Sherri@Mailinator.com",
+                    Email = "Sherri@Mailinator.com",
+                    FirstName = "Sherri",
+                    LastName = "Creech",
+                    DisplayName = "SCreech",
                     AvatarUrl = "~/Images/default-user-icon-8.jpg"
                 }, "P@ssw0rd");
             }
             #endregion
 
             #region AssignToRoles
-            var adminId = userManager.FindByEmail("admin@myblog.com").Id;
+            var adminId = userManager.FindByEmail("sheila.ward@email.com").Id;
             userManager.AddToRole(adminId, "Admin");
+
+            var submitterId = userManager.FindByEmail("TShorter@mailinator.com").Id;
+            userManager.AddToRole(submitterId, "Submitter");
+
+            submitterId = userManager.FindByEmail("Sherri@Mailinator.com").Id;
+            userManager.AddToRole(submitterId, "Submitter");
+
+            var PMId = userManager.FindByEmail("DRose@mailinator.com").Id;
+            userManager.AddToRole(PMId, "ProjectManager");
+
+            var DevId = userManager.FindByEmail("CTriplett@mailinator.com").Id;
+            userManager.AddToRole(DevId, "Developer");
+
             #endregion
 
             #region Projects
             context.Projects.AddOrUpdate(
                 p => p.Name,
                     new Project { Name = "Coder Foundry Blog", Description = "Blog exercise", Created = DateTimeOffset.Now },
-                    new Project { Name = "Sheila Ward Portfolio", Description = "My Portfolio created during Coder Foundry", Created = DateTimeOffset.Now },
+                    new Project { Name = "Portfolio Project", Description = "My Portfolio created during Coder Foundry", Created = DateTimeOffset.Now },
                     new Project { Name = "Bug Tracker Project", Description = "System to track tickets in an IT system - can be bugs, or requests for enhancements or documentation", Created = DateTime.Now }
             );
             #endregion
@@ -77,8 +138,8 @@ namespace SheilaWard_BugTracker.Migrations
                     new TicketPriority { Name = "None", Description = "Priority has not been determined"},
                     new TicketPriority { Name = "Low", Description = "Lowest priority level" },
                     new TicketPriority { Name = "Medium", Description = "Mid-level priority" },
-                    new TicketPriority { Name = "High", Description = "High priority" },
-                    new TicketPriority { Name = "Urgent", Description = "Highest priority level" }
+                    new TicketPriority { Name = "High", Description = "A high priority level requiring quick action" },
+                    new TicketPriority { Name = "Urgent", Description = "Highest priority level requiring immediate action" }
             );
             #endregion
 

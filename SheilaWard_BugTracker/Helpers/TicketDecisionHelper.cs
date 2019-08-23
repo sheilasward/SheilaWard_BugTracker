@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using SheilaWard_BugTracker.Enumerations;
 using SheilaWard_BugTracker.Models;
 using System;
 using System.Collections.Generic;
@@ -9,15 +10,14 @@ namespace SheilaWard_BugTracker.Helpers
 {
     public class TicketDecisionHelper : CommonHelper
     {
-
-        //public static bool TicketDetailIsViewableByUser(int ticketId)
+        //public bool TicketDetailIsViewableByUser(int ticketId)
         //{
         //    var userId = HttpContext.Current.User.Identity.GetUserId();
         //    var roleName = roleHelper.ListUserRoles(userId).FirstOrDefault();
         //    var systemRole = (SystemRole)Enum.Parse(typeof(SystemRole), roleName);
         //}
 
-        public static bool TicketIsEditableByUser(Ticket ticket)
+        public bool TicketIsEditableByUser(Ticket ticket)
         {
             var userId = HttpContext.Current.User.Identity.GetUserId();
             var myRole = roleHelper.ListUserRoles(userId).FirstOrDefault();

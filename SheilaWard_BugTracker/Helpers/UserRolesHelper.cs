@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using SheilaWard_BugTracker.Enumerations;
 using SheilaWard_BugTracker.Models;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,11 @@ namespace SheilaWard_BugTracker.Helpers
         private UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public bool IsUserInRole(string userId, string roleName)
+        public bool IsUserInSystemRole(string userId, SystemRole roleName)
+        {
+            return IsUserInRole(userId, roleName.ToString());
+        }
+        private bool IsUserInRole(string userId, string roleName)
         {
             return userManager.IsInRole(userId, roleName);
         }

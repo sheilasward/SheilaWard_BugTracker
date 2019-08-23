@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Web;
 
@@ -31,5 +32,33 @@ namespace SheilaWard_BugTracker.Helpers
 
         }
 
+        public static string GetIconPath(string filePath)
+        {
+            switch (Path.GetExtension(filePath))
+            {
+                case ".png":
+                case ".bmp":
+                case ".tif":
+                case ".ico":
+                case ".jpg":
+                case ".jpeg":
+                    return filePath;
+                case ".pdf":
+                    return "/Images/PDF.png";
+                case ".doc":
+                    return "/Images/doc.png";
+                case ".docx":
+                    return "/Images/docx.png";
+                case ".xls":
+                    return "/Images/xls.ico";
+                case ".xlsx":
+                    return "/Images/xlsx.ico";
+                case ".zip":
+                    return "/Images/zip.png";
+                default:
+                    return "/Images/other.png";
+            }
+
+        }
     }
 }

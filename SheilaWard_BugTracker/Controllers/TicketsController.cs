@@ -92,8 +92,8 @@ namespace SheilaWard_BugTracker.Controllers
                 return HttpNotFound();
             }
 
-            if (TicketDecisionHelper.TicketIsEditableByUser(ticket))
-            {
+            //if (TicketDecisionHelper.TicketIsEditableByUser(ticket))
+            //{
                 ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
                 ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
                 ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
@@ -101,12 +101,12 @@ namespace SheilaWard_BugTracker.Controllers
                 ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
                 ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
                 return View(ticket);
-            }
-            else
-            {
-                TempData["Message"] = "YOU ARE NOT AUTHORIZED TO EDIT THIS TICKET BASED ON YOUR ASSIGNED ROLE.";
-                return RedirectToAction("Index", "Tickets");
-            }
+            //}
+            //else
+            //{
+            //    TempData["Message"] = "YOU ARE NOT AUTHORIZED TO EDIT THIS TICKET BASED ON YOUR ASSIGNED ROLE.";
+            //    return RedirectToAction("Index", "Tickets");
+            //}
 
             //switch (myRole)
             //{
@@ -196,6 +196,21 @@ namespace SheilaWard_BugTracker.Controllers
             db.Tickets.Remove(ticket);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        // GET: Dashboard
+        [Authorize]
+        public ActionResult Dashboard()
+        {
+            return View();
+        }
+
+        // GET: AssignToTkt (Assign Users to Tickets) - Admins can access this for all Users.
+        // PMs can access this for Developers only
+        [Authorize(Roles = "Admin, ProjectManager")]
+        public ActionResult AssignToTkt()
+        {
+            return View();
         }
 
         protected override void Dispose(bool disposing)

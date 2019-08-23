@@ -183,6 +183,7 @@
     <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Controllers\TicketStatusController.cs" />
     <Compile Include="Controllers\TicketTypesController.cs" />
+    <Compile Include="Enumerations\SystemRole.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -6681,7 +6682,14 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\blue.png" />
     <Content Include="Images\default-user-icon-8.jpg" />
+    <Content Include="Images\doc.png" />
+    <Content Include="Images\docx.png" />
+    <Content Include="Images\other.png" />
+    <Content Include="Images\PDF.png" />
     <Content Include="Images\user2-160x160.jpg" />
+    <Content Include="Images\xls.ico" />
+    <Content Include="Images\xlsx.ico" />
+    <Content Include="Images\zip.png" />
     <Content Include="Scripts\adminlte.min.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\demo.js" />
@@ -7285,8 +7293,10 @@
     <Content Include="private.config" />
     <Content Include="Views\Account\CustomResetPassword.cshtml" />
     <Content Include="Views\Account\CustomResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Admin\AssignUsers.cshtml" />
-    <Content Include="Views\Admin\AssignDevs.cshtml" />
+    <Content Include="Views\Projects\AssignToProj.cshtml" />
+    <Content Include="Views\Tickets\AssignToTkt.cshtml" />
+    <Content Include="Views\Tickets\Dashboard.cshtml" />
+    <Content Include="Views\Projects\Archive.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\bower_components\moment\moment.d.ts" />
