@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using SheilaWard_BugTracker.Models;
 using SheilaWard_BugTracker.Helpers;
+using SheilaWard_BugTracker.Enumerations;
 
 namespace SheilaWard_BugTracker.Controllers
 {
@@ -16,6 +17,7 @@ namespace SheilaWard_BugTracker.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private UserRolesHelper roleHelper = new UserRolesHelper();
+        private ProjectsHelper projHelper = new ProjectsHelper();
 
         [Authorize]
         // GET: Tickets
@@ -65,7 +67,7 @@ namespace SheilaWard_BugTracker.Controllers
             {
                 ticket.Created = DateTimeOffset.Now;
                 ticket.OwnerUserId = User.Identity.GetUserId();
-                ticket.TicketStatusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "Inactive").Id;
+                ticket.TicketStatusId = db.TicketStatuses.AsNoTracking().FirstOrDefault(t => t.Name == "Inactive").Id;
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -92,62 +94,21 @@ namespace SheilaWard_BugTracker.Controllers
                 return HttpNotFound();
             }
 
-            //if (TicketDecisionHelper.TicketIsEditableByUser(ticket))
-            //{
-                ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
-                ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
-                ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
+            // if the method is not "static", you have to make a new instance of the decision helper
+            var decisionHelper = new TicketDecisionHelper();
+            if (decisionHelper.TicketIsEditableByUser(ticket))
+            {
+                ViewBag.AssignedToUserId = new SelectList(projHelper.UsersInRoleOnProject(ticket.ProjectId, SystemRole.Developer), "Id", "FullName", ticket.AssignedToUserId);
                 ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
                 ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
                 ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
                 return View(ticket);
-            //}
-            //else
-            //{
-            //    TempData["Message"] = "YOU ARE NOT AUTHORIZED TO EDIT THIS TICKET BASED ON YOUR ASSIGNED ROLE.";
-            //    return RedirectToAction("Index", "Tickets");
-            //}
-
-            //switch (myRole)
-            //{
-            //    // Question 1: What if I am a Developer...BUT this is not my Ticket??
-            //    case "Developer":
-            //        if (ticket.AssignedToUserId != userId)
-            //        {
-            //            TempData["Message"] = "You are not authorized to edit ticket: " + ticket.Title + ".";
-            //            return RedirectToAction("Index", "Tickets");
-            //        }
-            //        break;
-            //    // Question 2: What if I am a Submitter...BUT this is not my Ticket??
-            //    case "Submitter":
-            //        if (ticket.OwnerUserId != userId)
-            //        {
-            //            TempData["Message"] = "You are not authorized to edit ticket: " + ticket.Title + ".";
-            //            return RedirectToAction("Index", "Tickets");
-            //        }
-            //        break;
-            //    // Question 3: What if I am a Project Manager...BUT this is not my Ticket??
-            //    // If this Ticket is not on one of my projects...
-            //    case "ProjectManager":
-            //        // Get the User Id, then select all of that user's Projects and the Ticket Ids related to those projects, 
-            //        // Then see if one of those Ticket Ids contains this Ticket Id.
-            //        if (!db.Users.Find(userId).Projects.SelectMany(t => t.Tickets).Select(t => t.Id).Contains(ticket.Id))                    {
-            //            TempData["Message"] = "You are not authorized to edit ticket: " + ticket.Title + ".";
-            //            return RedirectToAction("Index", "Tickets");
-            //        }
-            //        break;
-            //    case "Admin":
-            //        break;
-            //    default:
-            //        break;
-            //}
-            //ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
-            //ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
-            //ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
-            //ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
-            //ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
-            //ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
-            //return View(ticket);
+            }
+            else
+            {
+                TempData["Message"] = "YOU ARE NOT AUTHORIZED TO EDIT THIS TICKET BASED ON YOUR ASSIGNED ROLE.";
+                return RedirectToAction("Index", "Tickets");
+            }
         }
 
         // POST: Tickets/Edit/5
@@ -155,17 +116,28 @@ namespace SheilaWard_BugTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,AssignedToUserId,Title,Description,Created,Updated")] Ticket ticket)
+        public ActionResult Edit([Bind(Include = "Id,TicketTypeId,TicketPriorityId,TicketStatusId,AssignedToUserId,Title,Description")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(ticket).State = EntityState.Modified;
+                var newTicket = db.Tickets.Find(ticket.Id);
+                newTicket.TicketTypeId = ticket.TicketTypeId;
+                newTicket.TicketPriorityId = ticket.TicketPriorityId;
+                newTicket.Title = ticket.Title;
+                newTicket.Description = ticket.Description;
+                newTicket.Updated = DateTimeOffset.Now;
+                if (ticket.AssignedToUserId != null)
+                {
+                    newTicket.AssignedToUserId = ticket.AssignedToUserId;
+                }
+                if (ticket.TicketStatusId != 0)
+                {
+                    newTicket.TicketStatusId = ticket.TicketStatusId;
+                }
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
-            ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
+            ViewBag.AssignedToUserId = new SelectList(projHelper.UsersInRoleOnProject(ticket.ProjectId, SystemRole.Developer), "Id", "FullName", ticket.AssignedToUserId);
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
             ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
@@ -200,9 +172,9 @@ namespace SheilaWard_BugTracker.Controllers
 
         // GET: Dashboard
         [Authorize]
-        public ActionResult Dashboard()
+        public ActionResult Dashboard(int id)
         {
-            return View();
+            return View(db.Tickets.Find(id));
         }
 
         // GET: AssignToTkt (Assign Users to Tickets) - Admins can access this for all Users.

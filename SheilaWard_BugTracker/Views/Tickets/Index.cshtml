@@ -3,7 +3,7 @@
 
 @{
     ViewBag.Title = "Index";
-    //var linkHelper = new LinkHelper();
+    var linkHelper = new LinkHelper();
 }
 
 
@@ -90,9 +90,13 @@
                 </td>
                 
                 <td>
+                    @if (linkHelper.UserCanEditTicketPriorityTypeTitleDescription(item))
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                    }
 
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                     @Html.ActionLink("Details", "Details", new { id = item.Id })
+                    @Html.ActionLink("Dashboard", "Dashboard", new { id = item.Id })
                 </td>
             </tr>
         }

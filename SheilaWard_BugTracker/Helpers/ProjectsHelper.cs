@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using SheilaWard_BugTracker.Enumerations;
 using SheilaWard_BugTracker.Models;
 using System;
 using System.Collections.Generic;
@@ -14,18 +15,18 @@ namespace SheilaWard_BugTracker.Helpers
         private ApplicationDbContext db = new ApplicationDbContext();
         private UserRolesHelper roleHelper = new UserRolesHelper();
 
-        //public List<string> UsersInRoleOnProject(int projectId, string roleName)
-        //{
-        //    var people = new List<string>();
-        //    foreach (var user in UsersOnProject(projectId).ToList())
-        //    {
-        //        if (roleHelper.IsUserInRole(user.Id, roleName))
-        //        {
-        //            people.Add(user.Id);
-        //        }
-        //    }
-        //    return people;
-        //}
+        public List<ApplicationUser> UsersInRoleOnProject(int projectId, SystemRole roleName)
+        {
+            var people = new List<ApplicationUser>();
+            foreach (var user in UsersOnProject(projectId).ToList())
+            {
+                if (roleHelper.IsUserInSystemRole(user.Id, roleName))
+                {
+                    people.Add(user);
+                }
+            }
+            return people;
+        }
 
         public bool IsUserOnProject(string userId, int projectId)
         {
