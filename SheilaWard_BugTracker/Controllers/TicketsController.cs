@@ -18,13 +18,33 @@ namespace SheilaWard_BugTracker.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         private UserRolesHelper roleHelper = new UserRolesHelper();
         private ProjectsHelper projHelper = new ProjectsHelper();
+        private TicketDecisionHelper tktHelper = new TicketDecisionHelper();
 
         [Authorize]
         // GET: Tickets
-        public ActionResult Index()
+        public ActionResult Index(string tkt)
         {
-            var tickets = db.Tickets.Include(t => t.AssignedToUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
+            var userId = User.Identity.GetUserId();
+            ViewBag.AllDevs = new SelectList(roleHelper.UsersInRole("Developer"), "Id", "FullName");
+
+            //SelectList(projHelper.UsersInRoleOnProject(db.Tickets.Find(ticketId).ProjectId), "Developer");
+
+            if (tkt == "AllTickets")
+            {
+                TempData["activeTab"] = "All";
+                return View(db.Tickets.ToList());
+            }
+            //var userId = User.Identity.GetUserId();
+            //    var projHelper = new ProjectsHelper();
+            //    var projList = projHelper.ListUserProjects(userId);
+            //    return View(projList);
+
+ 
+            var tickets = tktHelper.ListOfUsersTickets();
             return View(tickets.ToList());
+
+            //var tickets = db.Tickets.Include(t => t.AssignedToUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
+            //return View(tickets.ToList());
         }
 
         [Authorize]
@@ -120,20 +140,20 @@ namespace SheilaWard_BugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                var newTicket = db.Tickets.Find(ticket.Id);
-                newTicket.TicketTypeId = ticket.TicketTypeId;
-                newTicket.TicketPriorityId = ticket.TicketPriorityId;
-                newTicket.Title = ticket.Title;
-                newTicket.Description = ticket.Description;
-                newTicket.Updated = DateTimeOffset.Now;
+                db.Tickets.Attach(ticket);
+                db.Entry(ticket).Property(x => x.TicketTypeId).IsModified = true;
+                db.Entry(ticket).Property(x => x.TicketPriorityId).IsModified = true;
+                db.Entry(ticket).Property(x => x.Title).IsModified = true;
+                db.Entry(ticket).Property(x => x.Description).IsModified = true;
                 if (ticket.AssignedToUserId != null)
                 {
-                    newTicket.AssignedToUserId = ticket.AssignedToUserId;
+                    db.Entry(ticket).Property(x => x.AssignedToUserId).IsModified = true;
                 }
                 if (ticket.TicketStatusId != 0)
                 {
-                    newTicket.TicketStatusId = ticket.TicketStatusId;
+                    db.Entry(ticket).Property(x => x.TicketStatusId).IsModified = true;
                 }
+                ticket.Updated = DateTimeOffset.Now;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -174,7 +194,12 @@ namespace SheilaWard_BugTracker.Controllers
         [Authorize]
         public ActionResult Dashboard(int id)
         {
-            return View(db.Tickets.Find(id));
+            var ticket = db.Tickets.Find(id);
+            if (ticket == null)
+            {
+                return HttpNotFound();
+            }
+            return View(ticket);
         }
 
         // GET: AssignToTkt (Assign Users to Tickets) - Admins can access this for all Users.

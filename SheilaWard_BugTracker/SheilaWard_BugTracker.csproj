@@ -6778,6 +6778,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Attachments\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -7283,7 +7284,7 @@
     <Content Include="Views\Members\EditProfile.cshtml" />
     <Content Include="Views\Admin\UserIndex.cshtml" />
     <Content Include="Views\Admin\OldManageRoles.cshtml" />
-    <Content Include="Views\Admin\OldManageProjects.cshtml" />
+    <Content Include="Views\Projects\ManageProjects.cshtml" />
     <Content Include="Views\Shared\_AdminNavPartial.cshtml" />
     <Content Include="Views\Shared\_PMNavPartial.cshtml" />
     <Content Include="Views\Shared\_DevNavPartial.cshtml" />

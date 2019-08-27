@@ -508,6 +508,16 @@
 
         <script type="text/javascript" src="https://cdn.datatables.net/v/bs/b-1.5.6/b-html5-1.5.6/b-print-1.5.6/datatables.min.js"></script>
 
+        <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+        <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                tinymce.init({
+                    selector: '#Body'
+                });
+            });
+        </script>
+
         <script>
             $(document).ready(function () {
                 $('.sidebar-menu').tree()

@@ -32,6 +32,34 @@ namespace SheilaWard_BugTracker.Helpers
 
         }
 
+        public static bool IsValidAttachment(HttpPostedFileBase file)
+        {
+            try
+            {
+                if (file == null)
+                    return false;
+
+                if (file.ContentLength > 5 * 1024 * 1024 || file.ContentLength < 1024)
+                    return false;
+
+                var extValid = false;
+                foreach (var ext in System.Web.Configuration.WebConfigurationManager.AppSettings["AllowedAttachmentExtensions"].Split(','))
+                {
+                    if (Path.GetExtension(file.FileName) == ext)
+                    {
+                        extValid = true;
+                        break;
+                    }
+                }
+
+                return IsWebFriendlyImage(file) || extValid;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public static string GetIconPath(string filePath)
         {
             switch (Path.GetExtension(filePath))

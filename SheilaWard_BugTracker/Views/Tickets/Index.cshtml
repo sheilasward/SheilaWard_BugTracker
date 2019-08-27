@@ -4,7 +4,22 @@
 @{
     ViewBag.Title = "Index";
     var linkHelper = new LinkHelper();
+    var tktHelper = new TicketDecisionHelper();
 }
+
+<style>
+    .color-info a {
+        background-color: #D2D6DE;
+        color: darkgray;
+        margin: 2px;
+    }
+
+    .color-info .active a {
+        background-color: #007BFF !important;
+        color: white;
+        margin: 2px;
+    }
+</style>
 
 
 <!-- Content Header (Page header) -->
@@ -20,6 +35,22 @@
             @Html.ActionLink("Create New", "Create")
         }
     </p>
+
+    <p>
+        <div class="row">
+            <div class="col-md-2 text-center h5">
+                <ul class="nav nav-pills nav-justified color-info">
+                    <li class="myTkt">
+                        <a href="@Url.Action("Index", "Tickets", new { tkt = "MyTickets" })">My Tickets</a>
+                    </li>
+                    <li class="allTkt">
+                        <a href="@Url.Action("Index", "Tickets", new { tkt = "AllTickets" })">All Tickets</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </p>
+
     <table class="table">
         <tr>
             <th>
@@ -55,50 +86,61 @@
             <th></th>
         </tr>
 
-        @foreach (var item in Model)
+       @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AssignedToUser.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OwnerUser.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Project.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TicketPriority.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TicketStatus.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TicketType.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @item.Created.ToString("MM/dd/yyyy hh:mmtt")
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Updated)
-                </td>
-                
-                <td>
-                    @if (linkHelper.UserCanEditTicketPriorityTypeTitleDescription(item))
-                    {
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id })
-                    }
+        <tr>
+           @if ((User.IsInRole("Admin")) || (User.IsInRole("ProjectManager")))
+            {
+               
+               <td>
+                   @Html.DropDownList("AllDevs", null, "-- NONE --", htmlAttributes: new { @class = "form-control" })
+               </td>
+            }
+            else
+            {
+               <td>
+                   @Html.DisplayFor(modelItem => item.AssignedToUser.FirstName)
+               </td>
+            }
 
-                    @Html.ActionLink("Details", "Details", new { id = item.Id })
-                    @Html.ActionLink("Dashboard", "Dashboard", new { id = item.Id })
-                </td>
-            </tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OwnerUser.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Project.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketStatus.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketType.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @item.Created.ToString("MM/dd/yyyy hh:mmtt")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Updated)
+            </td>
+
+            <td>
+                @if (linkHelper.UserCanEditTicketPriorityTypeTitleDescription(item))
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id })<br />
+                }
+
+                @Html.ActionLink("Details", "Details", new { id = item.Id })<br />
+                @Html.ActionLink("Dashboard", "Dashboard", new { id = item.Id })
+            </td>
+        </tr>
         }
 
     </table>
@@ -114,6 +156,15 @@
                 title: 'AUTHORIZATION ERROR!',
                 text: msg
             })
+        }
+
+        if ("@TempData["activeTab"]" == "All") {
+            $('li.myTkt').removeClass('active');
+            $('li.allTkt').addClass('active');
+        }
+        else {
+            $('li.allTkt').removeClass('active');
+            $('li.myTkt').addClass('active');
         }
     </script>
 }

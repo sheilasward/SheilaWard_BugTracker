@@ -9,12 +9,14 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using SheilaWard_BugTracker.Helpers;
 using SheilaWard_BugTracker.Models;
+using SheilaWard_BugTracker.ViewModels;
 
 namespace SheilaWard_BugTracker.Controllers
 {
     public class ProjectsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private ProjectsHelper projHelper = new ProjectsHelper();
 
         [Authorize(Roles = "Admin, ProjectManager, Submitter, Developer")]
         // GET: Projects
@@ -133,9 +135,69 @@ namespace SheilaWard_BugTracker.Controllers
 
         // GET: Projects/AssignToProj (Assign Users to Projects) - Admins and PMs can access this for all Users. 
         [Authorize(Roles = "Admin, ProjectManager")]
-        public ActionResult AssignToProj()
+        public ActionResult AssignToProj(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                // pass to view list of all projects for drop-down
+                var projList = new List<Project>();
+                ViewBag.Projects = new MultiSelectList(projList);
+                return View(projList);
+            }
+            // pass the 1 project to view
+            Project project = db.Projects.Find(id);
+            return View(project);
+
+        }
+
+        // GET Projects/ManageProjects
+        public ActionResult ManageProjects()
+        {
+            var users = db.Users.Select(u => new UserProfileViewModel
+            {
+                Id = u.Id,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                DisplayName = u.DisplayName,
+                AvatarUrl = u.AvatarUrl,
+                Email = u.Email
+            }).ToList();
+
+            ViewBag.Users = new MultiSelectList(db.Users.ToList(), "Id", "FullNameWithEmail");
+            ViewBag.ProjectName = new MultiSelectList(db.Projects.ToList(), "Id", "Name");
+
+            return View(users);
+        }
+
+        // POST Projects/ManageProjects 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ManageProjects(List<string> users, List<int> projectName)
+        {
+            if (users != null)
+            {
+                // Iterate over the incoming list of Users that were selected from the form
+                foreach (var userId in users)
+                {
+                    // Remove each of them from whatever role they occupy currently
+                    foreach (var project in projHelper.ListUserProjects(userId))
+                    {
+                        projHelper.RemoveUserFromProject(userId, project.Id);
+                    }
+                    //Then add them back to the selected project
+                    if (projectName != null)
+                    {
+                        foreach (var project in projectName)
+                        {
+                            projHelper.AddUserToProject(userId, project);
+                        }
+
+                    }
+                }
+            }
+
+            return RedirectToAction("ManageProjects");
         }
 
         // GET: Projects/Archive

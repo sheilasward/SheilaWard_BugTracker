@@ -3,6 +3,7 @@
 @model Ticket
 @{
     ViewBag.Title = "Dashboard";
+    var decisionHelper = new TicketDecisionHelper();
 }
 
 <!-- Content Header (Page header) -->
@@ -223,75 +224,70 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    @*@if (TicketDecisionHelper.TicketIsEditableByUser(Model))
-        {
 
-        }*@
-                    @using (Html.BeginForm("Create", "TicketAttachments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+                    @if (decisionHelper.TicketIsEditableByUser(Model))
                     {
-                        @Html.AntiForgeryToken()
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.TextArea("Description", new { @class = "form-control" })
-                                @*@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })*@
-                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.TicketAttachments, "AttachmentUrl", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                <input type="file" name="Attachment" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Create" class="btn btn-default" />
-                            </div>
-                        </div>
-                    }
-                    <hr />
-                        @foreach (var attachment in Model.TicketAttachments)
+                        using (Html.BeginForm("Create", "TicketAttachments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
                         {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("TicketId", Model.Id)
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <img src="@ImageHelpers.GetIconPath(attachment.AttachmentUrl)" />
-
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <a target="_blank" href="@attachment.AttachmentUrl">@Path.GetFileNameWithoutExtension(attachment.AttachmentUrl)</a>
-                                        </div>
-                                    </div>
+                                <div class="col-md-12">
+                                    @Html.TextBox("AttachmentTitle", null, new { @class = "form-control cell-fill-input", placeholder = "Title" })
                                 </div>
-                                <div class="col-md-8">
-                                    <div class="row">
-                                        <div class="col-md-6">@attachment.Created.ToString("MMM d, yyyy")</div>
-                                        <div class="col-md-6">@attachment.User.FullName</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            @attachment.Title
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            @attachment.Description
-                                        </div>
-                                    </div>
+                            </div><br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    @Html.TextArea("AttachmentDescription", new { @class = "form-control cell-fill-textarea", rows = 5, cols = 150, placeholder = "Description" })
+                                </div>
+                            </div><br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="file" name="Attachment" />
+                                </div>
+                            </div><br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-default">Add Attachment</button>
                                 </div>
                             </div>
                         }
+                    }
+                    <hr />
+                    @foreach (var attachment in Model.TicketAttachments)
+                    {
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <img src="@ImageHelpers.GetIconPath(attachment.AttachmentUrl)" class="img-responsive" />
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <a target="_blank" href="@attachment.AttachmentUrl">@Path.GetFileNameWithoutExtension(attachment.AttachmentUrl)</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-6">@attachment.Created.ToString("MMM d, yyyy")</div>
+                                    <div class="col-md-6">@attachment.User.FullName</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @attachment.Title
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @attachment.Description
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
                 <!-- /.box-body -->
             </div>
@@ -299,3 +295,17 @@
         </div>
     </div>
 </section>
+
+@section scripts {
+    <script>
+        var msg = '@TempData["Message"]';
+        if (msg != "")
+        {
+            Swal.fire({
+                type: 'error',
+                title: 'ATTACHMENT ERROR!',
+                text: msg
+            })
+        }
+    </script>
+}

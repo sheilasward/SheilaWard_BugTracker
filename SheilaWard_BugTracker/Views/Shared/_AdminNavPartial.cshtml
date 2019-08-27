@@ -29,7 +29,7 @@
             <ul class="treeview-menu">
                 <li><a href="@Url.Action("Create", "Projects")"><i class="fa fa-circle-o"></i> Create New Project</a></li>
                 <li><a href="@Url.Action("Index", "Projects", new { proj = "MyProjects" })"><i class="fa fa-circle-o"></i> View/Manage Projects</a></li>
-                <li><a href="@Url.Action("AssignToProj", "Projects")"><i class="fa fa-circle-o"></i> Assign Users to Projects</a></li>
+                <li><a href="@Url.Action("ManageProjects", "Projects")"><i class="fa fa-circle-o"></i> Assign Users</a></li>
             </ul>
         </li>
         <li class="treeview">
@@ -40,12 +40,11 @@
                 </span>
             </a>
             <ul class="treeview-menu">
-                <li><a href="@Url.Action("Dashboard", "Tickets")"><i class="fa fa-circle-o"></i> Tickets Dashboard</a></li>
                 <li><a href="@Url.Action("Index", "Tickets", new { tkt = "MyTickets" })"><i class="fa fa-circle-o"></i> View/Manage Tickets</a></li>
-                <li><a href="@Url.Action("AssignToTkt", "Tickets")"><i class="fa fa-circle-o"></i> Assign Users to Tickets</a></li>
+                <li><a href="@Url.Action("AssignToTkt", "Tickets")"><i class="fa fa-circle-o"></i> Assign Developers</a></li>
             </ul>
         </li>
-        <li>
+        @*<li>
             <a href="../widgets.html">
                 <i class="fa fa-th"></i> <span>Widgets</span>
                 <span class="pull-right-container">
@@ -187,7 +186,7 @@
         <li class="header">LABELS</li>
         <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
         <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
+        <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>*@
     </ul>
 @*<script>
     $("li.treeview").toggleClass("active");

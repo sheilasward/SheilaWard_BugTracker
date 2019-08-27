@@ -44,7 +44,7 @@
                 </div>
             </div>
         }
-    </p>
+     </p>
     <table class="table">
         <tr>
             <th>
@@ -59,24 +59,27 @@
             <th></th>
         </tr>
 
-        @foreach (var item in Model)
+   @foreach (var item in Model)
         {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Created)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("Assign", "AssignToProj", new { id = item.Id }) |
-            @Html.ActionLink("Archive", "Archive", new { id = item.Id }) 
-        </td>
-    </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created)
+                </td>
+                @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+                {
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Archive", "Archive", new { id = item.Id })
+                    </td>
+                }
+            </tr>
         }
 
     </table>

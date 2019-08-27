@@ -36,6 +36,29 @@ namespace SheilaWard_BugTracker.Helpers
                     return false;
             }
         }
+        
+        public ICollection<Ticket> ListOfUsersTickets()
+        {
+            var userId = HttpContext.Current.User.Identity.GetUserId();
+            var myRole = roleHelper.ListUserRoles(userId).FirstOrDefault();
+            switch (myRole)
+            {
+                case "Developer":
+                    return db.Tickets.Where(t => t.AssignedToUserId == userId).ToList();
+                case "Submitter":
+                    return db.Tickets.Where(t => t.OwnerUserId == userId).ToList();
+                case "ProjectManager":
+                    return db.Users.Find(userId).Projects.SelectMany(t => t.Tickets).ToList();
+                default:
+                    return db.Tickets.ToList();
+            }
+                
+        }
+
+        public bool DevIsOnProject(Ticket ticket)
+        {
+            return currentUser.Projects.SelectMany(t => t.Tickets).Select(t => t.Id).Contains(ticket.Id);
+        }
 
     }
 }
