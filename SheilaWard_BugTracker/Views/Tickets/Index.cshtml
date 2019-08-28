@@ -51,98 +51,93 @@
         </div>
     </p>
 
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayName("Assigned To")
-            </th>
-            <th>
-                @Html.DisplayName("Owner")
-            </th>
-            <th>
-                @Html.DisplayName("Project")
-            </th>
-            <th>
-                @Html.DisplayName("Priority")
-            </th>
-            <th>
-                @Html.DisplayName("Status")
-            </th>
-            <th>
-                @Html.DisplayName("Type")
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Updated)
-            </th>
-            <th></th>
-        </tr>
-
-       @foreach (var item in Model)
-        {
-        <tr>
-           @if ((User.IsInRole("Admin")) || (User.IsInRole("ProjectManager")))
+    <table class="table searchTbl">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayName("Assigned To")
+                </th>
+                <th>
+                    @Html.DisplayName("Owner")
+                </th>
+                <th>
+                    @Html.DisplayName("Project")
+                </th>
+                <th>
+                    @Html.DisplayName("Priority")
+                </th>
+                <th>
+                    @Html.DisplayName("Status")
+                </th>
+                <th>
+                    @Html.DisplayName("Type")
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Created)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Updated)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+           @foreach (var item in Model)
             {
-               
-               <td>
-                   @Html.DropDownList("AllDevs", null, "-- NONE --", htmlAttributes: new { @class = "form-control" })
-               </td>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AssignedToUser.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OwnerUser.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Project.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TicketStatus.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TicketType.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @item.Created.ToString("MM/dd/yyyy hh:mmtt")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Updated)
+                    </td>
+
+                    <td>
+                        @if (linkHelper.UserCanEditTicketPriorityTypeTitleDescription(item))
+                        {
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id })<br />
+
+                            if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+                            {
+                                @Html.ActionLink("Assign", "AssignToTkt", new { id = item.Id })<br />
+                            }
+                            @Html.ActionLink("Details", "Details", new { id = item.Id })<br />
+                            @Html.ActionLink("Dashboard", "Dashboard", new { id = item.Id })
+                        }
+                    </td>
+                </tr>
             }
-            else
-            {
-               <td>
-                   @Html.DisplayFor(modelItem => item.AssignedToUser.FirstName)
-               </td>
-            }
-
-            <td>
-                @Html.DisplayFor(modelItem => item.OwnerUser.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Project.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketPriority.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketStatus.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketType.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @item.Created.ToString("MM/dd/yyyy hh:mmtt")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Updated)
-            </td>
-
-            <td>
-                @if (linkHelper.UserCanEditTicketPriorityTypeTitleDescription(item))
-                {
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id })<br />
-                }
-
-                @Html.ActionLink("Details", "Details", new { id = item.Id })<br />
-                @Html.ActionLink("Dashboard", "Dashboard", new { id = item.Id })
-            </td>
-        </tr>
-        }
-
+        </tbody>
     </table>
 </section>
 
@@ -157,7 +152,9 @@
                 text: msg
             })
         }
+    </script>
 
+    <script>
         if ("@TempData["activeTab"]" == "All") {
             $('li.myTkt').removeClass('active');
             $('li.allTkt').addClass('active');
@@ -167,4 +164,5 @@
             $('li.myTkt').addClass('active');
         }
     </script>
+
 }

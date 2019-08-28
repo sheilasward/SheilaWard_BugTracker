@@ -146,8 +146,8 @@ namespace SheilaWard_BugTracker.Migrations
             #region TicketStatuses
             context.TicketStatuses.AddOrUpdate(
                 t => t.Name,
-                new TicketStatus { Name = "Inactive", Description = "Has not been approved or has been tabled" },
-                new TicketStatus { Name = "Active/Unassigned", Description = "Manager has approved, but not assigned to developer" },
+                new TicketStatus { Name = "New/Unassigned", Description = "Has not been approved or has been tabled" },
+                new TicketStatus { Name = "Inactive", Description = "Not currently being worked on" },
                 new TicketStatus { Name = "Active/Assigned", Description = "Developer is currently working on ticket" },
                 new TicketStatus { Name = "Completed", Description = "Development and Testing done, but not deployed" },
                 new TicketStatus { Name = "Archived", Description = "Ticket is completed and all work delivered"}

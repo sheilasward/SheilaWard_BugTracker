@@ -22,6 +22,9 @@ namespace SheilaWard_BugTracker.Controllers
         // GET: Projects
         public ActionResult Index(string proj)
         {
+            var userId = User.Identity.GetUserId();
+            ViewBag.UserId = userId;
+
             if (proj == "AllProjects")
             {
                 TempData["activeTab"] = "All";
@@ -29,7 +32,6 @@ namespace SheilaWard_BugTracker.Controllers
             }
             else
             {
-                var userId = User.Identity.GetUserId();
                 var projHelper = new ProjectsHelper();
                 var projList = projHelper.ListUserProjects(userId);
                 return View(projList);
@@ -66,6 +68,9 @@ namespace SheilaWard_BugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userId = User.Identity.GetUserId();
+                var newUser = db.Users.Find(userId);
+                project.Users.Add(newUser);
                 project.Created = DateTimeOffset.Now;
                 db.Projects.Add(project);
                 db.SaveChanges();
@@ -216,6 +221,17 @@ namespace SheilaWard_BugTracker.Controllers
             return View(project);
         }
 
+        // POST: Projects/Archive/5
+        [HttpPost, ActionName("Archive")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Archive(int id)
+        {
+            Project project = db.Projects.Find(id);
+            db.Projects.Remove(project);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         // POST: Projects/Archive
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -223,7 +239,6 @@ namespace SheilaWard_BugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                project.Archived = DateTimeOffset.Now;
                 db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

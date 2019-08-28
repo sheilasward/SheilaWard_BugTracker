@@ -87,7 +87,7 @@ namespace SheilaWard_BugTracker.Controllers
             {
                 ticket.Created = DateTimeOffset.Now;
                 ticket.OwnerUserId = User.Identity.GetUserId();
-                ticket.TicketStatusId = db.TicketStatuses.AsNoTracking().FirstOrDefault(t => t.Name == "Inactive").Id;
+                ticket.TicketStatusId = db.TicketStatuses.AsNoTracking().FirstOrDefault(t => t.Name == "New/Unassigned").Id;
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -202,13 +202,52 @@ namespace SheilaWard_BugTracker.Controllers
             return View(ticket);
         }
 
-        // GET: AssignToTkt (Assign Users to Tickets) - Admins can access this for all Users.
-        // PMs can access this for Developers only
+        // GET: AssignToTkt (Assign Developers to Tickets) - Admins can access this for all Developers.
+        // PMs can access this for Developers only on the Project Manager's projects.
         [Authorize(Roles = "Admin, ProjectManager")]
-        public ActionResult AssignToTkt()
+        public ActionResult AssignToTkt(int? Id)
         {
-            return View();
+            if (Id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Ticket ticket = db.Tickets.Find(Id);
+            if (ticket == null)
+            {
+                return HttpNotFound();
+            }
+
+            var mgr = User.Identity.GetUserName();
+
+            ViewBag.Manager = mgr;
+            ViewBag.AssignedToUserId = new SelectList(projHelper.UsersInRoleOnProject(ticket.ProjectId, SystemRole.Developer), "Id", "FullName", ticket.AssignedToUserId);
+            return View(ticket);
         }
+
+        // POST: AssignToTkt
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AssignToTkt([Bind(Include = "Id,TicketTypeId,TicketPriorityId,TicketStatusId,AssignedToUserId,Title,Description")] Ticket ticket)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Tickets.Attach(ticket);
+                db.Entry(ticket).Property(x => x.AssignedToUserId).IsModified = true;
+                ticket.Updated = DateTimeOffset.Now;
+                ticket.TicketStatusId = db.TicketStatuses.AsNoTracking().FirstOrDefault(t => t.Name == "Active/Assigned").Id;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            var mgrId = User.Identity.GetUserId();
+            var manager = db.Users.Find(mgrId);
+            var mgrName = manager.FullName;
+
+            ViewBag.Manager = mgrName;
+            ViewBag.AssignedToUserId = new SelectList(projHelper.UsersInRoleOnProject(ticket.ProjectId, SystemRole.Developer), "Id", "FullName", ticket.AssignedToUserId);
+            return View(ticket);
+        }
+
 
         protected override void Dispose(bool disposing)
         {

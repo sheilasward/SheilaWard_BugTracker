@@ -35,7 +35,7 @@
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <link href="~/Content/Site.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/b-1.5.6/b-html5-1.5.6/b-print-1.5.6/datatables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css" />
 
     
 
@@ -506,7 +506,10 @@
         <!-- Optional: include a polyfill for ES6 Promises for IE11 and Android browser -->
         <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
 
-        <script type="text/javascript" src="https://cdn.datatables.net/v/bs/b-1.5.6/b-html5-1.5.6/b-print-1.5.6/datatables.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+        <script>
+            $(".searchTbl").DataTable();
+        </script>
 
         <script src="~/Scripts/tinymce/tinymce.min.js"></script>
         <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>

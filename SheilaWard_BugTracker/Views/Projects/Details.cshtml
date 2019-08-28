@@ -1,7 +1,9 @@
-﻿@model SheilaWard_BugTracker.Models.Project
+﻿@using SheilaWard_BugTracker.Helpers
+@model SheilaWard_BugTracker.Models.Project
 
 @{
     ViewBag.Title = "Details";
+    var projHelper = new ProjectsHelper();
 }
 
 <!-- Content Header (Page header) -->
@@ -46,18 +48,9 @@
                 @Html.DisplayFor(model => model.Updated)
             </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Archived)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Archived)
-            </dd>
-
         </dl>
     </div>
     <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
         @Html.ActionLink("Back to List", "Index")
     </p>
 </section>

@@ -15,8 +15,7 @@
             </a>
             <ul class="treeview-menu">
                 <li><a href="@Url.Action("UserIndex", "Admin")"><i class="fa fa-circle-o"></i> User Index</a></li>
-                <li><a href="@Url.Action("AssignToProj", "Projects")"><i class="fa fa-circle-o"></i> Assign to Projects</a></li>
-                <li><a href="@Url.Action("AssignToTkt", "Tickets")"><i class="fa fa-circle-o"></i> Assign to Tickets</a></li>
+                <li><a href="@Url.Action("ManageProjects", "Projects")"><i class="fa fa-circle-o"></i> Assign to Projects</a></li>
             </ul>
         </li>
         <li class="treeview">
@@ -32,17 +31,10 @@
                 <li><a href="@Url.Action("ManageProjects", "Projects")"><i class="fa fa-circle-o"></i> Assign Users</a></li>
             </ul>
         </li>
-        <li class="treeview">
-            <a href="#">
-                <i class="fa fa-ticket"></i><span>Tickets</span>
-                <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                </span>
+        <li>
+            <a href="@Url.Action("Index", "Tickets", new { tkt = "MyTickets" })">
+                <i class="fa fa-ticket"></i>View/Manage Tickets
             </a>
-            <ul class="treeview-menu">
-                <li><a href="@Url.Action("Index", "Tickets", new { tkt = "MyTickets" })"><i class="fa fa-circle-o"></i> View/Manage Tickets</a></li>
-                <li><a href="@Url.Action("AssignToTkt", "Tickets")"><i class="fa fa-circle-o"></i> Assign Developers</a></li>
-            </ul>
         </li>
         @*<li>
             <a href="../widgets.html">

@@ -19,7 +19,7 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.AssignedToUser.FirstName)
+                @Html.DisplayFor(model => model.AssignedToUser.FullName)
             </dd>
 
             <dt>
@@ -27,7 +27,7 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.OwnerUser.FirstName)
+                @Html.DisplayFor(model => model.OwnerUser.FullName)
             </dd>
 
             <dt>
@@ -97,7 +97,6 @@
         </dl>
     </div>
     <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
         @Html.ActionLink("Back to List", "Index")
     </p>
 </section>

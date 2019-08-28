@@ -24,50 +24,48 @@
     <p>
         @Html.ActionLink("Create New", "Create")
     </p>
-    <table class="table">
-        <tr>
-            <th>@Html.DisplayName("Avatar")</th>
-            <th>@Html.DisplayName("Name")</th>
-            <th>@Html.DisplayNameFor(model => model.Email)</th>
-            <th>@Html.DisplayName("Phone")</th>
-            <th>@Html.DisplayName("Current Role")</th>
-            <th>@Html.DisplayName("Current Projects")</th>
-            <th>@Html.DisplayName("Changes")</th>
-        </tr>
-        @foreach (var user in Model)
-        {
+    <table class="table searchTbl">
+        <thead>
             <tr>
-                @using (Html.BeginForm())
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.Hidden("userId", user.Id)
-                    <td class="avatar"><img src="@user.AvatarUrl" class="img-responsive" /></td>
-                    <td>@Html.DisplayFor(model => user.FullName)</td>
-                    <td>@Html.DisplayFor(model => user.Email)</td>
-                    <td>@Html.DisplayFor(model => user.PhoneNumber)</td>
-
-                    <td>@Html.DropDownList("CurrentRole", user.CurrentRole, "-- NONE --", htmlAttributes: new { @class = "form-control" })</td>
-                    <td>@Html.ListBox("CurrentProjects", user.CurrentProjects, htmlAttributes: new { @class = "form-control", @style = "max-width:600px; width:400px;" })</td>
-                    <td>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <input type="submit" value="Assign" class="btn btn-default">
-                            </div>
-                            <div class="col-md-12">
-                                @Html.ActionLink("Edit User Profile", "EditProfile", "Members", new { userId = user.Id }, null)
-                            </div>
-                        </div>
-                    </td>
-                }
+                <th>@Html.DisplayName("Avatar")</th>
+                <th>@Html.DisplayName("Name")</th>
+                <th>@Html.DisplayNameFor(model => model.Email)</th>
+                <th>@Html.DisplayName("Phone")</th>
+                <th>@Html.DisplayName("Current Role")</th>
+                <th>@Html.DisplayName("Current Projects")</th>
+                <th>@Html.DisplayName("Changes")</th>
             </tr>
-        }
+        </thead>
+        <tbody>
+           @foreach (var user in Model)
+            {
+                <tr>
+                   @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("userId", user.Id)
+                        <td class="avatar"><img src="@user.AvatarUrl" class="img-responsive" /></td>
+                        <td>@Html.DisplayFor(model => user.FullName)</td>
+                        <td>@Html.DisplayFor(model => user.Email)</td>
+                        <td>@Html.DisplayFor(model => user.PhoneNumber)</td>
+
+                        <td>@Html.DropDownList("CurrentRole", user.CurrentRole, "-- NONE --", htmlAttributes: new { @class = "form-control" })</td>
+                        <td>@Html.ListBox("CurrentProjects", user.CurrentProjects, htmlAttributes: new { @class = "form-control", @style = "max-width:600px; width:400px;" })</td>
+                        <td>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="submit" value="Assign" class="btn btn-default">
+                                </div>
+                                <div class="col-md-12">
+                                    @Html.ActionLink("Edit User Profile", "EditProfile", "Members", new { userId = user.Id }, null)
+                                </div>
+                            </div>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
     </table>
 
-    @*<td>
-            @Html.ActionLink("Manage Role", "ManageUserRole", "Admin", new { userId = user.Id }, null) |
-            @Html.ActionLink("Manage Projects", "ManageUserProjects", "Admin", new { userId = user.Id }, null)
-        </td>*@
-
-
-    @Html.ActionLink("Back To Dashboard", "Dashboard", "Home")
+     @Html.ActionLink("Back To Dashboard", "Dashboard", "Home")
 </section>

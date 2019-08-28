@@ -69,6 +69,7 @@ namespace SheilaWard_BugTracker.Models
         }
 
         public DbSet<Project> Projects { get; set; }
+        public DbSet<ProjectArchive> ProjectsArchived { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketPriority> TicketPriorities { get; set; }
         public DbSet<TicketStatus> TicketStatuses { get; set; }
