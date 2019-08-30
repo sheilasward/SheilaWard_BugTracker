@@ -31,11 +31,19 @@
                 <li><a href="@Url.Action("ManageProjects", "Projects")"><i class="fa fa-circle-o"></i> Assign Users</a></li>
             </ul>
         </li>
-        <li>
-            <a href="@Url.Action("Index", "Tickets", new { tkt = "MyTickets" })">
-                <i class="fa fa-ticket"></i>View/Manage Tickets
+        <li class="treeview">
+            <a href="#">
+                <i class="fa fa-ticket"></i><span>Tickets</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
             </a>
+            <ul class="treeview-menu">
+                <li><a href="@Url.Action("Index", "Tickets", new { proj = "MyTickets" })"><i class="fa fa-circle-o"></i> View/Manage Tickets</a></li>
+                <li><a href="@Url.Action("Index", "Ticket Histories")"><i class="fa fa-circle-o"></i> Ticket Histories</a></li>
+            </ul>
         </li>
+
         @*<li>
             <a href="../widgets.html">
                 <i class="fa fa-th"></i> <span>Widgets</span>

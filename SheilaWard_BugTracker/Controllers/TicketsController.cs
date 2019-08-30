@@ -19,6 +19,8 @@ namespace SheilaWard_BugTracker.Controllers
         private UserRolesHelper roleHelper = new UserRolesHelper();
         private ProjectsHelper projHelper = new ProjectsHelper();
         private TicketDecisionHelper tktHelper = new TicketDecisionHelper();
+        private NotificationHelper notfHelper = new NotificationHelper();
+        private HistoryHelper histHelper = new HistoryHelper();
 
         [Authorize]
         // GET: Tickets
@@ -140,6 +142,10 @@ namespace SheilaWard_BugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Get the "old" ticket from the DB before changing and rewriting
+                var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
+
+                // Now update the ticket
                 db.Tickets.Attach(ticket);
                 db.Entry(ticket).Property(x => x.TicketTypeId).IsModified = true;
                 db.Entry(ticket).Property(x => x.TicketPriorityId).IsModified = true;
@@ -155,6 +161,14 @@ namespace SheilaWard_BugTracker.Controllers
                 }
                 ticket.Updated = DateTimeOffset.Now;
                 db.SaveChanges();
+
+                // Now call the NotificationHelper to determine if Notification(s) need to be created
+                notfHelper.CreateAssignmentNotification(oldTicket, ticket);
+
+                // Now call the HistoryHelper to record changes
+                histHelper.RecordHistory(oldTicket, ticket);
+
+                // Now return to Ticket Index list
                 return RedirectToAction("Index");
             }
             ViewBag.AssignedToUserId = new SelectList(projHelper.UsersInRoleOnProject(ticket.ProjectId, SystemRole.Developer), "Id", "FullName", ticket.AssignedToUserId);
@@ -217,9 +231,11 @@ namespace SheilaWard_BugTracker.Controllers
                 return HttpNotFound();
             }
 
-            var mgr = User.Identity.GetUserName();
+            var mgrId = User.Identity.GetUserId();
+            var manager = db.Users.Find(mgrId);
+            var mgrName = manager.FullName;
 
-            ViewBag.Manager = mgr;
+            ViewBag.Manager = mgrName;
             ViewBag.AssignedToUserId = new SelectList(projHelper.UsersInRoleOnProject(ticket.ProjectId, SystemRole.Developer), "Id", "FullName", ticket.AssignedToUserId);
             return View(ticket);
         }
@@ -231,11 +247,29 @@ namespace SheilaWard_BugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Get the "old" ticket from the DB before changing and rewriting
+                var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
+
                 db.Tickets.Attach(ticket);
                 db.Entry(ticket).Property(x => x.AssignedToUserId).IsModified = true;
                 ticket.Updated = DateTimeOffset.Now;
-                ticket.TicketStatusId = db.TicketStatuses.AsNoTracking().FirstOrDefault(t => t.Name == "Active/Assigned").Id;
+                var newTicket = ticket;
                 db.SaveChanges();
+
+                newTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
+
+                // Now call the NotificationHelper to determine if Notification(s) need to be created
+                notfHelper.CreateAssignmentNotification(oldTicket, ticket);
+
+                //ticket.TicketStatusId = db.TicketStatuses.AsNoTracking().FirstOrDefault(t => t.Name == "Active/Assigned").Id;
+                
+
+                // Now call the NotificationHelper to determine if Notification(s) need to be created
+                notfHelper.CreateAssignmentNotification(oldTicket, ticket);
+
+                // Now call the HistoryHelper to record changes
+                histHelper.RecordHistory(oldTicket, ticket);
+
                 return RedirectToAction("Index");
             }
 

@@ -205,6 +205,19 @@ namespace SheilaWard_BugTracker.Controllers
             return RedirectToAction("ManageProjects");
         }
 
+        // Get Projects/AssignToTkt
+        [Authorize(Roles = "Admin, ProjectManager")]
+        public ActionResult AssignToTkt()
+        {
+            var userId = User.Identity.GetUserId();
+            var userProjects = projHelper.ListUserProjects(userId);
+            // pass all projects to view
+ 
+            return View(userProjects);
+
+
+        }
+
         // GET: Projects/Archive
         [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult Archive(int? id)
@@ -212,8 +225,7 @@ namespace SheilaWard_BugTracker.Controllers
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Project project = db.Projects.Find(id);
+            }            Project project = db.Projects.Find(id);
             if (project == null)
             {
                 return HttpNotFound();

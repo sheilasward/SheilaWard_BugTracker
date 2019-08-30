@@ -25,7 +25,8 @@ namespace SheilaWard_BugTracker.Helpers
             {
                 currentUser = db.Users.Find(userId);
                 var stringRole = roleHelper.ListUserRoles(userId).FirstOrDefault();
-                currentRole = (SystemRole)Enum.Parse(typeof(SystemRole), stringRole);
+                if (!string.IsNullOrEmpty(stringRole))
+                    currentRole = (SystemRole)Enum.Parse(typeof(SystemRole), stringRole);
             }
             
         }

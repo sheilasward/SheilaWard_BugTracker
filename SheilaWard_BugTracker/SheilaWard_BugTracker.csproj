@@ -174,7 +174,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MembersController.cs" />
-    <Compile Include="Controllers\ProjectsArchivedController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\TicketAttachmentsController.cs" />
     <Compile Include="Controllers\TicketCommentsController.cs" />
@@ -189,17 +188,19 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\CommonHelper.cs" />
+    <Compile Include="Helpers\HistoryHelper.cs" />
     <Compile Include="Helpers\ImageHelpers.cs" />
     <Compile Include="Helpers\LinkHelper.cs" />
+    <Compile Include="Helpers\NotificationHelper.cs" />
     <Compile Include="Helpers\ProjectsHelper.cs" />
     <Compile Include="Helpers\TicketDecisionHelper.cs" />
     <Compile Include="Helpers\UserRolesHelper.cs" />
+    <Compile Include="Helpers\Utilities.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Project.cs" />
-    <Compile Include="Models\ProjectArchive.cs" />
     <Compile Include="Models\Ticket.cs" />
     <Compile Include="Models\TicketAttachment.cs" />
     <Compile Include="Models\TicketComment.cs" />
@@ -6781,7 +6782,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Attachments\" />
-    <Folder Include="Views\ProjectArchive\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -7301,6 +7301,8 @@
     <Content Include="Views\Tickets\AssignToTkt.cshtml" />
     <Content Include="Views\Tickets\Dashboard.cshtml" />
     <Content Include="Views\Projects\Archive.cshtml" />
+    <Content Include="Views\Projects\AssignToTkt.cshtml" />
+    <Content Include="Views\TicketNotifications\MyNotifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\bower_components\moment\moment.d.ts" />

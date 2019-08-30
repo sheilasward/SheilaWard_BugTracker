@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using SheilaWard_BugTracker.Models;
 
 namespace SheilaWard_BugTracker.Controllers
@@ -20,6 +21,15 @@ namespace SheilaWard_BugTracker.Controllers
             var ticketNotifications = db.TicketNotifications.Include(t => t.Recipient).Include(t => t.Sender).Include(t => t.Ticket);
             return View(ticketNotifications.ToList());
         }
+
+        // GET: TicketNotifications/MyNotifications
+        public ActionResult MyNotifications()
+        {
+            var userId = User.Identity.GetUserId();
+            var ticketNotifications = db.TicketNotifications.Where(t => t.RecipientId == userId).ToList();
+            return View(ticketNotifications);
+        }
+
 
         // GET: TicketNotifications/Details/5
         public ActionResult Details(int? id)

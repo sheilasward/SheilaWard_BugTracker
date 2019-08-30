@@ -4,6 +4,7 @@
 @{
     ViewBag.Title = "Details";
     var projHelper = new ProjectsHelper();
+    var roleHelper = new UserRolesHelper(); 
 }
 
 <!-- Content Header (Page header) -->
@@ -37,7 +38,8 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Created)
+                @Model.Created.ToString("MM/dd/yyyy hh:mmtt")
+                @*@Html.DisplayFor(model => model.Created.ToString("MM/dd/yyyy hh:mmtt"))*@
             </dd>
 
             <dt>
@@ -45,11 +47,80 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Updated)
+                @Model.Updated.GetValueOrDefault().ToString("MM/dd/yyyy hh:mmtt")
+                @*@Html.DisplayFor(model => model.Updated.GetValueOrDefault().ToString("MM/dd/yyyy hh:mmtt"))*@
             </dd>
-
         </dl>
+        <hr />
+        <div class="row">
+            <div class="col-md-offset-1 col-md-2">
+                <dl>
+                    <dt>
+                        @Html.DisplayName("List of Tickets on Project")
+                    </dt>
+
+                    @foreach (var ticket in Model.Tickets)
+                    {
+                        <dd>
+                            @ticket.Title
+                        </dd>
+                    }
+
+                </dl>
+            </div>
+            <div class="col-md-2">
+                <dl>
+                    <dt>
+                        @Html.DisplayName("Developers Assigned")
+                    </dt>
+
+                    @foreach (var ticket in Model.Tickets)
+                    {
+                        <dd>
+                            @ticket.AssignedToUser.FullName
+                        </dd>
+                    }
+
+                </dl>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-offset-1 col-md-2">
+                <dl>
+                    <dt>
+                        @Html.DisplayName("All Users on Project")
+                    </dt>
+
+                    @foreach (var user in Model.Users)
+                    {
+                        <dd>
+                            @user.FullName
+                        </dd>
+                    }
+
+                </dl>
+            </div>
+            <div class="col-md-2">
+                <dl>
+                    <dt>
+                        @Html.DisplayName("Role")
+                    </dt>
+
+                    @foreach (var user in Model.Users)
+                    {
+                <dd>
+                    @roleHelper.ListUserRoles(user.Id).FirstOrDefault().ToString()
+                    @*@user.Roles.FirstOrDefault().ToString()*@
+                </dd>
+                    }
+
+                </dl>
+            </div>
+        </div>
+
     </div>
+
     <p>
         @Html.ActionLink("Back to List", "Index")
     </p>

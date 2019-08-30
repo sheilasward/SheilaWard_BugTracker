@@ -48,6 +48,7 @@
         var user = db.Users.Find(userId);
         var roleHelper = new UserRolesHelper();
         var userRole = @roleHelper.ListUserRoles(user.Id).FirstOrDefault();
+        var notfHelper = new NotificationHelper();
 
 
     }
@@ -77,30 +78,53 @@
                         <li class="dropdown messages-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-envelope-o"></i>
-                                <span class="label label-success">4</span>
+                                <span class="label label-success">@notfHelper.GetNewUserNotificationCount()</span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="header">You have 4 messages</li>
+                                <li class="header">You have @notfHelper.GetAllUserNotificationCount() messages</li>
                                 <li>
                                     <!-- inner menu: contains the actual data -->
-                                    <ul class="menu">
-                                        <li>
+                                    <ul class="menu" style="margin-left:5px; margin-right:5px;">
+                                       @foreach (var notification in notfHelper.GetUnreadUserNotifications())
+                                        {
                                             <!-- start message -->
-                                            <a href="#">
-                                                <div class="pull-left">
-                                                    <img src="~/Images/user2-160x160.jpg" class="img-circle" alt="User Image">
-                                                </div>
-                                                <h4>
-                                                    Support Team
-                                                    <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                                                </h4>
-                                                <p>Why not buy a new awesome theme?</p>
-                                            </a>
-                                        </li>
-                                        <!-- end message -->
+                                            <li>
+                                                <hr size=3 />
+                                                @using (Html.BeginForm("MarkAsRead", "TicketNotifications"))
+                                                {
+                                                    @Html.AntiForgeryToken()
+                                                    @Html.Hidden("Id", notification.Id)
+
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <figure class="image">
+                                                                <img src="@notification.Sender.AvatarUrl" class="img-circle" alt="@notification.Sender.Email" width="25">
+                                                            </figure>
+                                                        </div>
+                                                        <div class="col-md-10">
+                                                            <span class="fc-title">@notification.Subject</span>
+                                                        </div>
+                                                    </div>
+                                                    <br />
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <span class="message text-justify">@notification.NotificationBody</span>
+                                                        </div>
+                                                    </div>
+                                                    <br />
+                                                    <div class="row">
+                                                        <div class="col-md-12 text-center">
+                                                            <button type="submit" class="btn btn-sm btn-primary">Mark as read</button>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </li>
+                                            <!-- end message -->
+                                        }
                                     </ul>
+                                    <hr />
                                 </li>
-                                <li class="footer"><a href="#">See All Messages</a></li>
+                                <li class="footer"><a href="@Url.Action("MyNotifications", "TicketNotifications")">View All Notifications</a></li>
                             </ul>
                         </li>
                         <!-- Notifications: style can be found in dropdown.less -->

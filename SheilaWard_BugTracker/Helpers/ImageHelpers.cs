@@ -18,6 +18,7 @@ namespace SheilaWard_BugTracker.Helpers
             {
                 using (var img = Image.FromStream(file.InputStream))
                 {
+                    //File.Move(file, Path.ChangeExtension(file, Path.GetExtension(file).ToLower()));
                     return ImageFormat.Jpeg.Equals(img.RawFormat) ||
                            ImageFormat.Png.Equals(img.RawFormat) ||
                            ImageFormat.Icon.Equals(img.RawFormat) ||
@@ -45,7 +46,7 @@ namespace SheilaWard_BugTracker.Helpers
                 var extValid = false;
                 foreach (var ext in System.Web.Configuration.WebConfigurationManager.AppSettings["AllowedAttachmentExtensions"].Split(','))
                 {
-                    if (Path.GetExtension(file.FileName) == ext)
+                    if (Path.GetExtension(file.FileName).ToLower() == ext)
                     {
                         extValid = true;
                         break;

@@ -119,7 +119,7 @@
                         @item.Created.ToString("MM/dd/yyyy hh:mmtt")
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Updated)
+                        @item.Updated.GetValueOrDefault().ToString("MM/dd/yyyy hh:mmtt")
                     </td>
 
                     <td>

@@ -12,7 +12,7 @@ namespace SheilaWard_BugTracker.Models
 
         public string Description { get; set; }
         public DateTimeOffset Created { get; set; }
-        public DateTimeOffset Updated { get; set; }
+        public DateTimeOffset? Updated { get; set; }
 
         public virtual ICollection<ApplicationUser> Users { get; set; }
         public virtual ICollection<Ticket> Tickets { get; set; }

@@ -26,6 +26,6 @@ namespace SheilaWard_BugTracker.ViewModels
 
         public IEnumerable<SelectListItem> CurrentRole { get; set; }
 
-        public IEnumerable<SelectListItem> CurrentProjects { get; set; } 
+        public IEnumerable<SelectListItem> CurrentProjects { get; set; }
     }
 }

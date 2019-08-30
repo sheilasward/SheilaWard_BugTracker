@@ -1,0 +1,58 @@
+﻿@using SheilaWard_BugTracker.Helpers
+@model SheilaWard_BugTracker.Models.Project
+
+@{
+    ViewBag.Title = "Assign To Tickets";
+    var projHelper = new ProjectsHelper();
+    var roleHelper = new UserRolesHelper();
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h2>Assign Developers To Tickets</h2>
+    <hr />
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div>
+        <table class="table searchTbl">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayName("Project")</th>
+                    <th>@Html.DisplayName("Tickets")</th>
+                    <th>@Html.DisplayName("Developers")</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var proj in Model)
+                {
+                    <tr>
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+                            <td>@Html.DisplayFor(model => proj.Name)</td>
+                            <td>@Html.DisplayFor(model => proj.Tickets.Title)</td>
+                            <td>@Html.DisplayFor(model => user.PhoneNumber)</td>
+
+                            <td>@Html.DropDownList("CurrentRole", user.CurrentRole, "-- NONE --", htmlAttributes: new { @class = "form-control" })</td>
+                            <td>@Html.ListBox("CurrentProjects", user.CurrentProjects, htmlAttributes: new { @class = "form-control", @style = "max-width:600px; width:400px;" })</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type="submit" value="Assign" class="btn btn-default">
+                                    </div>
+                                    <div class="col-md-12">
+                                        @Html.ActionLink("Edit User Profile", "EditProfile", "Members", new { userId = user.Id }, null)
+                                    </div>
+                                </div>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
