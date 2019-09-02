@@ -138,29 +138,53 @@ namespace SheilaWard_BugTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,TicketTypeId,TicketPriorityId,TicketStatusId,AssignedToUserId,Title,Description")] Ticket ticket)
+        public ActionResult Edit([Bind(Include = "Id,TicketStatusId,TicketTypeId,TicketPriorityId,AssignedToUserId,Title,Description")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
                 // Get the "old" ticket from the DB before changing and rewriting
                 var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
 
-                // Now update the ticket
-                db.Tickets.Attach(ticket);
-                db.Entry(ticket).Property(x => x.TicketTypeId).IsModified = true;
-                db.Entry(ticket).Property(x => x.TicketPriorityId).IsModified = true;
-                db.Entry(ticket).Property(x => x.Title).IsModified = true;
-                db.Entry(ticket).Property(x => x.Description).IsModified = true;
-                if (ticket.AssignedToUserId != null)
-                {
-                    db.Entry(ticket).Property(x => x.AssignedToUserId).IsModified = true;
-                }
-                if (ticket.TicketStatusId != 0)
-                {
-                    db.Entry(ticket).Property(x => x.TicketStatusId).IsModified = true;
-                }
-                ticket.Updated = DateTimeOffset.Now;
+                var newTicket = db.Tickets.Find(ticket.Id);
+                newTicket.TicketStatusId = ticket.TicketStatusId;
+                newTicket.TicketTypeId = ticket.TicketTypeId;
+                newTicket.TicketPriorityId = ticket.TicketPriorityId;
+                newTicket.AssignedToUserId = ticket.AssignedToUserId;
+                newTicket.Title = ticket.Title;
+                newTicket.Description = ticket.Description;
+                newTicket.Updated = DateTimeOffset.Now;
+
+                // Boolean Variables to automatically set status
+                var noChange = (oldTicket.AssignedToUserId == newTicket.AssignedToUserId);
+                var assignment = (string.IsNullOrEmpty(oldTicket.AssignedToUserId));
+                var unassignment = (string.IsNullOrEmpty(newTicket.AssignedToUserId));
+
+                var ActiveStatusId = db.TicketStatuses.FirstOrDefault(ts => ts.Name == "Active/Assigned").Id;
+                var InactiveStatusId = db.TicketStatuses.FirstOrDefault(ts => ts.Name == "Inactive").Id;
+
+                if (assignment) newTicket.TicketStatusId = ActiveStatusId;
+                if (unassignment) newTicket.TicketStatusId = InactiveStatusId;
+
                 db.SaveChanges();
+
+
+
+                // Now update the ticket  ==> BestEdit
+                //db.Tickets.Attach(ticket);
+                //db.Entry(ticket).Property(x => x.TicketTypeId).IsModified = true;
+                //db.Entry(ticket).Property(x => x.TicketPriorityId).IsModified = true;
+                //db.Entry(ticket).Property(x => x.Title).IsModified = true;
+                //db.Entry(ticket).Property(x => x.Description).IsModified = true;
+                //if (ticket.AssignedToUserId != null)
+                //{
+                //    db.Entry(ticket).Property(x => x.AssignedToUserId).IsModified = true;
+                //}
+                //if (ticket.TicketStatusId != 0)
+                //{
+                //    db.Entry(ticket).Property(x => x.TicketStatusId).IsModified = true;
+                //}
+                //ticket.Updated = DateTimeOffset.Now;
+                //db.SaveChanges();
 
                 // Now call the NotificationHelper to determine if Notification(s) need to be created
                 notfHelper.CreateAssignmentNotification(oldTicket, ticket);
@@ -250,25 +274,34 @@ namespace SheilaWard_BugTracker.Controllers
                 // Get the "old" ticket from the DB before changing and rewriting
                 var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
 
-                db.Tickets.Attach(ticket);
-                db.Entry(ticket).Property(x => x.AssignedToUserId).IsModified = true;
-                ticket.Updated = DateTimeOffset.Now;
-                var newTicket = ticket;
+                var newTicket = db.Tickets.Find(ticket.Id);
+                newTicket.AssignedToUserId = ticket.AssignedToUserId;
+                newTicket.Updated = DateTimeOffset.Now;
+
+                // Boolean Variables to automatically set status
+                var noChange = (oldTicket.AssignedToUserId == newTicket.AssignedToUserId);
+                var assignment = (string.IsNullOrEmpty(oldTicket.AssignedToUserId));
+                var unassignment = (string.IsNullOrEmpty(newTicket.AssignedToUserId));
+
+                var ActiveStatusId = db.TicketStatuses.FirstOrDefault(ts => ts.Name == "Active/Assigned").Id;
+                var InactiveStatusId = db.TicketStatuses.FirstOrDefault(ts => ts.Name == "Inactive").Id;
+
+                if (assignment) newTicket.TicketStatusId = ActiveStatusId;
+                if (unassignment) newTicket.TicketStatusId = InactiveStatusId;
+
                 db.SaveChanges();
 
-                newTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
+                //db.Tickets.Attach(ticket);
+                //db.Entry(ticket).Property(x => x.AssignedToUserId).IsModified = true;
+                //ticket.Updated = DateTimeOffset.Now;
+                //var newTicket = ticket;
+                //db.SaveChanges();
 
                 // Now call the NotificationHelper to determine if Notification(s) need to be created
-                notfHelper.CreateAssignmentNotification(oldTicket, ticket);
-
-                //ticket.TicketStatusId = db.TicketStatuses.AsNoTracking().FirstOrDefault(t => t.Name == "Active/Assigned").Id;
-                
-
-                // Now call the NotificationHelper to determine if Notification(s) need to be created
-                notfHelper.CreateAssignmentNotification(oldTicket, ticket);
+                notfHelper.CreateAssignmentNotification(oldTicket, newTicket);
 
                 // Now call the HistoryHelper to record changes
-                histHelper.RecordHistory(oldTicket, ticket);
+                histHelper.RecordHistory(oldTicket, newTicket);
 
                 return RedirectToAction("Index");
             }

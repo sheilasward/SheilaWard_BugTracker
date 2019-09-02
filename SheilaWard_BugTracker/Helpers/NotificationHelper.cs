@@ -24,8 +24,7 @@ namespace SheilaWard_BugTracker.Helpers
             var unassignment = (string.IsNullOrEmpty(newTicket.AssignedToUserId));
 
             if (noChange) return;
-            if (assignment)
-                GenerateAssignmentNotification(oldTicket, newTicket);
+            if (assignment) GenerateAssignmentNotification(oldTicket, newTicket);
             else if (unassignment) GenerateUnassignmentNotification(oldTicket, newTicket);
             else
             {

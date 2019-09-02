@@ -64,9 +64,17 @@ namespace SheilaWard_BugTracker.Controllers
 
                 if (ImageHelpers.IsValidAttachment(attachment))
                 {
-                    var fileName = Path.GetFileName(attachment.FileName);
-                    attachment.SaveAs(Path.Combine(Server.MapPath("~/Attachments/"), fileName));
-                    ticketAttachment.AttachmentUrl = "/Attachments/" + fileName;
+                    var fileName = Path.GetFileNameWithoutExtension(attachment.FileName);
+                    var fileExtension = Path.GetExtension(attachment.FileName);
+                    // 1. Add DateTime stamp to end of filename
+                    // 2. Run that through slugmaker
+                    // 3. Map path
+                    // 4. Save complete file
+                    var fileWithDate = $"{fileName}-{DateTime.Now}";
+                    var slugFileName = Utilities.CreateSlug(fileWithDate);
+                    var formattedMedia = $"{slugFileName}{fileExtension}";
+                    attachment.SaveAs(Path.Combine(Server.MapPath("~/Attachments/"), formattedMedia));
+                    ticketAttachment.AttachmentUrl = "/Attachments/" + formattedMedia;
                 }
                 else
                 {

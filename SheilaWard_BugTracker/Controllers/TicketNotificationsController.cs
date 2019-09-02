@@ -27,7 +27,7 @@ namespace SheilaWard_BugTracker.Controllers
         {
             var userId = User.Identity.GetUserId();
             var ticketNotifications = db.TicketNotifications.Where(t => t.RecipientId == userId).ToList();
-            return View(ticketNotifications);
+            return View("Index", ticketNotifications);
         }
 
 
@@ -110,6 +110,18 @@ namespace SheilaWard_BugTracker.Controllers
             ViewBag.SenderId = new SelectList(db.Users, "Id", "FirstName", ticketNotification.SenderId);
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "OwnerUserId", ticketNotification.TicketId);
             return View(ticketNotification);
+        }
+
+        // POST: TicketNotifications/MarkAsRead/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public ActionResult MarkAsRead(int id)
+        {
+            var notification = db.TicketNotifications.Find(id);
+            notification.IsRead = true;
+            db.SaveChanges();
+            return RedirectToAction("Dashboard", "Home");
         }
 
         // GET: TicketNotifications/Delete/5

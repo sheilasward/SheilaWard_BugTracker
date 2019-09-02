@@ -17,6 +17,7 @@ namespace SheilaWard_BugTracker.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private ProjectsHelper projHelper = new ProjectsHelper();
+        private UserRolesHelper userRolesHelper = new UserRolesHelper();
 
         [Authorize(Roles = "Admin, ProjectManager, Submitter, Developer")]
         // GET: Projects
@@ -54,6 +55,7 @@ namespace SheilaWard_BugTracker.Controllers
         }
 
         // GET: Projects/Create
+        [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult Create()
         {
             return View();
@@ -69,8 +71,24 @@ namespace SheilaWard_BugTracker.Controllers
             if (ModelState.IsValid)
             {
                 var userId = User.Identity.GetUserId();
-                var newUser = db.Users.Find(userId);
-                project.Users.Add(newUser);
+                var thisUser = db.Users.Find(userId);
+                var thisUserRole = userRolesHelper.ListUserRoles(userId).FirstOrDefault();
+                // If the user creating the new project is a PM, add that PM to the new project
+                if (thisUserRole == "ProjectManager")
+                {
+                    project.Users.Add(thisUser);
+                }
+
+                // Add all Admins to the new project
+                foreach (var user in db.Users)
+                {
+                    var userRole = userRolesHelper.ListUserRoles(user.Id).FirstOrDefault();
+                    if (userRole == "Admin")
+                    {
+                        project.Users.Add(user);
+                    }
+                } 
+
                 project.Created = DateTimeOffset.Now;
                 db.Projects.Add(project);
                 db.SaveChanges();
@@ -156,8 +174,11 @@ namespace SheilaWard_BugTracker.Controllers
         }
 
         // GET Projects/ManageProjects
+        [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult ManageProjects()
         {
+            var userId = User.Identity.GetUserId();
+            var userRole = userRolesHelper.ListUserRoles(userId).FirstOrDefault();
             var users = db.Users.Select(u => new UserProfileViewModel
             {
                 Id = u.Id,
@@ -169,9 +190,18 @@ namespace SheilaWard_BugTracker.Controllers
             }).ToList();
 
             ViewBag.Users = new MultiSelectList(db.Users.ToList(), "Id", "FullNameWithEmail");
-            ViewBag.ProjectName = new MultiSelectList(db.Projects.ToList(), "Id", "Name");
+            if (userRole == "ProjectManager")
+            {
+                var projList = projHelper.ListUserProjects(userId);
+                ViewBag.ProjectName = new MultiSelectList(projList);
+            }
+            else
+            {
+                ViewBag.ProjectName = new MultiSelectList(db.Projects.ToList(), "Id", "Name");
+            }
 
             return View(users);
+
         }
 
         // POST Projects/ManageProjects 

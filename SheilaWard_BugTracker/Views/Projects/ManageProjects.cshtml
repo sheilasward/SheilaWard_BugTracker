@@ -4,6 +4,7 @@
 @{
     ViewBag.Title = "ManageProjects";
     var projHelper = new ProjectsHelper();
+    var userRolesHelper = new UserRolesHelper();
 }
 
 <!-- Content Header (Page header) -->
@@ -44,28 +45,33 @@
     }
 
     <div>
-        <table class="table">
-            <tr>
-                <th>@Html.DisplayName("Full Name")</th>
-                <th>@Html.DisplayNameFor(model => model.Email)</th>
-                <th>@Html.DisplayName("Project")</th>
-            </tr>
-
-            @foreach (var user in Model)
-            {
+        <table class="table searchTbl">
+            <thead>
                 <tr>
-                    <td>@user.LastName, @user.FirstName</td>
-                    <td>@Html.DisplayFor(modelItem => user.Email)</td>
-                    <td>
-                        @foreach (var proj in @projHelper.ListUserProjects(user.Id).Select(p => p.Name))
-                        {
-                            @proj <br />
-                        }
-                    </td>
+                    <th>@Html.DisplayName("Full Name")</th>
+                    <th>@Html.DisplayName("Role")</th>
+                    <th>@Html.DisplayNameFor(model => model.Email)</th>
+                    <th>@Html.DisplayName("Project")</th>
                 </tr>
-            }
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.LastName, @user.FirstName</td>
+                        <td>@userRolesHelper.ListUserRoles(user.Id).FirstOrDefault()</td>
+                        <td>@Html.DisplayFor(modelItem => user.Email)</td>
+                        <td>
+                            @foreach (var proj in @projHelper.ListUserProjects(user.Id).Select(p => p.Name))
+                            {
+                                @proj <br />
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
         </table>
-
+    
         <br />
         @Html.ActionLink("Back To Dashboard", "Dashboard", "Home")
     </div>

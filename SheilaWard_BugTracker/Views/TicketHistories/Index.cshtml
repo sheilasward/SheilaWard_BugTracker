@@ -1,63 +1,71 @@
 ﻿@model IEnumerable<SheilaWard_BugTracker.Models.TicketHistory>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Ticket Histories";
 }
 
-<h2>Index</h2>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h2>Ticket Histories</h2>
+</section>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Ticket.OwnerUserId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Property)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OldValue)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NewValue)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateChanged)
-        </th>
-        <th></th>
-    </tr>
+<!-- Main content -->
+<section class="content">
+    <table class="table searchTbl">
+        <thead>
+            <tr>
+                @*<th>
+                        @Html.DisplayName("Owner/User")
+                    </th>*@
+                <th>
+                    @Html.DisplayName("Ticket Title")
+                </th>
+                <th>
+                    @Html.DisplayName("User Making The Change")
+                </th>
+                <th>
+                    @Html.DisplayName("Property Changed")
+                </th>
+                <th>
+                    @Html.DisplayName("Old Value")
+                </th>
+                <th>
+                    @Html.DisplayName("New Value")
+                </th>
+                <th>
+                    @Html.DisplayName("Date Changed")
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tbody>
+                <tr>
+                    @*<td>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ticket.OwnerUserId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Property)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OldValue)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NewValue)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateChanged)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
-</table>
+                            @Html.DisplayFor(modelItem => item.Ticket.OwnerUser.FullName)
+                        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ticket.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Property)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OldValue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NewValue)
+                    </td>
+                    <td>
+                        @item.DateChanged.ToString("MM/dd/yyyy hh:mmtt")
+                    </td>
+                </tr>
+            </tbody>
+        }
+    </table>
+</section>

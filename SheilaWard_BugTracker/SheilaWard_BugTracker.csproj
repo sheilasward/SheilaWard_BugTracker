@@ -217,6 +217,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Avatars\default-user-icon-8.jpg" />
+    <Content Include="Avatars\kartunix%281%29.png" />
+    <Content Include="Avatars\kartunix%282%29.png" />
+    <Content Include="Avatars\kartunix%283%29.png" />
+    <Content Include="Avatars\kartunix%284%29.png" />
     <Content Include="Content\dist\css\AdminLTE.min.css" />
     <Content Include="Content\blue.css" />
     <Content Include="Content\bootstrap-theme.css" />

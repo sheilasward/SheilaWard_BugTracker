@@ -21,9 +21,6 @@
 
 <!-- Main content -->
 <section class="content">
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
     <table class="table searchTbl">
         <thead>
             <tr>
@@ -37,10 +34,10 @@
             </tr>
         </thead>
         <tbody>
-           @foreach (var user in Model)
+            @foreach (var user in Model)
             {
                 <tr>
-                   @using (Html.BeginForm())
+                    @using (Html.BeginForm())
                     {
                         @Html.AntiForgeryToken()
                         @Html.Hidden("userId", user.Id)
@@ -67,5 +64,14 @@
         </tbody>
     </table>
 
-     @Html.ActionLink("Back To Dashboard", "Dashboard", "Home")
+    @Html.ActionLink("Back To Dashboard", "Dashboard", "Home")
 </section>
+
+@section Scripts {
+    <script>
+        var table = $(".searchTbl").DataTable();
+        table
+            .order([1, 'asc'])
+            .draw();
+    </script>
+}

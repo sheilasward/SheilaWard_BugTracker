@@ -26,7 +26,7 @@ namespace SheilaWard_BugTracker.Controllers
             {
                 Id = u.Id,
                 AvatarUrl = u.AvatarUrl,
-                FullName = u.FirstName + " " + u.LastName,
+                FullName = u.LastName + ", " + u.FirstName,
                 PhoneNumber = u.PhoneNumber,
                 Email = u.Email
             }).ToList();

@@ -63,7 +63,7 @@ namespace SheilaWard_BugTracker.Helpers
 
         public static string GetIconPath(string filePath)
         {
-            switch (Path.GetExtension(filePath))
+            switch (Path.GetExtension(filePath).ToLower())
             {
                 case ".png":
                 case ".bmp":

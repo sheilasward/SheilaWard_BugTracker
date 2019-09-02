@@ -57,12 +57,12 @@ namespace SheilaWard_BugTracker.Migrations
                     AvatarUrl = "~/Avatars/AngieSmith.jpg"
                 }, "P@ssw0rd");
             }
-            if (!context.Users.Any(r => r.UserName == "AresEller@mailinator.com"))
+            if (!context.Users.Any(r => r.UserName == "AEller@mailinator.com"))
             {
                 userManager.Create(new ApplicationUser
                 {
-                    UserName = "AresEller@mailinator.com",
-                    Email = "AresEller@mailinator.com",
+                    UserName = "AEller@mailinator.com",
+                    Email = "AEller@mailinator.com",
                     FirstName = "Ares",
                     LastName = "Eller",
                     DisplayName = "AEller",
@@ -165,6 +165,7 @@ namespace SheilaWard_BugTracker.Migrations
                     AvatarUrl = "~/Avatars/teresa.jpg"
                 }, "P@ssw0rd");
             }
+
             //Introduce my Demo Users...
             if (!context.Users.Any(u => u.Email == "DemoAdmin@Mailinator.com"))
             {
@@ -174,7 +175,8 @@ namespace SheilaWard_BugTracker.Migrations
                     Email = "DemoAdmin@Mailinator.com",
                     FirstName = "Demo",
                     LastName = "Admin",
-                    DisplayName = "The Admin"
+                    DisplayName = "The Admin",
+                    AvatarUrl = "~/Avatars/kartunix(1).png"
                 }, WebConfigurationManager.AppSettings["DemoUserPassword"]);
             }
 
@@ -186,7 +188,8 @@ namespace SheilaWard_BugTracker.Migrations
                     Email = "DemoProjectManager@Mailinator.com",
                     FirstName = "Demo",
                     LastName = "Project Manager",
-                    DisplayName = "The PM"
+                    DisplayName = "The PM",
+                    AvatarUrl = "~/Avatars/kartunix(2).png"
                 }, WebConfigurationManager.AppSettings["DemoUserPassword"]);
             }
 
@@ -198,7 +201,8 @@ namespace SheilaWard_BugTracker.Migrations
                     Email = "DemoDeveloper@Mailinator.com",
                     FirstName = "Demo",
                     LastName = "Developer",
-                    DisplayName = "The Dev"
+                    DisplayName = "The Dev",
+                    AvatarUrl = "~/Avatars/kartunix(4).png"
                 }, WebConfigurationManager.AppSettings["DemoUserPassword"]);
             }
 
@@ -210,7 +214,8 @@ namespace SheilaWard_BugTracker.Migrations
                     Email = "DemoSubmitter@Mailinator.com",
                     FirstName = "Demo",
                     LastName = "Submitter",
-                    DisplayName = "The Sub"
+                    DisplayName = "The Sub",
+                    AvatarUrl = "~/Avatars/kartunix(3).png"
                 }, WebConfigurationManager.AppSettings["DemoUserPassword"]);
             }
             #endregion
@@ -219,16 +224,25 @@ namespace SheilaWard_BugTracker.Migrations
             var adminId = userManager.FindByEmail("Sheila.Ward@email.com").Id;
             userManager.AddToRole(adminId, "Admin");
 
+            adminId = userManager.FindByEmail("DemoAdmin@Mailinator.com").Id;
+            userManager.AddToRole(adminId, "Admin");
+
             var submitterId = userManager.FindByEmail("TShorter@mailinator.com").Id;
             userManager.AddToRole(submitterId, "Submitter");
 
             submitterId = userManager.FindByEmail("Sherri@Mailinator.com").Id;
             userManager.AddToRole(submitterId, "Submitter");
 
+            submitterId = userManager.FindByEmail("DemoSubmitter@Mailinator.com").Id;
+            userManager.AddToRole(submitterId, "Submitter");
+
             var PMId = userManager.FindByEmail("DRose@mailinator.com").Id;
             userManager.AddToRole(PMId, "ProjectManager");
 
             PMId = userManager.FindByEmail("AngieSmith@mailinator.com").Id;
+            userManager.AddToRole(PMId, "ProjectManager");
+
+            PMId = userManager.FindByEmail("DemoProjectManager@Mailinator.com").Id;
             userManager.AddToRole(PMId, "ProjectManager");
 
             var DevId = userManager.FindByEmail("CTriplett@mailinator.com").Id;
@@ -244,6 +258,9 @@ namespace SheilaWard_BugTracker.Migrations
             userManager.AddToRole(DevId, "Developer");
 
             DevId = userManager.FindByEmail("SPatel@mailinator.com").Id;
+            userManager.AddToRole(DevId, "Developer");
+
+            DevId = userManager.FindByEmail("DemoDeveloper@mailinator.com").Id;
             userManager.AddToRole(DevId, "Developer");
 
             #endregion

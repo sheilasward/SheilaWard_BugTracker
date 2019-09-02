@@ -80,15 +80,16 @@
                     @Html.DisplayFor(modelItem => item.Created)
                 </td>
                 <td>
-                   @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })<br />
+                    @if (User.IsInRole("Admin"))
                     {
-                        @Html.ActionLink("Details", "Details", new { id = item.Id })<br />
-
-                       if (projHelper.IsUserOnProject(ViewBag.UserId, item.Id))
-                        {
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id })<br />
-                            @Html.ActionLink("Archive", "Archive", new { id = item.Id })
-                        }
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id })<br />
+                        @Html.ActionLink("Archive", "Archive", new { id = item.Id })
+                    }
+                    else if (projHelper.IsUserOnProject(ViewBag.UserId, item.Id) && User.IsInRole("ProjectManager"))
+                    {
+                         @Html.ActionLink("Edit", "Edit", new { id = item.Id })<br />
+                         @Html.ActionLink("Archive", "Archive", new { id = item.Id })
                     }
                 </td>
             </tr>
