@@ -55,6 +55,42 @@ namespace SheilaWard_BugTracker.Helpers
                 
         }
 
+        public int GetTicketCount(string status)
+        {
+            var userId = HttpContext.Current.User.Identity.GetUserId();
+            var myRole = roleHelper.ListUserRoles(userId).FirstOrDefault();
+             if (status == "All")
+            {
+                switch (myRole)
+                {
+                    case "Developer":
+                        return db.Tickets.Where(t => t.AssignedToUserId == userId).Count();
+                    case "Submitter":
+                        return db.Tickets.Where(t => t.OwnerUserId == userId).Count();
+                    case "ProjectManager":
+                        return db.Users.Find(userId).Projects.SelectMany(t => t.Tickets).Count();
+                    default:
+                        return db.Tickets.Count();
+                }
+            }
+            else
+            {
+                switch (myRole)
+                {
+                    case "Developer":
+                        return db.Tickets.Where(t => t.TicketStatus.Name == status && t.AssignedToUserId == userId).Count();
+                    case "Submitter":
+                        return db.Tickets.Where(t => t.TicketStatus.Name == status && t.OwnerUserId == userId).Count();
+                    case "ProjectManager":
+                        var pmTickets = db.Users.Find(userId).Projects.SelectMany(t => t.Tickets);
+                        return pmTickets.Where(t => t.TicketStatus.Name == status).Count();
+                    default:
+                        return db.Tickets.Where(t => t.TicketStatus.Name == status).Count();
+                }
+            }
+            
+        }
+
         public bool DevIsOnProject(Ticket ticket)
         {
             return currentUser.Projects.SelectMany(t => t.Tickets).Select(t => t.Id).Contains(ticket.Id);

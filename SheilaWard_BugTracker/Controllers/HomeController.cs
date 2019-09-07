@@ -22,5 +22,10 @@ namespace SheilaWard_BugTracker.Controllers
         {
             return View();
         }
+
+        public ActionResult DemoLanding()
+        {
+            return View();
+        }
     }
 }

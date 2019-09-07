@@ -15,7 +15,7 @@ namespace SheilaWard_BugTracker.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: TicketNotifications
+        // GET: TicketNotifications/Index  => This will return ALL Notifications
         public ActionResult Index()
         {
             var ticketNotifications = db.TicketNotifications.Include(t => t.Recipient).Include(t => t.Sender).Include(t => t.Ticket);
@@ -27,7 +27,7 @@ namespace SheilaWard_BugTracker.Controllers
         {
             var userId = User.Identity.GetUserId();
             var ticketNotifications = db.TicketNotifications.Where(t => t.RecipientId == userId).ToList();
-            return View("Index", ticketNotifications);
+            return View(ticketNotifications);
         }
 
 
@@ -116,12 +116,30 @@ namespace SheilaWard_BugTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public ActionResult MarkAsRead(int id)
+        public ActionResult MarkAsRead(int id, string returnTo)
         {
             var notification = db.TicketNotifications.Find(id);
             notification.IsRead = true;
             db.SaveChanges();
-            return RedirectToAction("Dashboard", "Home");
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+
+        // POST: TicketNotifications/DeleteAll
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public ActionResult DeleteAll()
+        {
+            var userId = User.Identity.GetUserId();
+            foreach (var notification in db.TicketNotifications)
+            {
+                if (notification.RecipientId == userId)
+                {
+                    db.TicketNotifications.Remove(notification);
+                }
+            }
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: TicketNotifications/Delete/5

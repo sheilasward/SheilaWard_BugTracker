@@ -24,29 +24,21 @@ namespace SheilaWard_BugTracker.Controllers
 
         [Authorize]
         // GET: Tickets
-        public ActionResult Index(string tkt)
+        public ActionResult Index(string tkt, string stat)
         {
             var userId = User.Identity.GetUserId();
             ViewBag.AllDevs = new SelectList(roleHelper.UsersInRole("Developer"), "Id", "FullName");
-
-            //SelectList(projHelper.UsersInRoleOnProject(db.Tickets.Find(ticketId).ProjectId), "Developer");
+            ViewBag.Stats = stat;
 
             if (tkt == "AllTickets")
             {
                 TempData["activeTab"] = "All";
                 return View(db.Tickets.ToList());
             }
-            //var userId = User.Identity.GetUserId();
-            //    var projHelper = new ProjectsHelper();
-            //    var projList = projHelper.ListUserProjects(userId);
-            //    return View(projList);
 
- 
             var tickets = tktHelper.ListOfUsersTickets();
             return View(tickets.ToList());
 
-            //var tickets = db.Tickets.Include(t => t.AssignedToUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
-            //return View(tickets.ToList());
         }
 
         [Authorize]
@@ -187,7 +179,7 @@ namespace SheilaWard_BugTracker.Controllers
                 //db.SaveChanges();
 
                 // Now call the NotificationHelper to determine if Notification(s) need to be created
-                notfHelper.CreateAssignmentNotification(oldTicket, ticket);
+                notfHelper.ManageNotifications(oldTicket, ticket);
 
                 // Now call the HistoryHelper to record changes
                 histHelper.RecordHistory(oldTicket, ticket);
@@ -298,7 +290,7 @@ namespace SheilaWard_BugTracker.Controllers
                 //db.SaveChanges();
 
                 // Now call the NotificationHelper to determine if Notification(s) need to be created
-                notfHelper.CreateAssignmentNotification(oldTicket, newTicket);
+                notfHelper.ManageNotifications(oldTicket, newTicket);
 
                 // Now call the HistoryHelper to record changes
                 histHelper.RecordHistory(oldTicket, newTicket);

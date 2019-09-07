@@ -15,8 +15,8 @@
         <thead>
             <tr>
                 @*<th>
-                        @Html.DisplayName("Owner/User")
-                    </th>*@
+                    @Html.DisplayName("Owner/User")
+                </th>*@
                 <th>
                     @Html.DisplayName("Ticket Title")
                 </th>
@@ -38,14 +38,14 @@
                 <th></th>
             </tr>
         </thead>
-        @foreach (var item in Model)
-        {
-            <tbody>
+        <tbody>
+           @foreach (var item in Model)
+            {
                 <tr>
                     @*<td>
 
-                            @Html.DisplayFor(modelItem => item.Ticket.OwnerUser.FullName)
-                        </td>*@
+                    @Html.DisplayFor(modelItem => item.Ticket.OwnerUser.FullName)
+                </td>*@
                     <td>
                         @Html.DisplayFor(modelItem => item.Ticket.Title)
                     </td>
@@ -65,7 +65,8 @@
                         @item.DateChanged.ToString("MM/dd/yyyy hh:mmtt")
                     </td>
                 </tr>
-            </tbody>
-        }
+
+            }
+        </tbody>
     </table>
 </section>

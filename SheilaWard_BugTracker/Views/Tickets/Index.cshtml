@@ -24,13 +24,28 @@
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
-    <h2>List of Tickets</h2>
+    @{
+        var stat = ViewBag.Stats;
+        if (ViewBag.Stats == "All")
+        {
+            <h2>List of Tickets - All</h2>
+        }
+        else if (ViewBag.Stats == "InProg")
+        {
+            <h2>List of Tickets - In Progress</h2>
+        }
+        else
+        {
+            <h2>List of Tickets - Completed</h2>
+        }
+    }
+
 </section>
 
 <!-- Main content -->
 <section class="content">
     <p>
-        @if (User.IsInRole("Submitter"))
+       @if (User.IsInRole("Submitter"))
         {
             @Html.ActionLink("Create New", "Create")
         }
@@ -41,10 +56,10 @@
             <div class="col-md-2 text-center h5">
                 <ul class="nav nav-pills nav-justified color-info">
                     <li class="myTkt">
-                        <a href="@Url.Action("Index", "Tickets", new { tkt = "MyTickets" })">My Tickets</a>
+                        <a href="@Url.Action("Index", "Tickets", new { tkt = "MyTickets", stat = stat })">My Tickets</a>
                     </li>
                     <li class="allTkt">
-                        <a href="@Url.Action("Index", "Tickets", new { tkt = "AllTickets" })">All Tickets</a>
+                        <a href="@Url.Action("Index", "Tickets", new { tkt = "AllTickets", stat = stat })">All Tickets</a>
                     </li>
                 </ul>
             </div>
@@ -89,7 +104,21 @@
         </thead>
         <tbody>
            @foreach (var item in Model)
-            {
+           {
+                if (ViewBag.Stats == "InProg")
+                {
+                    if (item.TicketStatus.Name == "Completed" || item.TicketStatus.Name == "Archived" || item.TicketStatus.Name == "Inactive")
+                    {
+                        continue;  // Skip the display and read the next item
+                    }
+                }
+                if (ViewBag.Stats == "Completed")
+                {
+                    if (item.TicketStatus.Name == "New/Unassigned" || item.TicketStatus.Name == "Active/Assigned")
+                   {
+                       continue;  // Skip the display and read the next item
+                   }
+                }
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.AssignedToUser.FullName)
@@ -119,10 +148,14 @@
                         @item.Created.ToString("MM/dd/yyyy hh:mmtt")
                     </td>
                     <td>
-                        @item.Updated.GetValueOrDefault().ToString("MM/dd/yyyy hh:mmtt")
+                        @if (item.Updated.GetValueOrDefault().ToString("MM/dd/yyyy hh:mmtt") != "01/01/0001 12:00AM")
+                        {
+                            @item.Updated.GetValueOrDefault().ToString("MM/dd/yyyy hh:mmtt")
+                        }
                     </td>
 
                     <td>
+                        @Html.ActionLink("Details", "Details", new { id = item.Id })<br />
                         @if (linkHelper.UserCanEditTicketPriorityTypeTitleDescription(item))
                         {
                             @Html.ActionLink("Edit", "Edit", new { id = item.Id })<br />
@@ -131,7 +164,6 @@
                             {
                                 @Html.ActionLink("Assign", "AssignToTkt", new { id = item.Id })<br />
                             }
-                            @Html.ActionLink("Details", "Details", new { id = item.Id })<br />
                             @Html.ActionLink("Dashboard", "Dashboard", new { id = item.Id })
                         }
                     </td>

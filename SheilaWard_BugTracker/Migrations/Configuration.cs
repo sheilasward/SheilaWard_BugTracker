@@ -221,46 +221,46 @@ namespace SheilaWard_BugTracker.Migrations
             #endregion
 
             #region AssignToRoles
-            var adminId = userManager.FindByEmail("Sheila.Ward@email.com").Id;
+            var sheilaId = userManager.FindByEmail("Sheila.Ward@email.com").Id;
+            userManager.AddToRole(sheilaId, "Admin");
+
+            var adminId = userManager.FindByEmail("DemoAdmin@Mailinator.com").Id;
             userManager.AddToRole(adminId, "Admin");
 
-            adminId = userManager.FindByEmail("DemoAdmin@Mailinator.com").Id;
-            userManager.AddToRole(adminId, "Admin");
+            var teresaId = userManager.FindByEmail("TShorter@mailinator.com").Id;
+            userManager.AddToRole(teresaId, "Submitter");
 
-            var submitterId = userManager.FindByEmail("TShorter@mailinator.com").Id;
+            var sherriId = userManager.FindByEmail("Sherri@Mailinator.com").Id;
+            userManager.AddToRole(sherriId, "Submitter");
+
+            var submitterId = userManager.FindByEmail("DemoSubmitter@Mailinator.com").Id;
             userManager.AddToRole(submitterId, "Submitter");
 
-            submitterId = userManager.FindByEmail("Sherri@Mailinator.com").Id;
-            userManager.AddToRole(submitterId, "Submitter");
+            var daveId = userManager.FindByEmail("DRose@mailinator.com").Id;
+            userManager.AddToRole(daveId, "ProjectManager");
 
-            submitterId = userManager.FindByEmail("DemoSubmitter@Mailinator.com").Id;
-            userManager.AddToRole(submitterId, "Submitter");
+            var angieId = userManager.FindByEmail("AngieSmith@mailinator.com").Id;
+            userManager.AddToRole(angieId, "ProjectManager");
 
-            var PMId = userManager.FindByEmail("DRose@mailinator.com").Id;
+            var PMId = userManager.FindByEmail("DemoProjectManager@Mailinator.com").Id;
             userManager.AddToRole(PMId, "ProjectManager");
 
-            PMId = userManager.FindByEmail("AngieSmith@mailinator.com").Id;
-            userManager.AddToRole(PMId, "ProjectManager");
+            var cindyId = userManager.FindByEmail("CTriplett@mailinator.com").Id;
+            userManager.AddToRole(cindyId, "Developer");
 
-            PMId = userManager.FindByEmail("DemoProjectManager@Mailinator.com").Id;
-            userManager.AddToRole(PMId, "ProjectManager");
+            var aresId = userManager.FindByEmail("AEller@mailinator.com").Id;
+            userManager.AddToRole(aresId, "Developer");
 
-            var DevId = userManager.FindByEmail("CTriplett@mailinator.com").Id;
-            userManager.AddToRole(DevId, "Developer");
+            var cooleyId = userManager.FindByEmail("JCooley@mailinator.com").Id;
+            userManager.AddToRole(cooleyId, "Developer");
 
-            DevId = userManager.FindByEmail("AEller@mailinator.com").Id;
-            userManager.AddToRole(DevId, "Developer");
+            var leeId = userManager.FindByEmail("LConnelly@mailinator.com").Id;
+            userManager.AddToRole(leeId, "Developer");
 
-            DevId = userManager.FindByEmail("JCooley@mailinator.com").Id;
-            userManager.AddToRole(DevId, "Developer");
+            var sarveshId = userManager.FindByEmail("SPatel@mailinator.com").Id;
+            userManager.AddToRole(sarveshId, "Developer");
 
-            DevId = userManager.FindByEmail("LConnelly@mailinator.com").Id;
-            userManager.AddToRole(DevId, "Developer");
-
-            DevId = userManager.FindByEmail("SPatel@mailinator.com").Id;
-            userManager.AddToRole(DevId, "Developer");
-
-            DevId = userManager.FindByEmail("DemoDeveloper@mailinator.com").Id;
+            var DevId = userManager.FindByEmail("DemoDeveloper@mailinator.com").Id;
             userManager.AddToRole(DevId, "Developer");
 
             #endregion
@@ -276,16 +276,52 @@ namespace SheilaWard_BugTracker.Migrations
             context.SaveChanges();
             #endregion
 
-            //#region Project Assignment
-            //var blogProjectId = context.Projects.FirstOrDefault(p => p.Name == "Coder Foundry Blog").Id;
-            //var bugTrackerProjectId = context.Projects.FirstOrDefault(p => p.Name == "Bug Tracker Project").Id;
-            //var portfolioProject = context.Projects.FirstOrDefault(p => p.Name == "Portfolio Project").Id;
-            //var yelpCampProject = context.Projects.FirstOrDefault(p => p.Name == "YelpCamp Project");
+            #region Project Assignment
+            var blogProjectId = context.Projects.FirstOrDefault(p => p.Name == "Coder Foundry Blog").Id;
+            var bugTrackerProjectId = context.Projects.FirstOrDefault(p => p.Name == "Bug Tracker Project").Id;
+            var portfolioProjectId = context.Projects.FirstOrDefault(p => p.Name == "Portfolio Project").Id;
+            var yelpCampProjectId = context.Projects.FirstOrDefault(p => p.Name == "YelpCamp Project").Id;
 
-            //var projHelper = new ProjectsHelper();
-            //#endregion
+            var projHelper = new ProjectsHelper();
 
-            #region TicketPriorities
+            // Assign Sheila to projects
+            projHelper.AddUserToProject(sheilaId, portfolioProjectId);
+            projHelper.AddUserToProject(sheilaId, blogProjectId);
+            projHelper.AddUserToProject(sheilaId, bugTrackerProjectId);
+            projHelper.AddUserToProject(sheilaId, yelpCampProjectId);
+
+            // Assign Angie to projects
+            projHelper.AddUserToProject(angieId, blogProjectId);
+
+            // Assign Ares to projects
+            projHelper.AddUserToProject(aresId, blogProjectId);
+
+            // Assign Teresa to projects
+            projHelper.AddUserToProject(teresaId, blogProjectId);
+            projHelper.AddUserToProject(teresaId, bugTrackerProjectId);
+
+            // Assign Sarvesh to projects
+            projHelper.AddUserToProject(sarveshId, portfolioProjectId);
+
+            // Assign Sherri to projects
+            projHelper.AddUserToProject(sherriId, portfolioProjectId);
+
+            // Assign Dave to projects
+            projHelper.AddUserToProject(daveId, bugTrackerProjectId);
+            projHelper.AddUserToProject(daveId, yelpCampProjectId);
+
+            // Assign Lee to projects
+            projHelper.AddUserToProject(leeId, bugTrackerProjectId);
+
+            // Assign Cindy to projects
+            projHelper.AddUserToProject(cindyId, bugTrackerProjectId);
+
+            // Assign Cooley to projects
+            projHelper.AddUserToProject(cooleyId, portfolioProjectId);
+            projHelper.AddUserToProject(cooleyId, blogProjectId);
+            #endregion
+
+            #region Ticket Priorities, Statuses, & Types (require Foreign Keys)
             context.TicketPriorities.AddOrUpdate(
                 t => t.Name,
                     new TicketPriority { Name = "None", Description = "Priority has not been determined"},
@@ -294,9 +330,7 @@ namespace SheilaWard_BugTracker.Migrations
                     new TicketPriority { Name = "High", Description = "A high priority level requiring quick action" },
                     new TicketPriority { Name = "Urgent", Description = "Highest priority level requiring immediate action" }
             );
-            #endregion
 
-            #region TicketStatuses
             context.TicketStatuses.AddOrUpdate(
                 t => t.Name,
                 new TicketStatus { Name = "New/Unassigned", Description = "Has not been approved or has been tabled" },
@@ -305,14 +339,123 @@ namespace SheilaWard_BugTracker.Migrations
                 new TicketStatus { Name = "Completed", Description = "Development and Testing done, but not deployed" },
                 new TicketStatus { Name = "Archived", Description = "Ticket is completed and all work delivered"}
             );
-            #endregion
 
-            #region TicketTypes
             context.TicketTypes.AddOrUpdate(
                 t => t.Name,
                 new TicketType { Name = "Defect", Description = "There is a defect in the application code or logic" },
                 new TicketType { Name = "Documentation", Description = "There is a need for documentation/training on the application"},
                 new TicketType { Name = "Enhancement", Description = "There is a request for more functionality for the application"}
+            );
+
+            context.SaveChanges();
+            #endregion
+
+            #region Ticket creation
+            context.Tickets.AddOrUpdate(
+                p => p.Title,
+                    new Ticket
+                    {
+                        ProjectId = bugTrackerProjectId,
+                        OwnerUserId = teresaId,
+                        Title = "Make Icons turn red when active",
+                        Description = "Make the Icons in the left navigation turn red when active",
+                        Created = DateTimeOffset.Now,
+                        TicketPriorityId = context.TicketPriorities.FirstOrDefault(t => t.Name == "Medium").Id,
+                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "New/Unassigned").Id,
+                        TicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Enhancement").Id,
+                    },
+                    new Ticket
+                    {
+                        ProjectId = bugTrackerProjectId,
+                        OwnerUserId = teresaId,
+                        Title = "Add Buttons for Table Downloads",
+                        Description = "Add Copy, CSV, Excel, PDF, and Print buttons for tables",
+                        Created = DateTimeOffset.Now,
+                        TicketPriorityId = context.TicketPriorities.FirstOrDefault(t => t.Name == "Medium").Id,
+                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "New/Unassigned").Id,
+                        TicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Enhancement").Id,
+                    },
+                    new Ticket
+                    {
+                        ProjectId = bugTrackerProjectId,
+                        OwnerUserId = teresaId,
+                        Title = "Add Buttons to Table Header",
+                        Description = "Add pop-out, refresh, collapse, and close buttons to table headers.",
+                        Created = DateTimeOffset.Now,
+                        TicketPriorityId = context.TicketPriorities.FirstOrDefault(t => t.Name == "Low").Id,
+                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "New/Unassigned").Id,
+                        TicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Enhancement").Id,
+                    },
+                    new Ticket
+                    {
+                        ProjectId = bugTrackerProjectId,
+                        OwnerUserId = teresaId,
+                        Title = "Add Functionality to Edit Projects View",
+                        Description = "On Edit Projects, give Admin/PM ability to assign people to projects",
+                        Created = DateTimeOffset.Now,
+                        TicketPriorityId = context.TicketPriorities.FirstOrDefault(t => t.Name == "Medium").Id,
+                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "New/Unassigned").Id,
+                        TicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Enhancement").Id,
+                    },
+                    new Ticket
+                    {
+                        ProjectId = portfolioProjectId,
+                        OwnerUserId = sherriId,
+                        AssignedToUserId = cooleyId,
+                        Title = "Activate Google Maps",
+                        Description = "The Portfolio Project has a Google Maps area in the 'Contact' section that needs to be activated.",
+                        Created = DateTimeOffset.Now,
+                        TicketPriorityId = context.TicketPriorities.FirstOrDefault(t => t.Name == "Medium").Id,
+                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "Active/Assigned").Id,
+                        TicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Defect").Id,
+                    },
+                    new Ticket
+                    {
+                        ProjectId = portfolioProjectId,
+                        OwnerUserId = sherriId,
+                        AssignedToUserId = sarveshId,
+                        Title = "Separate JavaScript Exercises",
+                        Description = "Bobby wants the Javascript Exercises put in a different section than the Bug Tracker and the Blog.  He also wants them separated out into: Math, Factorial, Fizz-Buzz, and Palindrome.",
+                        Created = DateTimeOffset.Now,
+                        TicketPriorityId = context.TicketPriorities.FirstOrDefault(t => t.Name == "Medium").Id,
+                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "Active/Assigned").Id,
+                        TicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Defect").Id,
+                    },
+                    new Ticket
+                    {
+                        ProjectId = bugTrackerProjectId,
+                        OwnerUserId = teresaId,
+                        Title = "Add Buttons for Table Downloads",
+                        Description = "Add Copy, CSV, Excel, PDF, and Print buttons for tables",
+                        Created = DateTimeOffset.Now,
+                        TicketPriorityId = context.TicketPriorities.FirstOrDefault(t => t.Name == "Medium").Id,
+                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "New/Unassigned").Id,
+                        TicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Enhancement").Id,
+                    },
+                    new Ticket
+                    {
+                        ProjectId = bugTrackerProjectId,
+                        OwnerUserId = teresaId,
+                        AssignedToUserId = cindyId,
+                        Title = "Add List of Users to Project 'Dashboard'",
+                        Description = "Add a list of all users on a particular project to that project's 'Dashboard' page.",
+                        Created = DateTimeOffset.Now,
+                        TicketPriorityId = context.TicketPriorities.FirstOrDefault(t => t.Name == "Medium").Id,
+                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "Active/Assigned").Id,
+                        TicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Enhancement").Id,
+                    },
+                    new Ticket
+                    {
+                        ProjectId = bugTrackerProjectId,
+                        OwnerUserId = teresaId,
+                        AssignedToUserId = cindyId,
+                        Title = "Add List of Tickets to Project 'Dashboard'",
+                        Description = "Add a list of all tickets on a particular project to that project's 'Dashboard' page.",
+                        Created = DateTimeOffset.Now,
+                        TicketPriorityId = context.TicketPriorities.FirstOrDefault(t => t.Name == "Medium").Id,
+                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "New/Unassigned").Id,
+                        TicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Enhancement").Id,
+                    }
             );
             #endregion
         }

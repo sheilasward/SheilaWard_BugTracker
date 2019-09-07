@@ -6539,6 +6539,7 @@
     <Content Include="Content\dist\js\pages\dashboard2.js" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\ionicons.min.css" />
+    <Content Include="Content\jquery.dataTables.css" />
     <Content Include="Content\plugins\bootstrap-slider\bootstrap-slider.js" />
     <Content Include="Content\plugins\bootstrap-slider\slider.css" />
     <Content Include="Content\plugins\bootstrap-wysihtml5\bootstrap3-wysihtml5.all.js" />
@@ -7307,6 +7308,8 @@
     <Content Include="Views\Projects\Archive.cshtml" />
     <Content Include="Views\Projects\AssignToTkt.cshtml" />
     <Content Include="Views\TicketNotifications\MyNotifications.cshtml" />
+    <Content Include="Views\Home\DemoLanding.cshtml" />
+    <None Include="Properties\PublishProfiles\SheilaWardBugTracker - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\bower_components\moment\moment.d.ts" />

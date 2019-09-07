@@ -4,66 +4,86 @@
     ViewBag.Title = "MyNotifications";
 }
 
-    <h2>MyNotifications</h2>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row">
+        <div class="col-md-10">
+            <h2>Ticket Notifications</h2>
+        </div>
+        <div class="col-md-2">
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Recipient.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Sender.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Ticket.OwnerUserId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Created)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Subject)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NotificationBody)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsRead)
-        </th>
-        <th></th>
-    </tr>
+            @using (Html.BeginForm("DeleteMine", "TicketNotifications"))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <button type="submit" class="btn btn-small btn-danger" style="margin-top:20px;">Delete All Notifications</button>
+            }
+        </div>
+    </div>
+</section>
+<hr />
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Recipient.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sender.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ticket.OwnerUserId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Subject)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NotificationBody)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsRead)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
-
-</table>
-
-
+<!-- Main content -->
+<section class="content">
+    <table class="table searchTbl">
+        <thead>   
+            <tr>
+                @*<th>
+                    @Html.DisplayName("Recipient")
+                </th>*@
+                <th>
+                    @Html.DisplayName("Sender")
+                </th>
+                @*<th>
+                    @Html.DisplayName("Owner/User")
+                </th>*@
+                <th>
+                    @Html.DisplayName("Created")
+                </th>
+                <th>
+                    @Html.DisplayName("Subject")
+                </th>
+                <th>
+                    @Html.DisplayName("Notification Body")
+                </th>
+                @*<th>
+                    @Html.DisplayName("Message")
+                </th>
+                <th>
+                    @Html.DisplayName("Read?")
+                </th>*@
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+           @foreach (var item in Model)
+            {
+            <tr>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.Recipient.FullName)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sender.FullName)
+                </td>
+                <td>
+                    @item.Created.ToString("MMM d, yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Subject)
+                </td>
+                <td>
+                    <pre>
+                        @Html.DisplayFor(modelItem => item.NotificationBody)
+                    </pre>
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.IsRead)
+                </td>*@
+                <td>
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</section>

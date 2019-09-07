@@ -30,3 +30,8 @@ textarea {
 .listBox {
     width: 300px;
 }
+
+.bg-white {
+    background-color: white;
+    color: black;
+}

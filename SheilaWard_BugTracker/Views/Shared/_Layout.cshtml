@@ -1,6 +1,7 @@
 ﻿@using SheilaWard_BugTracker.Models;
 @using SheilaWard_BugTracker.Helpers;
 @using Microsoft.AspNet.Identity;
+@using System.Linq;
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,12 +37,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <link href="~/Content/Site.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css" />
-
-    
-
-
-
-
+    <link href="~/Content/jquery.dataTables.css" rel="stylesheet" />
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 
@@ -88,12 +84,12 @@
                                 <li>
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu" style="margin-left:5px; margin-right:5px;">
-                                       @foreach (var notification in notfHelper.GetUnreadUserNotifications())
+                                       @foreach (var notification in notfHelper.GetUnreadUserNotifications().OrderByDescending(i => i.Created))
                                         {
                                             <!-- start message -->
                                             <li>
                                                 <hr size=3 />
-                                                @using (Html.BeginForm("MarkAsRead", "TicketNotifications"))
+                                                @using (Html.BeginForm("MarkAsRead", "TicketNotifications", new { id = notification.Id, returnUrl = "Home-Dashboard" }))
                                                 {
                                                     @Html.AntiForgeryToken()
                                                     @Html.Hidden("Id", notification.Id)
@@ -538,20 +534,30 @@
             $(".searchTbl").DataTable();
         </script>
 
-        <script src="~/Scripts/tinymce/tinymce.min.js"></script>
-        <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>
-        <script type="text/javascript">
+        @*<script src="~/Scripts/tinymce/tinymce.min.js"></script>
+        <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>*@
+        @*<script type="text/javascript">
             $(function () {
                 tinymce.init({
                     selector: '#Body'
                 });
             });
-        </script>
+        </script>*@
 
         <script>
             $(document).ready(function () {
                 $('.sidebar-menu').tree()
-            })</script>
+
+                $(".searchTbl").DataTable();
+
+                //tinymce.init({
+                //    selector: '#Body'
+                //});
+
+            })
+
+
+        </script>
         @RenderSection("scripts", required: false)
     </div>
 </body>
