@@ -75,17 +75,31 @@ namespace SheilaWard_BugTracker.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl, string key)
         {
-            if (!ModelState.IsValid)
+            SignInStatus result;
+            if (!ModelState.IsValid)  // Model State is NOT valid - check to see if there is a key
             {
-                ModelState.AddModelError("", "Model State is invalid.");
-                return RedirectToAction("Login", "Home");
+                if (!string.IsNullOrEmpty(key))  // It is OK - there is a key.  That means it is a demo user logging on.
+                {
+                    var demoEmail = WebConfigurationManager.AppSettings[key];
+                    var demoPassword = WebConfigurationManager.AppSettings["DemoUserPassword"];
+                    result = await SignInManager.PasswordSignInAsync(demoEmail, demoPassword, false, shouldLockout: false);
+                }
+                else  // The Model State is NOT valid, and there is NOT a key - this is an error.
+                {
+                    TempData["Message"] = "PASSWORD OR USERNAME IS INCORRECT.";
+                    return RedirectToAction("Login", "Home");
+                }
+            }
+            else  // Model state is valid
+            {
+                // This doesn't count login failures towards account lockout
+                // To enable password failures to trigger account lockout, change to shouldLockout: true
+                result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
             }
 
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+
             switch (result)
             {
                 case SignInStatus.Success:

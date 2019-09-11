@@ -38,7 +38,7 @@
                 <i class="fa fa-circle-o"></i>
                 <span> All</span>
                 <span class="pull-right-container">
-                    <small class="label pull-right bg-white">@ticketHelper.GetTicketCount("All")</small>
+                    <small data-toggle="tooltip" title="All My Tickets" class="label pull-right bg-white">@ticketHelper.GetTicketCount("All")</small>
                 </span>
             </a>
         </li>
@@ -61,8 +61,8 @@
                 <i class="fa fa-circle-o"></i>
                 <span>Completed</span>
                 <span class="pull-right-container">
-                    <small class="label pull-right bg-red">@ticketHelper.GetTicketCount("Completed")</small>
-                    <small class="label pull-right bg-blue">@ticketHelper.GetTicketCount("Archived")</small>
+                    <small data-toggle="tooltip" title="Completed" class="label pull-right bg-red">@ticketHelper.GetTicketCount("Completed")</small>
+                    <small data-toggle="tooltip" title="Archived" class="label pull-right bg-blue">@ticketHelper.GetTicketCount("Archived")</small>
                 </span>
             </a>
         </li>

@@ -84,7 +84,11 @@
                     }
                 </td>
                 <td>
-                     @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    @if (item.IsRead)
+                    {
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    }
+
                 </td>
             </tr>
             }
@@ -105,8 +109,11 @@
             }
         })
 
-        $(".chkRead input[type=checkbox]").click(function () {
-
+        $(".chkRead input[type=checkbox]").change(function () {
+            var url = '@Url.Action("MarkAsRead","TicketNotifications")';
+            $.post(url).then(function (response) {
+                alert("This worked!");
+            })
         })
 
     </script>

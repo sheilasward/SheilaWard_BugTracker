@@ -117,6 +117,12 @@ namespace SheilaWard_BugTracker.Helpers
             return db.TicketNotifications.Where(t => t.RecipientId == userId && !t.IsRead).Count();
         }
 
+        public int GetReadUserNotificationCount()
+        {
+            var userId = HttpContext.Current.User.Identity.GetUserId();
+            return db.TicketNotifications.Where(t => t.RecipientId == userId && t.IsRead).Count();
+        }
+
         public int GetAllUserNotificationCount()
         {
             var userId = HttpContext.Current.User.Identity.GetUserId();

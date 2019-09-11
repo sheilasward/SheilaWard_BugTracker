@@ -41,6 +41,14 @@ namespace SheilaWard_BugTracker.Helpers
             return (projects);
         }
 
+        public int CountUserProjects()
+        {
+            var userId = HttpContext.Current.User.Identity.GetUserId();
+            ApplicationUser user = db.Users.Find(userId);
+            var projects = user.Projects.Count();
+            return (projects);
+        }
+
         public void AddUserToProject(string userId, int projectId)
         {
             if (!IsUserOnProject(userId, projectId))

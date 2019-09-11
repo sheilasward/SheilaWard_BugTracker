@@ -38,81 +38,194 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <body class="hold-transition login-page">
-    <div class="login-box">
+    <div class="demo-user-box">
         <div class="login-logo">
             <b>MyCo </b>BugTrakker
         </div>
         <!-- /.login-logo -->
-        <div class="login-box-body">
-            <p class="login-box-msg">Choose a demo user to start your session</p>
-
-            <div class="row">
-                <div class="col-md-offset-1 col-md-4">
-                    <a href="#" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#demoAdmin">
-                        Admin Privileges
-                    </a>
-                </div>
-                <div class="col-md-offset-2 col-md-4">
-                    <a href="#" class="btn btn-lg btn-success" data-toggle="modal" data-target="#demoPM">
-                        Project Manager Privileges
-                    </a>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-offset-1 col-md-4">
-                    <a href="#" class="btn btn-lg btn-warning" data-toggle="modal" data-target="#demoDev">
-                        Developer Privileges
-                    </a>
-                </div>
-                <div class="col-md-offset-2 col-md-4">
-                    <a href="#" class="btn btn-lg btn-danger" data-toggle="modal" data-target="#demoSub">
-                        Submitter Privileges
-                    </a>
-                </div>
-            </div>
+        <div class="demo-user-box-body" >
+            <h2 class="login-box-msg">Choose a demo user to start your session</h2>
+            <div class="row" style="margin:0 100px;">
 
 
-            <!-- Modal -->
-            <div id="demoAdmin" class="modal fade" data-focus-on="input:first" role="dialog">
-                <div class="modal-dialog">
-
-                    <!-- Admin Modal content-->
-                    <div class="modal-content modal-lg">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Administrator Privileges</h4>
+                <!-- Begin Demo Admin Box -->
+                <div class="col-lg-6 text-center">
+                    <div class="box box-danger box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Demo Administrator Role</h3>
                         </div>
-                        <div class="modal-body">
+                        <div class="box-body">
                             <div class="row">
-                                <div class="col-md-12 text-center h4">
-
-                                    <h4>An Administrator can:</h4>
-                                    <ul>
-                                        <li>1</li>
-                                        <li>2</li>
-                                        <li>3</li>
-                                        <li>4</li>
-                                    </ul>
+                                <div class="col-sm-6">
+                                    <img src="~/Avatars/kartunix(1).png" class="img-responsive" />
+                                </div>
+                                <div class="col-sm-6 text-left">
+                                    <h4>Privileges:</h4>
 
                                 </div>
                             </div>
+                        </div>
+                        <div>
+                            @using (Html.BeginForm("Login", "Account"))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("key", "DemoAdmin")
+                                <button class="btn btn-sm btn-danger" type="submit">
+                                    Sign in as Demo Administrator
+                                </button>
+                            }
+                        </div>
+                        <br />
+                    </div>
+                </div>
+
+                <!-- Begin Demo Project Manager Box -->
+                <div class="col-lg-6 text-center">
+                    <div class="box box-primary box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Demo Project Manager Role</h3>
+                        </div>
+                        <div class="box-body">
                             <div class="row">
-                                <div class="col-md-12 text-center">
-                                    @using (Html.BeginForm())
-                                    {
-                                        @Html.AntiForgeryToken()
-                                        @Html.Hidden("key", "DemoAdmin")
-                                        <button type="submit" class="btn btn-info">Login as DemoAdmin</button>
-                                    }
+                                <div class="col-sm-6">
+                                    <img src="~/Avatars/kartunix(2).png" class="img-responsive" />
+                                </div>
+                                <div class="col-sm-6 text-left">
+                                    <h4>Privileges:</h4>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            @using (Html.BeginForm("Login", "Account"))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("key", "DemoProjectManager")
+                                <button class="btn btn-sm btn-primary" type="submit">
+                                    Sign in as Demo Project Manager
+                                </button>
+                            }
+                        </div>
+                        <br />
+                    </div>
+                </div>
+
+                <!-- Begin Demo Developer Box -->
+                <div class="col-lg-6 text-center">
+                    <div class="box box-warning box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Demo Developer Role</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <img src="~/Avatars/kartunix(4).png" class="img-responsive" />
+                                </div>
+                                <div class="col-sm-6 text-left">
+                                    <h4>Privileges:</h4>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            @using (Html.BeginForm("Login", "Account"))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("key", "DemoDeveloper")
+                                <button class="btn btn-sm btn-warning" type="submit">
+                                    Sign in as Demo Developer
+                                </button>
+                            }
+                        </div>
+                        <br />
+                    </div>
+                </div>
+
+                <!-- Begin Demo Submitter Box -->
+                <div class="col-lg-6 text-center">
+                    <div class="box box-success box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Demo Submitter Role</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <img src="~/Avatars/kartunix(3).png" class="img-responsive" />
+                                </div>
+                                <div class="col-sm-6 text-left">
+                                    <h4>Privileges:</h4>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            @using (Html.BeginForm("Login", "Account"))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("key", "DemoSubmitter")
+                                <button class="btn btn-sm btn-success" type="submit">
+                                    Sign in as Demo Submitter
+                                </button>
+                            }
+                        </div>
+                        <br />
+                    </div>
+                </div>
+
+                @*<div class="row">
+            <div class="col-md-offset-1 col-md-4">
+                <a href="#" class="btn btn-lg btn-warning" data-toggle="modal" data-target="#demoDev">
+                    Developer Privileges
+                </a>
+            </div>
+            <div class="col-md-offset-2 col-md-4">
+                <a href="#" class="btn btn-lg btn-danger" data-toggle="modal" data-target="#demoSub">
+                    Submitter Privileges
+                </a>
+            </div>
+        </div>*@
+
+
+                <!-- Modal -->
+                <div id="demoAdmin" class="modal fade" data-focus-on="input:first" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Admin Modal content-->
+                        <div class="modal-content modal-lg">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Administrator Privileges</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12 text-center h4">
+
+                                        <h4>An Administrator can:</h4>
+                                        <ul>
+                                            <li>1</li>
+                                            <li>2</li>
+                                            <li>3</li>
+                                            <li>4</li>
+                                        </ul>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        @using (Html.BeginForm())
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.Hidden("key", "DemoAdmin")
+                                            <button type="submit" class="btn btn-info">Login as DemoAdmin</button>
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+            </div>
 </body>
 </html>
 

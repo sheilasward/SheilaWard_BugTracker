@@ -89,7 +89,7 @@
                                             <!-- start message -->
                                             <li>
                                                 <hr size=3 />
-                                                @using (Html.BeginForm("MarkAsRead", "TicketNotifications", new { id = notification.Id, returnUrl = "Home-Dashboard" }))
+                                                @using (Html.BeginForm("MarkAsRead", "TicketNotifications"))
                                                 {
                                                     @Html.AntiForgeryToken()
                                                     @Html.Hidden("Id", notification.Id)

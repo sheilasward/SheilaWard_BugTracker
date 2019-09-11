@@ -116,7 +116,7 @@ namespace SheilaWard_BugTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public ActionResult MarkAsRead(int id, string returnTo)
+        public ActionResult MarkAsRead(int id)
         {
             var notification = db.TicketNotifications.Find(id);
             notification.IsRead = true;
@@ -124,22 +124,40 @@ namespace SheilaWard_BugTracker.Controllers
             return Redirect(Request.UrlReferrer.ToString());
         }
 
-        // POST: TicketNotifications/DeleteAll
+        // POST: TicketNotifications/MarkAllRead
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public ActionResult DeleteAll()
+        public ActionResult MarkAllRead()
         {
             var userId = User.Identity.GetUserId();
+            var ticketNotifications = db.TicketNotifications.Where(t => t.RecipientId == userId).ToList();
+            foreach (var notification in ticketNotifications)
+            {
+                notification.IsRead = true;
+            }
+            
+            db.SaveChanges();
+            return RedirectToAction("MyNotifications");
+        }
+
+        // POST: TicketNotifications/DeleteRead
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public ActionResult DeleteRead()
+        {
+            var userId = User.Identity.GetUserId();
+            var ticketNotifications = db.TicketNotifications.Where(t => t.RecipientId == userId).ToList();
             foreach (var notification in db.TicketNotifications)
             {
-                if (notification.RecipientId == userId)
+                if (notification.IsRead == true)
                 {
                     db.TicketNotifications.Remove(notification);
                 }
             }
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return Redirect(Request.UrlReferrer.ToString());
         }
 
         // GET: TicketNotifications/Delete/5
@@ -165,7 +183,7 @@ namespace SheilaWard_BugTracker.Controllers
             TicketNotification ticketNotification = db.TicketNotifications.Find(id);
             db.TicketNotifications.Remove(ticketNotification);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("MyNotifications");
         }
 
         protected override void Dispose(bool disposing)

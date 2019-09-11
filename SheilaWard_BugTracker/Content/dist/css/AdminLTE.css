@@ -3303,18 +3303,24 @@ table.text-center th {
   height: auto;
   background: #d2d6de;
 }
+.demo-user-box {
+    width: 90%;
+    margin: 20px;
+}
 .login-box,
 .register-box {
-  width: 360px;
+  width: 450px;
   margin: 7% auto;
 }
 @media (max-width: 768px) {
+  .demo-user-box,
   .login-box,
   .register-box {
     width: 90%;
     margin-top: 20px;
   }
 }
+.demo-user-box-body,
 .login-box-body,
 .register-box-body {
   background: #fff;
@@ -3322,9 +3328,10 @@ table.text-center th {
   border-top: 0;
   color: #666;
 }
+.demo-user-box-body .form-control-feedback,
 .login-box-body .form-control-feedback,
 .register-box-body .form-control-feedback {
-  color: #777;
+    color: #777;
 }
 .login-box-msg,
 .register-box-msg {
