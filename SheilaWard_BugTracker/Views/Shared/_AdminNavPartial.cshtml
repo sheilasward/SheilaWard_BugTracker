@@ -1,12 +1,22 @@
-﻿
-    @using SheilaWard_BugTracker.Helpers;
+﻿    @using SheilaWard_BugTracker.Helpers;
     @using SheilaWard_BugTracker.Models;
 
     @{
         
        var ticketHelper = new TicketDecisionHelper();
+       var projectHelper = new ProjectsHelper();
+       var notfHelper = new NotificationHelper();
        ApplicationDbContext db = new ApplicationDbContext();
     }
+
+    <style>
+        ul li.current > a > i,
+        ul li a:hover > i,
+        ul li a:focus > i,
+        ul li a:active > i {
+            color: red;
+        }
+    </style>
 
     <ul class="sidebar-menu" data-widget="tree">
         <li class="header">ADMINISTRATOR NAVIGATION</li>
@@ -15,6 +25,7 @@
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
             </a>
         </li>
+
         <li><hr /></li>
 
         <li><a href="@Url.Action("UserIndex", "Admin")"><i class="fa fa-user"></i> User Index</a></li>
@@ -22,7 +33,15 @@
         <li><hr /></li>
 
         <li><a href="@Url.Action("Create", "Projects")"><i class="fa fa-book"></i> Create New Project</a></li>
-        <li><a href="@Url.Action("Index", "Projects", new { proj = "MyProjects" })"><i class="fa fa-book"></i> View/Manage Projects</a></li>
+        <li>
+            <a href="@Url.Action("Index", "Projects", new { proj = "MyProjects" })">
+                <i class="fa fa-book"></i>
+                <span>View/Manage Projects</span>
+                <span class="pull-right-container">
+                    <small data-toggle="tooltip" title="All My Projects" class="label pull-right bg-white">@projectHelper.CountUserProjects()</small>
+                </span>
+            </a>
+        </li>
         <li><hr /></li>
 
         <li>
@@ -59,8 +78,9 @@
             <a href="@Url.Action("Index", "Tickets", new { proj = "MyTickets", stat = "Completed" })">
                 <span>&emsp;</span>
                 <i class="fa fa-circle-o"></i>
-                <span>Completed</span>
+                <span>Not Active</span>
                 <span class="pull-right-container">
+                    <small data-toggle="tooltip" title="Inactive" class="label pull-right bg-purple">@ticketHelper.GetTicketCount("Inactive")</small>
                     <small data-toggle="tooltip" title="Completed" class="label pull-right bg-red">@ticketHelper.GetTicketCount("Completed")</small>
                     <small data-toggle="tooltip" title="Archived" class="label pull-right bg-blue">@ticketHelper.GetTicketCount("Archived")</small>
                 </span>
@@ -69,9 +89,21 @@
 
         <li><hr /></li>
 
-        <li><a href="@Url.Action("MyNotifications", "TicketNotifications")"><i class="fa fa-envelope-o"></i> My Notifications</a></li>
-        <li><a href="@Url.Action("Index", "TicketNotifications")"><i class="fa fa-envelope-o"></i> All Notifications</a></li>
+        <li>
+            <a href="@Url.Action("MyNotifications", "TicketNotifications")">
+                <i class="fa fa-bell-o"></i>
+                <span>My Notifications</span>
+                <span class="pull-right-container">
+                    <small data-toggle="tooltip" title="All Notifications" class="label pull-right bg-white">@notfHelper.GetAllUserNotificationCount()</small>
+                    <small data-toggle="tooltip" title="Read Notifications" class="label pull-right bg-green">@notfHelper.GetReadUserNotificationCount()</small>
+                    <small data-toggle="tooltip" title="Unread Notifications" class="label pull-right bg-yellow">@notfHelper.GetNewUserNotificationCount()</small>
+                </span>
+            </a>
+        </li>
+        <li><a href="@Url.Action("Index", "TicketNotifications")"><i class="fa fa-bell-o"></i> All Notifications</a></li>
+
         <li><hr /></li>
+
         <li><a href="@Url.Action("Index", "TicketHistories")"><i class="fa fa-history"></i> Ticket Histories</a></li>
         <li><a href="@Url.Action("Index", "TicketComments")"><i class="fa fa-comment"></i> Ticket Comments</a></li>
 
@@ -220,6 +252,9 @@
         <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
         <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>*@
     </ul>
-@*<script>
-    $("li.treeview").toggleClass("active");
-</script>*@
+
+<script>
+    $("li").click(function) {
+
+    }
+</script>

@@ -5,6 +5,7 @@
     ViewBag.Title = "Index";
     var linkHelper = new LinkHelper();
     var tktHelper = new TicketDecisionHelper();
+    var stat = ViewBag.Stats;
 }
 
 <style>
@@ -25,7 +26,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     @{
-        var stat = ViewBag.Stats;
+        
         if (ViewBag.Stats == "All")
         {
             <h2>List of Tickets - All</h2>
@@ -158,11 +159,11 @@
                         @Html.ActionLink("Details", "Details", new { id = item.Id })<br />
                         @if (linkHelper.UserCanEditTicketPriorityTypeTitleDescription(item))
                         {
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id })<br />
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id, stat = stat })<br />
 
                             if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
                             {
-                                @Html.ActionLink("Assign", "AssignToTkt", new { id = item.Id })<br />
+                                @Html.ActionLink("Assign", "AssignToTkt", new { id = item.Id, stat = stat })<br />
                             }
                             @Html.ActionLink("Dashboard", "Dashboard", new { id = item.Id })
                         }

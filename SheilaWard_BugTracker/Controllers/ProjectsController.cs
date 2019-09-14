@@ -54,6 +54,44 @@ namespace SheilaWard_BugTracker.Controllers
             return View(project);
         }
 
+        // GET: Projects/UsersOnMyProjects
+        //[Authorize]
+        //public ActionResult UsersOnMyProjects(string userId)
+        //{
+        //    ICollection<Project> myProjects = projHelper.ListUserProjects(userId);
+        //    if (myProjects.Count == 0)
+        //    {
+        //        TempData["Message"] = "YOU ARE NOT ASSIGNED TO ANY PROJECTS...";
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
+        //    ICollection<ApplicationUser> UsersOnProjects = new List<ApplicationUser>();
+        //    ICollection<ApplicationUser> UsersOnThisProject = new List<ApplicationUser>();
+        //    foreach (var project in myProjects)
+        //    {
+        //        UsersOnThisProject = projHelper.UsersOnProject(project.Id);
+        //        foreach (var user in UsersOnThisProject)
+        //        {
+        //            if (!UsersOnProjects.Contains(user))
+        //            {
+        //                UsersOnProjects.Add(user);
+        //            }
+        //        }
+        //    }
+        //    var users = UsersOnProjects.Select(u => new UserIndexViewModel
+        //    {
+        //        Id = u.Id,
+        //        AvatarUrl = u.AvatarUrl,
+        //        FullName = u.LastName + ", " + u.FirstName,
+        //        PhoneNumber = u.PhoneNumber,
+        //        Email = u.Email
+        //        CurrentRole = userRolesHelper.ListUserRoles(u.Id).FirstOrDefault();
+        //        CurrentProjects = projectHelper.ListUserProjects(u.Id).Select(u => u.Id));
+        //    }).ToList();
+
+        //    return View(UsersOnProjects);
+        //}
+
+
         // GET: Projects/Create
         [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult Create()

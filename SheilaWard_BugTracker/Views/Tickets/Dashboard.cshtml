@@ -4,18 +4,26 @@
 @{
     ViewBag.Title = "Dashboard";
     var decisionHelper = new TicketDecisionHelper();
+    var prevHistory = @Model.Created;
 }
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
-    <h2>Ticket Dashboard:  @Model.Title</h2>
+    <div class="row">
+        <div class="col-md-10">
+            <h2>Ticket Dashboard:  @Model.Title</h2>
+        </div>
+        <div class="col-md-2" style="margin-top:20px;">
+            <a href="@Url.Action("Index", "Tickets", new { proj = "MyTickets", stat = "InProg"})">Back to Ticket List</a>
+        </div>
+    </div>
     <hr />
 </section>
 
 <!-- Main content -->
 <section class="content">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-6">
             <div class="box box-primary box-solid">
                 <div class="box-header with-border">
                     <h3 class="box-title">Ticket Information</h3>
@@ -29,14 +37,66 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    TICKET INFO GOES HERE
+                    <div class="row">
+                        <div class="col-md-3">
+                            TITLE:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.Title
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            DESCRIPTION:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.Description
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            TYPE:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.TicketType.Name
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            PRIORITY:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.TicketPriority.Name
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            STATUS:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.TicketStatus.Name
+                        </div>
+                    </div>
+                    @{ 
+                        if (@Model.AssignedToUser != null)
+                        {
+                            <div class="row">
+                                <div class="col-md-3">
+                                    ASSIGNED TO:
+                                </div>
+                                <div class="col-md-9">
+                                    @Model.AssignedToUser.FullName
+                                </div>
+                            </div>
+                        }
+                    }
                 </div>
                 <!-- /.box-body -->
             </div>
             <!-- /.box -->
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="box box-success box-solid">
                 <div class="box-header with-border">
                     <h3 class="box-title">Project Information</h3>
@@ -50,171 +110,42 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    PROJECT INFO GOES HERE
+                    <div class="row">
+                        <div class="col-md-3">
+                            TITLE:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.Project.Name
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            DESCRIPTION:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.Project.Description
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            CREATED:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.Project.Created.ToString("MMMM d, yyyy hh:mmtt")
+                        </div>
+                    </div>
                 </div>
                 <!-- /.box-body -->
             </div>
             <!-- /.box -->
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-md-3">
-            <div class="box box-default box-solid">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Attachment(s)</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                    <!-- /.box-tools -->
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    ATTACHMENT BADGE/LABEL
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-        </div>
-
-        <div class="col-md-3">
-            <div class="box box-default box-solid">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Comment(s)</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                    <!-- /.box-tools -->
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    COMMENT BADGE/LABEL
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-        </div>
-
-        <div class="col-md-3">
-            <div class="box box-danger box-solid">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Notification(s)</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                    <!-- /.box-tools -->
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    NOTIFICATION BADGE/LABEL
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-        </div>
-
-        <div class="col-md-3">
-            <div class="box box-default box-solid">
-                <div class="box-header with-border">
-                    <h3 class="box-title">History</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                    <!-- /.box-tools -->
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    HISTORY BADGE/LABEL
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-4">
-            <div class="box box-warning box-solid">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Developer</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                    <!-- /.box-tools -->
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    DEVELOPER PROFILE SECTION
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-        </div>
-
-        <div class="col-md-8">
-            <div class="box box-warning box-solid">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Team</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                    <!-- /.box-tools -->
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    TEAM PROFILE SECTION
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-        </div>
-    </div>
-
+     
     <div class="row">
         <div class="col-md-6">
-            <div class="box box-default box-solid">
+            <div class="box box-primary box-solid">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Comment(s)</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                    <!-- /.box-tools -->
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    A MECHANISM FOR DISPLAYING AND ADDING COMMENTS
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-        </div>
-
-        <div class="col-md-6">
-            <div class="box box-default box-solid">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Attachment(s)</h3>
-
+                    <h3 class="box-title">Ticket Attachment(s)</h3>
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse">
                             <i class="fa fa-minus"></i>
@@ -253,9 +184,10 @@
                             </div>
                         }
                     }
-                    <hr />
+
                     @foreach (var attachment in Model.TicketAttachments)
                     {
+                        <hr class="hr-primary" />
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="row">
@@ -288,6 +220,311 @@
                             </div>
                         </div>
                     }
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+
+        <div class="col-md-6">
+            <div class="box box-warning box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Project Team</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    @{
+                        var count = 0;
+                        foreach (var manager in @ViewBag.TeamPMs)
+                        {
+                            count++;
+                            <div class="row">
+                                @if (count == 1)
+                                {
+                                    <div class="col-md-3">
+                                        MANAGER(S):
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-3">
+                                        &nbsp;
+                                    </div>
+                                }
+                                <div class="col-md-3">
+                                    @manager.FullName
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="avatar"><img src="@manager.AvatarUrl" class="img-responsive" style="max-width:100px" /></div>
+                                </div>
+                                <div class="col-md-3">
+                                    @manager.PhoneNumber
+                                </div>
+                            </div>
+                            <hr class="hr-warning" />
+                        }
+                    }
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            SUBMITTER:
+                        </div>
+                        <div class="col-md-3">
+                            @Model.OwnerUser.FullName
+                        </div>
+                        <div class="col-md-3">
+                            <div class="avatar"><img src="@Model.OwnerUser.AvatarUrl" class="img-responsive" style="max-width:100px" /></div>
+                        </div>
+                        <div class="col-md-3">
+                            @Model.OwnerUser.PhoneNumber
+                        </div>
+                    </div>
+                    <hr class="hr-warning" />
+
+                    @{
+                        count = 0;
+                        foreach (var dev in @ViewBag.TeamDevs)
+                        {
+                            count++;
+                            <div class="row">
+                                @if (count == 1)
+                                {
+                                    <div class="col-md-3">
+                                        DEVELOPER(S):
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-3">
+                                        &nbsp;
+                                    </div>
+                                }
+                                <div class="col-md-3">
+                                    @dev.FullName
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="avatar"><img src="@dev.AvatarUrl" class="img-responsive" style="max-width:100px" /></div>
+                                </div>
+                                <div class="col-md-3">
+                                    @dev.PhoneNumber
+                                </div>
+                            </div>
+                            <br />
+                        }
+                    }
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-primary box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Ticket Comment(s)</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+
+                    @using (Html.BeginForm("Create", "TicketComments", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("TicketId", Model.Id)
+                        <div class="row">
+                            <div class="col-md-12">
+                                @Html.TextArea("CommentBody", new { @class = "form-control cell-fill-textarea", rows = 5, cols = 800, placeholder = "Comment" })
+                            </div>
+                        </div><br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-default">Add Comment</button>
+                            </div>
+                        </div>
+                    }
+
+                    @foreach (var comment in Model.TicketComments)
+                    {
+                        <hr class="hr-primary" />
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-6">@comment.Created.ToString("MMM d, yyyy")</div>
+                                    <div class="col-md-6">@comment.Author.FullName</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @comment.Comment
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+ 
+        <div class="col-md-6">
+            <div class="box box-danger box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Notification(s)</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    NOTIFICATION BADGE/LABEL
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-primary box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Ticket History</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+
+                <div class="box-body" style="background-color: rgb(236,239,244)">
+                    <ul class="timeline">
+                        <!-- timeline time label -->
+                        <li class="time-label">
+                            <span class="bg-red">
+                                @Model.Created.ToString("MMM d, yyyy")
+                            </span>
+                        </li>
+                        <!-- /.timeline-label -->
+                        <!-- timeline item -->
+                        <li>
+                            <!-- timeline icon -->
+                            <i class="fa fa-bug bg-blue"></i>
+                            <div class="timeline-item">
+                                <span class="time"><i class="fa fa-clock-o"></i> @Model.Created.ToString("hh:mmtt")</span>
+
+                                <h3 class="timeline-header">Ticket Created</h3>
+
+                                <div class="timeline-body">
+                                    Ticket "@Model.Title" was created by @Model.OwnerUser.FullName
+                                </div>
+                            </div>
+                        </li>
+
+                       @foreach (var history in ViewBag.History)
+                        {
+                            if (prevHistory.Year.Equals(history.DateChanged.Year) &&
+                                prevHistory.Month.Equals(history.DateChanged.Month) &&
+                                prevHistory.Day.Equals(history.DateChanged.Day))
+                            {
+                            }
+                            else
+                            {
+                                <!-- timeline time label -->
+                                prevHistory = history.DateChanged;
+                                <li class="time-label">
+                                    <span class="bg-red">
+                                        @prevHistory.ToString("MMM d, yyyy")
+                                    </span>
+                                </li>
+                                <!-- /.timeline-label -->
+                            }
+                            <!-- timeline item -->
+                            <li>
+                                <!-- timeline icon -->
+                                <i class="fa fa-ticket bg-blue"></i>
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fa fa-clock-o"></i> @Model.Created.ToString("hh:mmtt")</span>
+
+                                    <h3 class="timeline-header">Ticket Changed</h3>
+
+                                    <div class="timeline-body">
+                                        @history.Property was changed from " @history.OldValue " to " @history.NewValue " by @history.User.FullName
+                                    </div>
+                                </div>
+                            </li>
+                        }
+
+                        <!-- END timeline item -->
+                        <li class="time-label">
+                            <span class="bg-red">
+                                @DateTime.Now.ToString("MMM d, yyyy")
+                            </span>
+                        </li>
+                    </ul>
+
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+
+        <div class="col-md-6">
+            <div class="box box-warning box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Developer</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    DEVELOPER PROFILE SECTION
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-default box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Comment(s)</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    A MECHANISM FOR DISPLAYING AND ADDING COMMENTS
                 </div>
                 <!-- /.box-body -->
             </div>

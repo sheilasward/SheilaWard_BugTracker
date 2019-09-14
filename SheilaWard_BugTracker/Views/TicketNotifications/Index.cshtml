@@ -11,11 +11,11 @@
             <h2>Ticket Notifications</h2>
         </div>
         <div class="col-md-2">
-           @using (Html.BeginForm("DeleteAll", "TicketNotifications"))
+           @using (Html.BeginForm("DeleteRead", "TicketNotifications"))
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <button type="submit" class="btn btn-small btn-danger" style="margin-top:20px;">Delete All Notifications</button>
+                <button type="submit" class="btn btn-small btn-danger" style="margin-top:20px;">Delete Read</button>
             }
         </div>
     </div>

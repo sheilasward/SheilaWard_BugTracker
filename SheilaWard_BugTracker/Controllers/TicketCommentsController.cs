@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using SheilaWard_BugTracker.Models;
 
 namespace SheilaWard_BugTracker.Controllers
@@ -49,13 +50,16 @@ namespace SheilaWard_BugTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TicketId,AuthorId,Comment,Created")] TicketComment ticketComment)
+        public ActionResult Create([Bind(Include = "TicketId")] TicketComment ticketComment, string Comment) 
         {
             if (ModelState.IsValid)
             {
+                ticketComment.Comment = Comment;
+                ticketComment.Created = DateTimeOffset.Now;
+                ticketComment.AuthorId = User.Identity.GetUserId();
                 db.TicketComments.Add(ticketComment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Dashboard", "Tickets", new { id = ticketComment.TicketId });
             }
 
             ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", ticketComment.AuthorId);

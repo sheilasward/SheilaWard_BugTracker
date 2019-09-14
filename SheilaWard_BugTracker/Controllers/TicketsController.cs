@@ -57,6 +57,24 @@ namespace SheilaWard_BugTracker.Controllers
             return View(ticket);
         }
 
+        // GET: Dashboard
+        [Authorize]
+        public ActionResult Dashboard(int id)
+        {
+            var ticket = db.Tickets.Find(id);
+            if (ticket == null)
+            {
+                return HttpNotFound();
+            }
+            var project = ticket.Project;
+            ViewBag.TeamPMs = projHelper.UsersInRoleOnProject(project.Id, SystemRole.ProjectManager).ToList();
+            ViewBag.TeamSubs = projHelper.UsersInRoleOnProject(project.Id, SystemRole.Submitter).ToList();
+            ViewBag.TeamDevs = projHelper.UsersInRoleOnProject(project.Id, SystemRole.Developer).ToList();
+            ViewBag.History = ticket.TicketHistories;
+            return View(ticket);
+
+        }
+
         // GET: Tickets/Create
         [Authorize(Roles = "Submitter")]
         public ActionResult Create()
@@ -95,7 +113,7 @@ namespace SheilaWard_BugTracker.Controllers
 
         // GET: Tickets/Edit/5
         [Authorize(Roles = "Admin, ProjectManager, Submitter, Developer")]
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, string stat)
         {
             if (id == null)
             {
@@ -116,6 +134,7 @@ namespace SheilaWard_BugTracker.Controllers
                 ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
                 ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
                 ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
+                ViewBag.Stats = stat;
                 return View(ticket);
             }
             else
@@ -179,13 +198,14 @@ namespace SheilaWard_BugTracker.Controllers
                 //db.SaveChanges();
 
                 // Now call the NotificationHelper to determine if Notification(s) need to be created
-                notfHelper.ManageNotifications(oldTicket, ticket);
+                notfHelper.ManageNotifications(oldTicket, newTicket);
 
                 // Now call the HistoryHelper to record changes
-                histHelper.RecordHistory(oldTicket, ticket);
+                histHelper.RecordHistory(oldTicket, newTicket);
 
-                // Now return to Ticket Index list
-                return RedirectToAction("Index");
+                // Now return:
+                return RedirectToAction("Index", "Tickets", new { proj = "MyTickets", stat = "InProg" });
+
             }
             ViewBag.AssignedToUserId = new SelectList(projHelper.UsersInRoleOnProject(ticket.ProjectId, SystemRole.Developer), "Id", "FullName", ticket.AssignedToUserId);
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
@@ -220,17 +240,7 @@ namespace SheilaWard_BugTracker.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Dashboard
-        [Authorize]
-        public ActionResult Dashboard(int id)
-        {
-            var ticket = db.Tickets.Find(id);
-            if (ticket == null)
-            {
-                return HttpNotFound();
-            }
-            return View(ticket);
-        }
+       
 
         // GET: AssignToTkt (Assign Developers to Tickets) - Admins can access this for all Developers.
         // PMs can access this for Developers only on the Project Manager's projects.
@@ -295,7 +305,7 @@ namespace SheilaWard_BugTracker.Controllers
                 // Now call the HistoryHelper to record changes
                 histHelper.RecordHistory(oldTicket, newTicket);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Tickets", new { proj = "MyTickets", stat = "InProg" });
             }
 
             var mgrId = User.Identity.GetUserId();

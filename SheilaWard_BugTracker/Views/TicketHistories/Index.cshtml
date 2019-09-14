@@ -14,9 +14,6 @@
     <table class="table searchTbl">
         <thead>
             <tr>
-                @*<th>
-                    @Html.DisplayName("Owner/User")
-                </th>*@
                 <th>
                     @Html.DisplayName("Ticket Title")
                 </th>
@@ -35,17 +32,12 @@
                 <th>
                     @Html.DisplayName("Date Changed")
                 </th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
            @foreach (var item in Model)
             {
                 <tr>
-                    @*<td>
-
-                    @Html.DisplayFor(modelItem => item.Ticket.OwnerUser.FullName)
-                </td>*@
                     <td>
                         @Html.DisplayFor(modelItem => item.Ticket.Title)
                     </td>

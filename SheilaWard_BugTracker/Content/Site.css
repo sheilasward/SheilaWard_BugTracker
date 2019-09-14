@@ -35,3 +35,11 @@ textarea {
     background-color: white;
     color: black;
 }
+
+.hr-warning {
+    border-color: rgb(243,156,17);
+}
+
+.hr-primary {
+    border-color: rgb(60,141,188);
+}

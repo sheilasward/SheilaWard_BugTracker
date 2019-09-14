@@ -4,6 +4,14 @@
     ViewBag.Title = "MyNotifications";
 }
 
+<style>
+    .btn-square {
+        height: 13px;
+        width: 10px;
+        border: 1px solid gray;
+    }
+</style>
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="row">
@@ -108,9 +116,17 @@
                         }
                         else
                         {
-                            @Html.CheckBoxFor(modelItem => item.IsRead)
+                            using (Html.BeginForm("MarkAsRead", "TicketNotifications", new { id = item.Id }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <button type="submit" class="btn-square">
+                                    @*@Html.CheckBoxFor(modelItem => item.IsRead)*@
+                                </button>
+                            }
+                            
                         }
-                         @*@Html.DisplayFor(modelItem => item.IsRead)*@
+                        @*@Html.DisplayFor(modelItem => item.IsRead)*@
                     </td>
                     <td>
                         @if (item.IsRead)
