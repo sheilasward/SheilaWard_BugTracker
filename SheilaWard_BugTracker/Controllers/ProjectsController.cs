@@ -148,6 +148,8 @@ namespace SheilaWard_BugTracker.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.Users = new MultiSelectList(db.Users.ToList(), "Id", "FullNameWithEmail", projHelper.UsersOnProject(project.Id).Select(u => u.Id));
             return View(project);
         }
 
@@ -156,10 +158,19 @@ namespace SheilaWard_BugTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,Created")] Project project)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,Created")] Project project, List<string> users)
         {
             if (ModelState.IsValid)
             {
+                foreach (var user in db.Users)
+                {
+                    projHelper.RemoveUserFromProject(user.Id, project.Id);
+                }
+                // Then add them back to the selected role
+                foreach (var user in users)
+                {
+                    projHelper.AddUserToProject(user, project.Id);
+                }
                 project.Updated = DateTimeOffset.Now;
                 db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();

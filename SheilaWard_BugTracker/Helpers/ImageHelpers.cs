@@ -40,7 +40,7 @@ namespace SheilaWard_BugTracker.Helpers
                 if (file == null)
                     return false;
 
-                if (file.ContentLength > 5 * 1024 * 1024 || file.ContentLength < 1024)
+                if (file.ContentLength > 5 * 1024 * 1024)     // || file.ContentLength < 1024)
                     return false;
 
                 var extValid = false;

@@ -57,7 +57,7 @@
                     </div>
                 </div>
 
-                @if (linkHelper.UserCanEditTicketStatus(Model))
+               @if (linkHelper.UserCanEditTicketStatus(Model))
                 {
                     <div class="form-group">
                         @Html.Label("Ticket Status", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -66,6 +66,20 @@
                             @Html.ValidationMessageFor(model => model.TicketStatusId, "", new { @class = "text-danger" })
                         </div>
                     </div>
+                }
+                else
+                {
+                    if (@Model.AssignedToUserId == ViewBag.CurrentUser)
+                    {
+                      
+                        <div class="form-group">
+                            @Html.Label("Ticket Completed?", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.CheckBox("TktComplete", isChecked: false)
+                            </div>
+                            
+                        </div>
+                    }
                 }
 
                 @if (linkHelper.UserCanEditTicketAssignment(Model))

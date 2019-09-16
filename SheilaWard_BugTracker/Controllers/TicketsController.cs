@@ -71,6 +71,8 @@ namespace SheilaWard_BugTracker.Controllers
             ViewBag.TeamSubs = projHelper.UsersInRoleOnProject(project.Id, SystemRole.Submitter).ToList();
             ViewBag.TeamDevs = projHelper.UsersInRoleOnProject(project.Id, SystemRole.Developer).ToList();
             ViewBag.History = ticket.TicketHistories;
+            ViewBag.CurrentUser = User.Identity.GetUserId();
+            ViewBag.DevProjects = projHelper.ListUserProjects(ticket.AssignedToUserId);
             return View(ticket);
 
         }
@@ -135,6 +137,7 @@ namespace SheilaWard_BugTracker.Controllers
                 ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
                 ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
                 ViewBag.Stats = stat;
+                ViewBag.CurrentUser = User.Identity.GetUserId();
                 return View(ticket);
             }
             else
@@ -178,25 +181,6 @@ namespace SheilaWard_BugTracker.Controllers
 
                 db.SaveChanges();
 
-
-
-                // Now update the ticket  ==> BestEdit
-                //db.Tickets.Attach(ticket);
-                //db.Entry(ticket).Property(x => x.TicketTypeId).IsModified = true;
-                //db.Entry(ticket).Property(x => x.TicketPriorityId).IsModified = true;
-                //db.Entry(ticket).Property(x => x.Title).IsModified = true;
-                //db.Entry(ticket).Property(x => x.Description).IsModified = true;
-                //if (ticket.AssignedToUserId != null)
-                //{
-                //    db.Entry(ticket).Property(x => x.AssignedToUserId).IsModified = true;
-                //}
-                //if (ticket.TicketStatusId != 0)
-                //{
-                //    db.Entry(ticket).Property(x => x.TicketStatusId).IsModified = true;
-                //}
-                //ticket.Updated = DateTimeOffset.Now;
-                //db.SaveChanges();
-
                 // Now call the NotificationHelper to determine if Notification(s) need to be created
                 notfHelper.ManageNotifications(oldTicket, newTicket);
 
@@ -211,6 +195,7 @@ namespace SheilaWard_BugTracker.Controllers
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
             ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
+            ViewBag.CurrentUser = User.Identity.GetUserId();
             return View(ticket);
         }
 

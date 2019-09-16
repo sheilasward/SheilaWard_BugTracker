@@ -585,24 +585,10 @@
             </script>*@
 
         <script>
-            $(document).ready(function () {
-                $('.sidebar-menu').tree()
-
-                $(".searchTbl").DataTable();
-
-                //tinymce.init({
-                //    selector: '#Body'
-                //});
-
-            })
-        </script>
-
-        <script>
             $("ul.sidebar-menu li").click(function () {
-                $("ul.sidebar-menu li").removeClass("active");
-                $(this).addClass("active");
+                $("ul.sidebar-menu li").removeClass("current");
+                $(this).addClass("current");
             })
-
         </script>
 
         @RenderSection("scripts", required: false)

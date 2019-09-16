@@ -1,0 +1,6 @@
+1.  How do I make the icons on the side menu change color when I click one?
+2.  How do I hide the Google API Key?
+3.  When I edit a ticket in Progress, how do I go back to the tickets in Progress?
+4.  Change my _Layout to how it is in github.  Nothing's working on top menu.
+5.  Do Ticket Comments.
+6.  Do Archiving of Projects and Tickets.

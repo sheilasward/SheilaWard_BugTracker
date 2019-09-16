@@ -156,7 +156,6 @@
                     </td>
 
                     <td>
-                        @Html.ActionLink("Details", "Details", new { id = item.Id })<br />
                         @if (linkHelper.UserCanEditTicketPriorityTypeTitleDescription(item))
                         {
                             @Html.ActionLink("Edit", "Edit", new { id = item.Id, stat = stat })<br />
@@ -166,6 +165,10 @@
                                 @Html.ActionLink("Assign", "AssignToTkt", new { id = item.Id, stat = stat })<br />
                             }
                             @Html.ActionLink("Dashboard", "Dashboard", new { id = item.Id })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Details", "Details", new { id = item.Id })<br />
                         }
                     </td>
                 </tr>

@@ -7314,6 +7314,7 @@
     <Content Include="Views\Home\DemoLanding.cshtml" />
     <None Include="Properties\PublishProfiles\SheilaWardBugTracker - Web Deploy.pubxml" />
     <Content Include="Views\Projects\UsersOnMyProjects.cshtml" />
+    <Content Include="Views\Tickets\OldDashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\bower_components\moment\moment.d.ts" />

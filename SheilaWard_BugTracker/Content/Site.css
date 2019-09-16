@@ -36,10 +36,19 @@ textarea {
     color: black;
 }
 
+.bg-dark {
+    background-color: rgb(53,58,64);
+    color: white;
+}
+
 .hr-warning {
     border-color: rgb(243,156,17);
 }
 
 .hr-primary {
     border-color: rgb(60,141,188);
+} 
+
+.hr-success {
+    border-color: rgb(0,166,90);
 }
