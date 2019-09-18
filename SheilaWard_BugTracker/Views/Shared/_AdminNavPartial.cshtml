@@ -9,18 +9,18 @@
        ApplicationDbContext db = new ApplicationDbContext();
     }
 
-    <style>
+    @*<style>
         ul li.current > a > i,
         ul li a:hover > i,
         ul li a:focus > i,
         ul li a:active > i {
             color: red;
         }
-    </style>
+    </style>*@
 
-    <ul class="sidebar-menu" data-widget="tree">
+    <ul id="sidebar-items" class="sidebar-menu" data-widget="tree">
         <li class="header">ADMINISTRATOR NAVIGATION</li>
-        <li>
+        <li class="current">
             <a href="@Url.Action("Dashboard", "Home")">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
             </a>
@@ -106,6 +106,7 @@
 
         <li><a href="@Url.Action("Index", "TicketHistories")"><i class="fa fa-history"></i> Ticket Histories</a></li>
         <li><a href="@Url.Action("Index", "TicketComments")"><i class="fa fa-comment"></i> Ticket Comments</a></li>
+        <li><a href="@Url.Action("Index", "TicketAttachments")"><i class="fa fa-paperclip"></i> Ticket Attachments</a></li>
     </ul>
 
 

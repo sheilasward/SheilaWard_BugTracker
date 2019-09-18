@@ -49,10 +49,11 @@ namespace SheilaWard_BugTracker.Helpers
                     return db.Tickets.Where(t => t.OwnerUserId == userId).ToList();
                 case "ProjectManager":
                     return db.Users.Find(userId).Projects.SelectMany(t => t.Tickets).ToList();
-                default:
+                case "Admin":
                     return db.Tickets.ToList();
+                default:
+                    return db.Tickets.Where(t => t.AssignedToUserId == userId).ToList(); 
             }
-                
         }
 
         public int GetTicketCount(string status)
@@ -69,8 +70,10 @@ namespace SheilaWard_BugTracker.Helpers
                         return db.Tickets.Where(t => t.OwnerUserId == userId).Count();
                     case "ProjectManager":
                         return db.Users.Find(userId).Projects.SelectMany(t => t.Tickets).Count();
-                    default:
+                    case "Admin":
                         return db.Tickets.Count();
+                    default:
+                        return 0;
                 }
             }
             else
@@ -84,11 +87,12 @@ namespace SheilaWard_BugTracker.Helpers
                     case "ProjectManager":
                         var pmTickets = db.Users.Find(userId).Projects.SelectMany(t => t.Tickets);
                         return pmTickets.Where(t => t.TicketStatus.Name == status).Count();
-                    default:
+                    case "Admin":
                         return db.Tickets.Where(t => t.TicketStatus.Name == status).Count();
+                    default:
+                        return 0;
                 }
             }
-            
         }
 
         public bool DevIsOnProject(Ticket ticket)

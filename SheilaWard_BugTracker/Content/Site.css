@@ -52,3 +52,9 @@ textarea {
 .hr-success {
     border-color: rgb(0,166,90);
 }
+
+.login-box,
+.register-box {
+    width: 500px;
+    margin: 7% auto;
+}

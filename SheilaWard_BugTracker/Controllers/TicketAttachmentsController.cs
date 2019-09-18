@@ -41,12 +41,12 @@ namespace SheilaWard_BugTracker.Controllers
         }
 
         // GET: TicketAttachments/Create
-        public ActionResult Create()
-        {
-            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "OwnerUserId");
-            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName");
-            return View();
-        }
+        //public ActionResult Create()
+        //{
+        //    ViewBag.TicketId = new SelectList(db.Tickets, "Id", "OwnerUserId");
+        //    ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName");
+        //    return View();
+        //}
 
         // POST: TicketAttachments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 

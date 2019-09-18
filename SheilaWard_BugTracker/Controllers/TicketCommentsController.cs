@@ -38,12 +38,12 @@ namespace SheilaWard_BugTracker.Controllers
         }
 
         // GET: TicketComments/Create
-        public ActionResult Create()
-        {
-            ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName");
-            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "OwnerUserId");
-            return View();
-        }
+        //public ActionResult Create()
+        //{
+        //    ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName");
+        //    ViewBag.TicketId = new SelectList(db.Tickets, "Id", "OwnerUserId");
+        //    return View();
+        //}
 
         // POST: TicketComments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 

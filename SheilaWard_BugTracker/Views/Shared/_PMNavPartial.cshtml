@@ -20,7 +20,7 @@
 
     <ul class="sidebar-menu" data-widget="tree">
         <li class="header">PROJECT MANAGER NAVIGATION</li>
-        <li>
+        <li class="current">
             <a href="@Url.Action("Dashboard", "Home")">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
             </a>
@@ -32,7 +32,7 @@
         <li><hr /></li>
 
         <li><a href="@Url.Action("Create", "Projects")"><i class="fa fa-book"></i> Create New Project</a></li>
-        <li class="current">
+        <li>
             <a href="@Url.Action("Index", "Projects", new { proj = "MyProjects" })">
                 <i class="fa fa-book"></i>
                 <span>View/Manage Projects</span>

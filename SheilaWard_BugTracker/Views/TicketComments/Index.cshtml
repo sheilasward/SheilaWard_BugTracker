@@ -1,51 +1,54 @@
-﻿@model IEnumerable<SheilaWard_BugTracker.Models.TicketComment>
+﻿@using SheilaWard_BugTracker.Models
+@model IEnumerable<SheilaWard_BugTracker.Models.TicketComment>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h2>List of Ticket Comments</h2>
+    </hr>
+</section>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Author.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Ticket.OwnerUserId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Comment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Created)
-        </th>
-        <th></th>
-    </tr>
+<!-- Main content -->
+<section class="content">
+    <table class="table searchTbl">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayName("Author")
+                </th>
+                <th>
+                    @Html.DisplayName("Ticket Title")
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Comment)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Created)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+           @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Author.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ticket.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comment)
+                    </td>
+                    <td>
+                        @item.Created.ToString("M/d/yyyy hh:mmtt")
+                    </td>
+                </tr>
+            }
+        </tbody>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Author.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ticket.OwnerUserId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Comment)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Created)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
-</table>
+    </table>
+</section>

@@ -38,7 +38,6 @@ namespace SheilaWard_BugTracker.Controllers
 
             var tickets = tktHelper.ListOfUsersTickets();
             return View(tickets.ToList());
-
         }
 
         [Authorize]
@@ -58,7 +57,7 @@ namespace SheilaWard_BugTracker.Controllers
         }
 
         // GET: Dashboard
-        [Authorize]
+        [Authorize(Roles = "Admin, ProjectManager, Submitter, Developer")]
         public ActionResult Dashboard(int id)
         {
             var ticket = db.Tickets.Find(id);

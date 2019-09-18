@@ -11,8 +11,8 @@ namespace SheilaWard_BugTracker.ViewModels
     {
         public string Id { get; set; }
 
-        [Required]
-        [MaxLength(40, ErrorMessage = "First Name cannot be greater than 40 characters")]
+        [Required(ErrorMessage = "First Name is required.")]
+        [StringLength(40, ErrorMessage = "Cannot be longer than 40 characters.")]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 

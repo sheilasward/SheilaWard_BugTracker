@@ -10,12 +10,12 @@
     <title>BugTrakker | Dashboard</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
     <!-- Bootstrap 3.3.7 -->
     <link href="~/Content/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
 
     <!-- Font Awesome -->
     <link href="~/Content/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    @*<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" media="screen" />*@
 
     <!-- Ionicons -->
     <link href="~/Content/bower_components/Ionicons/css/ionicons.min.css" rel="stylesheet" />
@@ -27,12 +27,21 @@
          folder instead of downloading all of them to reduce the load. -->
     <link href="~/Content/dist/css/skins/_all-skins.min.css" rel="stylesheet" />
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="//oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <!-- Morris chart-->
+    <link rel="stylesheet" href="~/Content/bower_components/morris.js/morris.css" />
+
+    <!-- jvectormap -->
+    <link rel="stylesheet" href="~/Content/bower_components/jvectormap/jquery-jvectormap.css">
+
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="~/Content/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/Content/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link rel="stylesheet" href="~/Content/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+
     <!-- Google Font -->
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <link href="~/Content/Site.css" rel="stylesheet" />
@@ -41,7 +50,7 @@
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css" />
 
     <link href="~/Content/jquery.dataTables.css" rel="stylesheet" />
-    
+
     <style>
         ul.sidebar-menu li.current > a > i,
         ul.sidebar-menu li a:hover > i,
@@ -52,10 +61,10 @@
     </style>
 
     <!-- CDN for Morris Charts -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+    @*<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">*@
 
 
- 
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 
@@ -224,20 +233,6 @@
                                     </p>
                                 </li>
                                 <!-- Menu Body -->
-                                <li class="user-body">
-                                    <div class="row">
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Followers</a>
-                                        </div>
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Sales</a>
-                                        </div>
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Friends</a>
-                                        </div>
-                                    </div>
-                                    <!-- /.row -->
-                                </li>
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
@@ -525,12 +520,42 @@
         <!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
         <div class="control-sidebar-bg"></div>
 
+        <!-- ChartJS -->
+        <script src="~/Scripts/Chart.bundle.js"></script>
+
         <!-- jQuery 3 -->
         <script src="~/Content/bower_components/jquery/dist/jquery.min.js"></script>
 
+        <!-- jQuery UI 1.11.4 -->
+        <script src="~/Content/bower_components/jquery-ui/jquery-ui.min.js"></script>
+
+        <script>
+            $.widget.bridge('uibutton', $.ui.button);
+        </script>
+
         <!-- Bootstrap 3.3.7 -->
         <script src="~/Content/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-        @*<script src="~/Content/bower_components/bootstrap/dist/js/bootstrap.js"></script>*@
+
+        <!-- Morris.js charts -->
+        <script src="~/Content/bower_components/raphael/raphael.min.js"></script>
+        <script src="~/Content/bower_components/morris.js/morris.min.js"></script>
+
+        <!-- Sparkline -->
+        <script src="~/Content/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+
+        <!-- jvectormap -->
+        <script src="~/Content/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+        <script src="~/Content/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+
+        <!-- daterangepicker -->
+        <script src="~/Content/bower_components/moment/min/moment.min.js"></script>
+        <script src="~/Content/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+        <!-- datepicker -->
+        <script src="~/Content/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+        <!-- Bootstrap WYSIHTML5 -->
+        <script src="~/Content/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 
         <!-- SlimScroll -->
         <script src="~/Content/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
@@ -544,53 +569,88 @@
         <!-- AdminLTE for demo purposes -->
         <script src="~/Content/dist/js/demo.js"></script>
 
+        <!-- Sweet Alert -->
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-        <!-- Optional: include a polyfill for ES6 Promises for IE11 and Android browser -->
-        @*<script src="//cdn.jsdelivr.net/npm/promise-polyfill"></script>*@
 
         <!-- Datatable files from Sarvesh -->
         @*<script src="~/Scripts/jquery-datatable.js"></script>
-            <script src="~/Scripts/dataTables.bootstrap.js"></script>
-            <script src="~/Scripts/dataTables.buttons.min.js"></script>
-            <script src="~/Scripts/buttons.flash.min.js"></script>
-            <script src="~/Scripts/jszip.min.js"></script>
-            <script src="~/Scripts/pdfmake.min.js"></script>
-            <script src="~/Scripts/vfs_fonts.js"></script>
-            <script src="~/Scripts/buttons.html5.min.js"></script>
-            <script src="~/Scripts/buttons.print.min.js"></script>
-            <script src="~/Scripts/jquery.dataTables.min.js"></script>*@
+        <script src="~/Scripts/dataTables.bootstrap.js"></script>
+        <script src="~/Scripts/dataTables.buttons.min.js"></script>
+        <script src="~/Scripts/buttons.flash.min.js"></script>
+        <script src="~/Scripts/jszip.min.js"></script>
+        <script src="~/Scripts/pdfmake.min.js"></script>
+        <script src="~/Scripts/vfs_fonts.js"></script>
+        <script src="~/Scripts/buttons.html5.min.js"></script>
+        <script src="~/Scripts/buttons.print.min.js"></script>
+        <script src="~/Scripts/jquery.dataTables.min.js"></script>*@
 
-        <!-- CDN for Datatables -->
+        <!-- Datatables -->
         <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
         <script>
             $(".searchTbl").DataTable();
         </script>
 
         <!-- Morris Charts -->
-        <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+        @*<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>*@
 
         <!-- ChartJS-->
         @*<script src="~/Content/bower_components/chart.js/Chart.js"></script>*@
         <script src="//cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
         @*<script src="~/Scripts/tinymce/tinymce.min.js"></script>
-            <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>*@
+        <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>*@
         @*<script type="text/javascript">
-                $(function () {
-                    tinymce.init({
-                        selector: '#Body'
+            $(function () {
+                tinymce.init({
+                    selector: '#Body'
+                });
+            });
+        </script>*@
+
+        @*<script>
+            $(function () {
+                $("aside.main-sidebar > section > ul > li").click(function () {
+                    var clickedvar = $(this);
+                    var items = $("aside.main-sidebar > section > ul > li");
+                    items.each(function () {
+                        if ($(this) == clickedvar) {
+                            $(this).addClass("current");
+                        } else {
+                            $(this).removeClass("current");
+                        }
                     });
                 });
-            </script>*@
+            });
+        </script>*@
 
-        <script>
-            $("ul.sidebar-menu li").click(function () {
-                $("ul.sidebar-menu li").removeClass("current");
+
+        @*$(".sidebar-menu li").click(function () {
+                $(".sidebar-menu li").each(function () {
+                    $(".sidebar-menu li").removeClass("current");
+                });
                 $(this).addClass("current");
             })
+        </script>*@
+
+        <script>
+            $(function () {
+                $("aside.main-sidebar > section > ul > li > a").each(function () {
+                    var var1 = $(this).attr("href");
+                    var var2 = window.location.pathname;
+                    var thisvar = $(this);
+                    if ($(this).attr("href") == window.location.pathname) {
+                        $(this).closest("li").addClass("current");
+                    }
+                    else {
+                        $(this).closest("li").removeClass("current");
+                    }
+
+                });
+            });
         </script>
 
+ 
         @RenderSection("scripts", required: false)
     </div>
 </body>

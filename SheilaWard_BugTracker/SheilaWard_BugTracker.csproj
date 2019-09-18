@@ -6702,6 +6702,7 @@
     <Content Include="Images\zip.png" />
     <Content Include="Scripts\adminlte.min.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Chart.bundle.js" />
     <Content Include="Scripts\demo.js" />
     <Content Include="Scripts\fastclick.js" />
     <Content Include="Scripts\icheck.min.js" />

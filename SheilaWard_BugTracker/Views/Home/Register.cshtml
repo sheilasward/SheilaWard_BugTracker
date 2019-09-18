@@ -52,32 +52,32 @@
                 @Html.AntiForgeryToken()
 
                 <div class="form-group has-feedback">
-                    <input type="text" name="FirstName" class="form-control" placeholder="First Name">
+                    <input type="text" maxlength="40" required name="FirstName" class="form-control" placeholder="First Name">
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                 </div>
 
                 <div class="form-group has-feedback">
-                    <input type="text" name="LastName" class="form-control" placeholder="Last Name">
+                    <input type="text" maxlength="40" required name="LastName" class="form-control" placeholder="Last Name">
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                 </div>
 
                 <div class="form-group has-feedback">
-                    <input type="text" name="DisplayName" class="form-control" placeholder="Display Name">
+                    <input type="text" maxlength="25" name="DisplayName" class="form-control" placeholder="Display Name">
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                 </div>
 
                 <div class="form-group has-feedback">
-                    <input type="email" name="Email" class="form-control" placeholder="Email">
+                    <input type="email" maxlength="100" required name="Email" class="form-control" placeholder="Email">
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                 </div>
 
                 <div class="form-group has-feedback">
-                    <input type="password" name="Password" class="form-control" placeholder="Password">
+                    <input type="password" maxlength="100" required name="Password" class="form-control" placeholder="Password">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
 
                 <div class="form-group has-feedback">
-                    <input type="password" name="ConfirmPassword" class="form-control" placeholder="Confirm password">
+                    <input type="password" maxlength="100" required name="ConfirmPassword" class="form-control" placeholder="Confirm password">
                     <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
                 </div>
 
@@ -99,14 +99,20 @@
 
             <div class="social-auth-links text-center">
                 <p>- OR -</p>
-                <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
-                    <i class="fa fa-facebook"></i> Sign up using
-                    Facebook
-                </a>
-                <a href="#" class="btn btn-block btn-social btn-google btn-flat">
-                    <i class="fa fa-google-plus"></i> Sign up using
-                    Google+
-                </a>
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
+                            <i class="fa fa-facebook"></i> Sign up using
+                            Facebook
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="#" class="btn btn-block btn-social btn-google btn-flat">
+                            <i class="fa fa-google-plus"></i> Sign up using
+                            Google+
+                        </a>
+                    </div>
+                </div>
             </div>
             <!-- /.social-auth-links -->
 
