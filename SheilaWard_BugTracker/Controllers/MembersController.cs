@@ -43,30 +43,38 @@ namespace SheilaWard_BugTracker.Controllers
 
         public ActionResult EditProfile(UserProfileViewModel member)
         {
-            var user = db.Users.Find(member.Id);
-            user.FirstName = member.FirstName;
-            user.LastName = member.LastName;
-            user.DisplayName = member.DisplayName;
-            user.Email = member.Email;
-            user.UserName = member.Email;
-            user.PhoneNumber = member.PhoneNumber;
-
-            if (ImageHelpers.IsWebFriendlyImage(member.Avatar))
+            if (ModelState.IsValid)
             {
-                var fileName = Path.GetFileName(member.Avatar.FileName);
-                member.Avatar.SaveAs(Path.Combine(Server.MapPath("~/Avatars/"), fileName));
-                user.AvatarUrl = "/Avatars/" + fileName;
-            }
+                var user = db.Users.Find(member.Id);
+                user.FirstName = member.FirstName;
+                user.LastName = member.LastName;
+                user.DisplayName = member.DisplayName;
+                user.Email = member.Email;
+                user.UserName = member.Email;
+                user.PhoneNumber = member.PhoneNumber;
 
-            db.SaveChanges();
-            if (member.Id == User.Identity.GetUserId())
-            {
-                return RedirectToAction("Dashboard", "Home");
+                if (ImageHelpers.IsWebFriendlyImage(member.Avatar))
+                {
+                    var fileName = Path.GetFileName(member.Avatar.FileName);
+                    member.Avatar.SaveAs(Path.Combine(Server.MapPath("~/Avatars/"), fileName));
+                    user.AvatarUrl = "/Avatars/" + fileName;
+                }
+
+                db.SaveChanges();
+                if (member.Id == User.Identity.GetUserId())
+                {
+                    return RedirectToAction("Dashboard", "Home");
+                }
+                else
+                {
+                    return RedirectToAction("UserIndex", "Admin");
+                }
             }
             else
             {
-                return RedirectToAction("UserIndex", "Admin");
+                return View(member);
             }
+            
             
         }
     }

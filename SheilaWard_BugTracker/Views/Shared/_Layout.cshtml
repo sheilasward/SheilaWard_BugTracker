@@ -46,8 +46,10 @@
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <link href="~/Content/Site.css" rel="stylesheet" />
 
-    <!-- CDN for datatables -->
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css" />
+     <!-- JQuery DataTable Css -->
+    <link href="~/Scripts/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="~/Content/style.css" rel="stylesheet" />
+    @*<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css" />*@
 
     <link href="~/Content/jquery.dataTables.css" rel="stylesheet" />
 
@@ -572,23 +574,34 @@
         <!-- Sweet Alert -->
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
-        <!-- Datatable files from Sarvesh -->
-        @*<script src="~/Scripts/jquery-datatable.js"></script>
-        <script src="~/Scripts/dataTables.bootstrap.js"></script>
-        <script src="~/Scripts/dataTables.buttons.min.js"></script>
-        <script src="~/Scripts/buttons.flash.min.js"></script>
-        <script src="~/Scripts/jszip.min.js"></script>
-        <script src="~/Scripts/pdfmake.min.js"></script>
-        <script src="~/Scripts/vfs_fonts.js"></script>
-        <script src="~/Scripts/buttons.html5.min.js"></script>
-        <script src="~/Scripts/buttons.print.min.js"></script>
-        <script src="~/Scripts/jquery.dataTables.min.js"></script>*@
-
-        <!-- Datatables -->
-        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+        <!-- Jquery DataTable Plugin Js -->
+        <script src="~/Scripts/jquery-datatable/jquery.dataTables.js"></script>
+        <script src="~/Scripts/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+        <script src="~/Scripts/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
+        <script src="~/Scripts/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
+        <script src="~/Scripts/jquery-datatable/extensions/export/jszip.min.js"></script>
+        <script src="~/Scripts/jquery-datatable/extensions/export/pdfmake.min.js"></script>
+        <script src="~/Scripts/jquery-datatable/extensions/export/vfs_fonts.js"></script>
+        <script src="~/Scripts/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
+        <script src="~/Scripts/jquery-datatable/extensions/export/buttons.print.min.js"></script>
+        <!-- Display Export Buttons -->
         <script>
-            $(".searchTbl").DataTable();
+            $(document).ready(function () {
+                $('#js-exportable').DataTable({
+                    dom: 'Bfrtip',
+                    reponsive: true,
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'csvHtml5',
+                        'pdfHtml5'
+                    ]
+                });
+            });
         </script>
+ 
+        <!-- Datatables -->
+        @*<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>*@
 
         <!-- Morris Charts -->
         @*<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
@@ -596,7 +609,8 @@
 
         <!-- ChartJS-->
         @*<script src="~/Content/bower_components/chart.js/Chart.js"></script>*@
-        <script src="//cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+        @*<script src="//cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>*@
+        <script src="~/Scripts/Chart.bundle.js"></script>
 
         @*<script src="~/Scripts/tinymce/tinymce.min.js"></script>
         <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>*@
@@ -650,7 +664,7 @@
             });
         </script>
 
- 
+
         @RenderSection("scripts", required: false)
     </div>
 </body>

@@ -6684,6 +6684,7 @@
     <Content Include="Content\plugins\timepicker\bootstrap-timepicker.js" />
     <Content Include="Content\plugins\timepicker\bootstrap-timepicker.min.css" />
     <Content Include="Content\plugins\timepicker\bootstrap-timepicker.min.js" />
+    <Content Include="Content\style.css" />
     <Content Include="Content\_all-skins.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -6703,9 +6704,28 @@
     <Content Include="Scripts\adminlte.min.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Chart.bundle.js" />
+    <Content Include="Scripts\dataTables.bootstrap.js" />
     <Content Include="Scripts\demo.js" />
     <Content Include="Scripts\fastclick.js" />
     <Content Include="Scripts\icheck.min.js" />
+    <Content Include="Scripts\jquery-datatable\extensions\export\buttons.flash.min.js" />
+    <Content Include="Scripts\jquery-datatable\extensions\export\buttons.html5.min.js" />
+    <Content Include="Scripts\jquery-datatable\extensions\export\buttons.print.min.js" />
+    <Content Include="Scripts\jquery-datatable\extensions\export\dataTables.buttons.min.js" />
+    <Content Include="Scripts\jquery-datatable\extensions\export\jszip.min.js" />
+    <Content Include="Scripts\jquery-datatable\extensions\export\pdfmake.min.js" />
+    <Content Include="Scripts\jquery-datatable\extensions\export\vfs_fonts.js" />
+    <Content Include="Scripts\jquery-datatable\jquery.dataTables.js" />
+    <Content Include="Scripts\jquery-datatable\skin\bootstrap\css\dataTables.bootstrap.css" />
+    <Content Include="Scripts\jquery-datatable\skin\bootstrap\css\dataTables.bootstrap.min.css" />
+    <Content Include="Scripts\jquery-datatable\skin\bootstrap\images\favicon.ico" />
+    <Content Include="Scripts\jquery-datatable\skin\bootstrap\images\sort_asc.png" />
+    <Content Include="Scripts\jquery-datatable\skin\bootstrap\images\sort_asc_disabled.png" />
+    <Content Include="Scripts\jquery-datatable\skin\bootstrap\images\sort_both.png" />
+    <Content Include="Scripts\jquery-datatable\skin\bootstrap\images\sort_desc.png" />
+    <Content Include="Scripts\jquery-datatable\skin\bootstrap\images\sort_desc_disabled.png" />
+    <Content Include="Scripts\jquery-datatable\skin\bootstrap\js\dataTables.bootstrap.js" />
+    <Content Include="Scripts\jquery-datatable\skin\bootstrap\js\dataTables.bootstrap.min.js" />
     <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\jquery.slimscroll.min.js" />
     <Content Include="Scripts\site.js" />
@@ -7316,6 +7336,7 @@
     <None Include="Properties\PublishProfiles\SheilaWardBugTracker - Web Deploy.pubxml" />
     <Content Include="Views\Projects\UsersOnMyProjects.cshtml" />
     <Content Include="Views\Tickets\OldDashboard.cshtml" />
+    <Content Include="Scripts\jquery-datatable\skin\bootstrap\images\Sorting icons.psd" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\bower_components\moment\moment.d.ts" />
