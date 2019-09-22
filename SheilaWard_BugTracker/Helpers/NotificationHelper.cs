@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using SheilaWard_BugTracker.Enumerations;
 using SheilaWard_BugTracker.Models;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace SheilaWard_BugTracker.Helpers
 {
     public class NotificationHelper : CommonHelper
     {
+        private ProjectsHelper projHelper = new ProjectsHelper();
         public void ManageNotifications(Ticket oldTicket, Ticket newTicket)
         {
             CreateAssignmentNotification(oldTicket, newTicket);
@@ -44,7 +46,7 @@ namespace SheilaWard_BugTracker.Helpers
             var notification = new TicketNotification
             {
                 Created = DateTime.Now,
-                Subject = $"You were assigned to Ticket Id {newTicket.Id} on {DateTime.Now.ToString("M/d/yyyy mm:hhtt")}",
+                Subject = $"You were assigned to Ticket '{newTicket.Title}' on {DateTime.Now.ToString("M/d/yyyy mm:hhtt")}",
                 IsRead = false,
                 RecipientId = newTicket.AssignedToUserId,
                 SenderId = senderId,
@@ -60,7 +62,7 @@ namespace SheilaWard_BugTracker.Helpers
             var notification = new TicketNotification
             {
                 Created = DateTime.Now,
-                Subject = $"You were unassigned from Ticket Id {newTicket.Id} on {DateTime.Now.ToString("M/d/yyyy mm:hhtt")}",
+                Subject = $"You were unassigned from Ticket '{newTicket.Title}' on {DateTime.Now.ToString("M/d/yyyy mm:hhtt")}",
                 IsRead = false,
                 RecipientId = oldTicket.AssignedToUserId,
                 SenderId = HttpContext.Current.User.Identity.GetUserId(),
@@ -91,7 +93,7 @@ namespace SheilaWard_BugTracker.Helpers
             if (!string.IsNullOrEmpty(messageBody.ToString()))
             {
                 var message = new StringBuilder();
-                message.AppendLine($"Changes were made to Ticket #{newTicket.Id} on {newTicket.Updated.GetValueOrDefault().ToString("MMM d, yyyy")}");
+                message.AppendLine($"Changes were made to '{newTicket.Title}' on {newTicket.Updated.GetValueOrDefault().ToString("MMM d, yyyy")}");
                 message.AppendLine(messageBody.ToString());
                 var senderId = HttpContext.Current.User.Identity.GetUserId();
 
@@ -99,8 +101,8 @@ namespace SheilaWard_BugTracker.Helpers
                 {
                     TicketId = newTicket.Id,
                     Created = DateTime.Now,
-                    Subject = $"Ticket #{newTicket.Id} has changed",
-                    RecipientId = oldTicket.AssignedToUserId,
+                    Subject = $"Ticket with title '{newTicket.Title}' has changed",
+                    RecipientId = newTicket.AssignedToUserId,
                     SenderId = senderId,
                     NotificationBody = message.ToString(),
                     IsRead = false
@@ -109,6 +111,35 @@ namespace SheilaWard_BugTracker.Helpers
                 db.TicketNotifications.Add(notification);
                 db.SaveChanges();
             }
+        }
+
+        public void NewTicketNotification(Ticket ticket)
+
+        {
+            List<ApplicationUser> recipients = new List<ApplicationUser>();
+
+            recipients = projHelper.UsersInRoleOnProject(ticket.ProjectId, SystemRole.ProjectManager).ToList();
+            foreach (var recipient in recipients)
+            {
+                GeneratePMNotification(recipient, ticket);
+            }
+        }
+
+        private void GeneratePMNotification(ApplicationUser recipient, Ticket ticket)
+        {
+            var notification = new TicketNotification
+            {
+                Created = DateTime.Now,
+                Subject = $"A new Ticket '{ticket.Title}' needs assignment",
+                IsRead = false,
+                RecipientId = recipient.Id,
+                SenderId = HttpContext.Current.User.Identity.GetUserId(),
+                NotificationBody = $"Please acknowledge that you have read this notification by marking it as 'READ'.",
+                TicketId = ticket.Id
+            };
+
+            db.TicketNotifications.Add(notification);
+            db.SaveChanges();
         }
 
         public int GetNewUserNotificationCount()

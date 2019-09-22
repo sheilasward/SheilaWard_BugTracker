@@ -62,6 +62,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Created)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Updated)
+                </th>
                 <th></th>
             </tr>
         </thead>
@@ -77,7 +80,13 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Created)
+                    @item.Created.ToString("MM/dd/yyyy hh:mmtt")
+                </td>
+                <td>
+                    @if (item.Updated.GetValueOrDefault().ToString("MM/dd/yyyy hh:mmtt") != "01/01/0001 12:00AM")
+                    {
+                        @item.Updated.GetValueOrDefault().ToString("MM/dd/yyyy hh:mmtt")
+                    }
                 </td>
                 <td>
                     @Html.ActionLink("Details", "Details", new { id = item.Id })<br />
@@ -88,8 +97,8 @@
                     }
                     else if (projHelper.IsUserOnProject(ViewBag.UserId, item.Id) && User.IsInRole("ProjectManager"))
                     {
-                         @Html.ActionLink("Edit", "Edit", new { id = item.Id })<br />
-                         @Html.ActionLink("Archive", "Archive", new { id = item.Id })
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id })<br />
+                        @Html.ActionLink("Archive", "Archive", new { id = item.Id })
                     }
                 </td>
             </tr>

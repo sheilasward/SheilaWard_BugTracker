@@ -16,7 +16,16 @@
         ul li a:active > i {
             color: red;
         }
+
+       
     </style>*@
+
+    <style>
+         .theBug {
+
+            color: red;
+        }
+    </style>
 
     <ul id="sidebar-items" class="sidebar-menu" data-widget="tree">
         <li class="header">ADMINISTRATOR NAVIGATION</li>
@@ -45,8 +54,10 @@
         <li><hr /></li>
 
         <li>
-            <i class="fa fa-bug"></i>
-            <span> View/Manage Tickets</span>
+            <a href="#">
+                <i class="fa fa-bug"></i>
+                <span> View/Manage Tickets</span>
+            </a>
         </li>
 
         <li class="">
@@ -78,9 +89,10 @@
                 <i class="fa fa-circle-o"></i>
                 <span>Not Active</span>
                 <span class="pull-right-container">
-                    <small data-toggle="tooltip" title="Inactive" class="label pull-right bg-purple">@ticketHelper.GetTicketCount("Inactive")</small>
-                    <small data-toggle="tooltip" title="Completed" class="label pull-right bg-red">@ticketHelper.GetTicketCount("Completed")</small>
-                    <small data-toggle="tooltip" title="Archived" class="label pull-right bg-blue">@ticketHelper.GetTicketCount("Archived")</small>
+                    <small data-toggle="tooltip" title="Inactive" class="label pull-right bg-red">@ticketHelper.GetTicketCount("Inactive")</small>
+                    <small data-toggle="tooltip" title="Withdrawn" class="label pull-right bg-blue">@ticketHelper.GetTicketCount("Withdrawn")</small><br />
+                    <small data-toggle="tooltip" title="Completed" class="label pull-right bg-aqua">@ticketHelper.GetTicketCount("Completed")</small>
+                    <small data-toggle="tooltip" title="Archived" class="label pull-right bg-yellow">@ticketHelper.GetTicketCount("Archived")</small>
                 </span>
             </a>
         </li>
@@ -92,7 +104,6 @@
                 <i class="fa fa-bell-o"></i>
                 <span>My Notifications</span>
                 <span class="pull-right-container">
-                    <small data-toggle="tooltip" title="All Notifications" class="label pull-right bg-white">@notfHelper.GetAllUserNotificationCount()</small>
                     <small data-toggle="tooltip" title="Read Notifications" class="label pull-right bg-green">@notfHelper.GetReadUserNotificationCount()</small>
                     <small data-toggle="tooltip" title="Unread Notifications" class="label pull-right bg-yellow">@notfHelper.GetNewUserNotificationCount()</small>
                 </span>
@@ -105,6 +116,8 @@
         <li><a href="@Url.Action("Index", "TicketHistories")"><i class="fa fa-history"></i> Ticket Histories</a></li>
         <li><a href="@Url.Action("Index", "TicketComments")"><i class="fa fa-comment"></i> Ticket Comments</a></li>
         <li><a href="@Url.Action("Index", "TicketAttachments")"><i class="fa fa-paperclip"></i> Ticket Attachments</a></li>
+
     </ul>
+    
 
 

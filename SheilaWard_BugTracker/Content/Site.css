@@ -41,6 +41,16 @@ textarea {
     color: white;
 }
 
+.bg-aqua {
+    background-color: rgb(0,192,239);
+    color: white;
+}
+
+.bg-hot-pink {
+    background-color: rgb(255,4,149);
+    color: white;
+}
+
 .hr-warning {
     border-color: rgb(243,156,17);
 }

@@ -218,11 +218,23 @@
     <Compile Include="ViewModels\UserProfileViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Avatars\AngieSmith.jpg" />
+    <Content Include="Avatars\AresEller.jpg" />
+    <Content Include="Avatars\bitmoji160747120.png" />
+    <Content Include="Avatars\Cindy.jpg" />
+    <Content Include="Avatars\cooley.jpg" />
+    <Content Include="Avatars\DaveRose.jpg" />
     <Content Include="Avatars\default-user-icon-8.jpg" />
     <Content Include="Avatars\kartunix%281%29.png" />
     <Content Include="Avatars\kartunix%282%29.png" />
     <Content Include="Avatars\kartunix%283%29.png" />
     <Content Include="Avatars\kartunix%284%29.png" />
+    <Content Include="Avatars\LeeConnelly.jpg" />
+    <Content Include="Avatars\sarvesh.jpg" />
+    <Content Include="Avatars\SCreech.jpg" />
+    <Content Include="Avatars\sheila.jpg" />
+    <Content Include="Avatars\teresa.jpg" />
+    <Content Include="Avatars\TShorter.jpg" />
     <Content Include="Content\dist\css\AdminLTE.min.css" />
     <Content Include="Content\blue.css" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -6765,7 +6777,7 @@
     <Content Include="Views\Projects\Edit.cshtml" />
     <Content Include="Views\Projects\Index.cshtml" />
     <Content Include="Views\Tickets\Create.cshtml" />
-    <Content Include="Views\Tickets\Delete.cshtml" />
+    <Content Include="Views\Tickets\Archive.cshtml" />
     <Content Include="Views\Tickets\Details.cshtml" />
     <Content Include="Views\Tickets\Edit.cshtml" />
     <Content Include="Views\Tickets\Index.cshtml" />
@@ -7337,6 +7349,8 @@
     <Content Include="Views\Projects\UsersOnMyProjects.cshtml" />
     <Content Include="Views\Tickets\OldDashboard.cshtml" />
     <Content Include="Scripts\jquery-datatable\skin\bootstrap\images\Sorting icons.psd" />
+    <Content Include="Views\Tickets\Chart.cshtml" />
+    <Content Include="Views\Shared\_PMCharts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\bower_components\moment\moment.d.ts" />

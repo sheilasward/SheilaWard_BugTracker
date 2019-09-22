@@ -35,11 +35,19 @@ namespace SheilaWard_BugTracker.Models
         [Display(Name = "Description")]
         public string Description { get; set; }        // Description of the ticket
 
+        [Required]
+        [Range(0, 100, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
+        [Display(Name = "% Complete")]
+        public int PercentComplete { get; set; }       // Percent Complete
+
         [Display(Name = "Created")]
         public DateTimeOffset Created { get; set; }    // When the ticket was added into the system
 
         [Display(Name = "Updated")]
         public DateTimeOffset? Updated { get; set; }   // Last time the ticket was updated in the system
+
+        [Display(Name = "Archived")]
+        public bool Archived { get; set; }
 
         // nav properties - Parent
         public virtual Project Project { get; set; }

@@ -94,15 +94,20 @@ namespace SheilaWard_BugTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         // Bind Include gets info from the form
-        public ActionResult Create([Bind(Include = "ProjectId,TicketTypeId,TicketPriorityId,Title,Description")] Ticket ticket)
+        public ActionResult Create([Bind(Include = "ProjectId,TicketTypeId,TicketPriorityId,Title,Description,PercentComplete,Archived")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
                 ticket.Created = DateTimeOffset.Now;
                 ticket.OwnerUserId = User.Identity.GetUserId();
+                ticket.PercentComplete = 0;
                 ticket.TicketStatusId = db.TicketStatuses.AsNoTracking().FirstOrDefault(t => t.Name == "New/Unassigned").Id;
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
+
+                // Now call the NotificationHelper to send a notification to every manager on the project of the new ticket.
+                notfHelper.NewTicketNotification(ticket);
+
                 return RedirectToAction("Index");
             }
 
@@ -151,7 +156,7 @@ namespace SheilaWard_BugTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,TicketStatusId,TicketTypeId,TicketPriorityId,AssignedToUserId,Title,Description")] Ticket ticket)
+        public ActionResult Edit([Bind(Include = "Id,TicketStatusId,TicketTypeId,TicketPriorityId,AssignedToUserId,Title,Description,PercentComplete,Archived")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
@@ -159,13 +164,23 @@ namespace SheilaWard_BugTracker.Controllers
                 var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
 
                 var newTicket = db.Tickets.Find(ticket.Id);
+                newTicket.AssignedToUserId = ticket.AssignedToUserId;
                 newTicket.TicketStatusId = ticket.TicketStatusId;
                 newTicket.TicketTypeId = ticket.TicketTypeId;
                 newTicket.TicketPriorityId = ticket.TicketPriorityId;
                 newTicket.AssignedToUserId = ticket.AssignedToUserId;
                 newTicket.Title = ticket.Title;
                 newTicket.Description = ticket.Description;
+                newTicket.PercentComplete = ticket.PercentComplete;
+                if (newTicket.PercentComplete == 100)
+                {
+                    newTicket.TicketStatusId = db.TicketStatuses.AsNoTracking().FirstOrDefault(t => t.Name == "Completed").Id;
+                }
                 newTicket.Updated = DateTimeOffset.Now;
+                if (newTicket.TicketStatusId == db.TicketStatuses.AsNoTracking().FirstOrDefault(t => t.Name == "Withdrawn").Id)
+                {
+                    newTicket.AssignedToUserId = null;
+                }
 
                 // Boolean Variables to automatically set status
                 var noChange = (oldTicket.AssignedToUserId == newTicket.AssignedToUserId);
@@ -198,8 +213,10 @@ namespace SheilaWard_BugTracker.Controllers
             return View(ticket);
         }
 
-        // GET: Tickets/Delete/5
-        public ActionResult Delete(int? id)
+
+        [Authorize(Roles = "Admin,ProjectManager")]
+        // GET: Tickets/Archive/5
+        public ActionResult Archive(int? id)
         {
             if (id == null)
             {
@@ -213,15 +230,17 @@ namespace SheilaWard_BugTracker.Controllers
             return View(ticket);
         }
 
-        // POST: Tickets/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Tickets/Archive/5
+        [HttpPost, ActionName("Archive")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult ArchiveConfirmed([Bind(Include = "Id,TicketTypeId,TicketPriorityId,TicketStatusId,AssignedToUserId,Title,Description,PercentComplete,Archived")] int id)
         {
             Ticket ticket = db.Tickets.Find(id);
-            db.Tickets.Remove(ticket);
+            ticket.Archived = true;
+            var ArchivedStatusId = db.TicketStatuses.FirstOrDefault(ts => ts.Name == "Archived").Id;
+            ticket.TicketStatusId = ArchivedStatusId;
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Tickets", new { proj = "MyTickets", stat = "Completed" }); ;
         }
 
        

@@ -67,7 +67,7 @@
         </div>
     </p>
 
-    <table class="table searchTbl">
+    <table id="js-exportable" class="table table-bordered table-striped table-hover dataTable js-exportable">
         <thead>
             <tr>
                 <th>
@@ -89,6 +89,9 @@
                     @Html.DisplayName("Type")
                 </th>
                 <th>
+                    @Html.DisplayName("% Complete")
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.Title)
                 </th>
                 <th>
@@ -104,11 +107,11 @@
             </tr>
         </thead>
         <tbody>
-           @foreach (var item in Model)
-           {
+            @foreach (var item in Model)
+            {
                 if (ViewBag.Stats == "InProg")
                 {
-                    if (item.TicketStatus.Name == "Completed" || item.TicketStatus.Name == "Archived" || item.TicketStatus.Name == "Inactive")
+                    if (!(item.TicketStatus.Name == "New/Unassigned" || item.TicketStatus.Name == "Active/Assigned"))
                     {
                         continue;  // Skip the display and read the next item
                     }
@@ -116,62 +119,70 @@
                 if (ViewBag.Stats == "Completed")
                 {
                     if (item.TicketStatus.Name == "New/Unassigned" || item.TicketStatus.Name == "Active/Assigned")
-                   {
-                       continue;  // Skip the display and read the next item
-                   }
+                    {
+                        continue;  // Skip the display and read the next item
+                    }
                 }
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AssignedToUser.FullName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.OwnerUser.FullName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Project.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TicketPriority.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TicketStatus.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TicketType.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @item.Created.ToString("MM/dd/yyyy hh:mmtt")
-                    </td>
-                    <td>
-                        @if (item.Updated.GetValueOrDefault().ToString("MM/dd/yyyy hh:mmtt") != "01/01/0001 12:00AM")
-                        {
-                            @item.Updated.GetValueOrDefault().ToString("MM/dd/yyyy hh:mmtt")
-                        }
-                    </td>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AssignedToUser.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OwnerUser.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Project.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketStatus.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PercentComplete)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @item.Created.ToString("MM/dd/yyyy hh:mmtt")
+                </td>
+                <td>
+                    @if (item.Updated.GetValueOrDefault().ToString("MM/dd/yyyy hh:mmtt") != "01/01/0001 12:00AM")
+                    {
+                        @item.Updated.GetValueOrDefault().ToString("MM/dd/yyyy hh:mmtt")
+                    }
+                </td>
 
-                    <td>
-                        @if (linkHelper.UserCanEditTicketPriorityTypeTitleDescription(item))
-                        {
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id, stat = stat })<br />
+                <td>
+                    @if (linkHelper.UserCanEditTicketPriorityTypeTitleDescription(item))
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id, stat = stat })<br />
 
-                            if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+                        if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+                        {
+                            @Html.ActionLink("Assign", "AssignToTkt", new { id = item.Id, stat = stat })<br />
+                            if (item.TicketStatus.Name == "Completed" || item.TicketStatus.Name == "Withdrawn")
                             {
-                                @Html.ActionLink("Assign", "AssignToTkt", new { id = item.Id, stat = stat })<br />
+                                @Html.ActionLink("Archive", "Archive", new { id = item.Id })<br />
                             }
-                            @Html.ActionLink("Dashboard", "Dashboard", new { id = item.Id })
+
                         }
-                        else
-                        {
-                            @Html.ActionLink("Details", "Details", new { id = item.Id })<br />
-                        }
-                    </td>
-                </tr>
+                        @Html.ActionLink("Dashboard", "Dashboard", new { id = item.Id })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Details", "Details", new { id = item.Id })<br />
+                    }
+                </td>
+            </tr>
             }
         </tbody>
     </table>

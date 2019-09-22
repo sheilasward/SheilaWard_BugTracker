@@ -11,7 +11,13 @@ namespace SheilaWard_BugTracker.ChartViewModels
         public int value { get; set; }
     }
 
-    public class ChartJsData
+    public class TicketStatusData
+    {
+        public List<string> Labels = new List<string>();
+        public List<int> Values = new List<int>();
+    }
+
+    public class TicketsAssignedToDevs
     {
         public List<string> Labels = new List<string>();
         public List<int> Values = new List<int>();

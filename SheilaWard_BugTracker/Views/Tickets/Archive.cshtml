@@ -1,0 +1,108 @@
+﻿@model SheilaWard_BugTracker.Models.Ticket
+
+@{
+    ViewBag.Title = "Archive";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+
+    <h3>Are you sure you want to archive this ticket?</h3>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayName("Title:")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Description:")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Assigned To:")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.AssignedToUser.FullName)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Submitted By:")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OwnerUser.FullName)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Project Name:")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Project.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Ticket Priority:")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TicketPriority.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Ticket Status:")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TicketStatus.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Ticket Type:")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TicketType.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Created:")
+            </dt>
+
+            <dd>
+                @Model.Created.ToString("M/d/yyyy hh:mmtt")
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Updated:")
+            </dt>
+
+            <dd>
+                @if (@Model.Updated.GetValueOrDefault().ToString("M/d/yyyy h:mmtt") != "01/01/0001 12:00AM")
+                {
+                    @Model.Updated.GetValueOrDefault().ToString("M/d/yyyy h:mmtt")
+                }
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Archive" class="btn btn-primary" /> <br /><br />
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>

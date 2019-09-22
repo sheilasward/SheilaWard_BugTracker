@@ -1,4 +1,7 @@
-﻿using SheilaWard_BugTracker.ChartViewModels;
+﻿using Microsoft.AspNet.Identity;
+using SheilaWard_BugTracker.ChartViewModels;
+using SheilaWard_BugTracker.Enumerations;
+using SheilaWard_BugTracker.Helpers;
 using SheilaWard_BugTracker.Models;
 using System;
 using System.Collections.Generic;
@@ -11,6 +14,7 @@ namespace SheilaWard_BugTracker.Controllers
     public class ChartsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private ProjectsHelper projHelper = new ProjectsHelper();
 
         // GET: Charts
         public JsonResult GetHardCodedMorrisBarData()
@@ -36,13 +40,54 @@ namespace SheilaWard_BugTracker.Controllers
             return Json(dataSet);
         }
 
-        public JsonResult GetRealChartJsData()
+        //public JsonResult GetTicketStatusData()
+        //{
+        //    var data = new TicketStatusData();
+        //    foreach (var ticketStatus in db.TicketStatuses.ToList())
+        //    {
+        //        var value = db.TicketStatuses.Find(ticketStatus.Id).Tickets.Count();
+        //        data.Labels.Add(ticketStatus.Name);
+        //        data.Values.Add(value);
+        //    }
+        //    return Json(data);
+        //}
+
+        public JsonResult GetTicketStatusData()
         {
-            var data = new ChartJsData();
-            foreach (var ticketStatus in db.TicketStatuses.ToList())
+            var data = new TicketStatusData();
+
+            var mgrId = User.Identity.GetUserId();
+            var mgrProjects = projHelper.ListUserProjects(mgrId);
+
+
+            foreach (var ticketStatus in mgrProjects.SelectMany(t => t.Tickets).Select(t => t.TicketStatus).Distinct().ToList()) 
             {
-                var value = db.TicketStatuses.Find(ticketStatus.Id).Tickets.Count();
                 data.Labels.Add(ticketStatus.Name);
+                data.Values.Add(mgrProjects.SelectMany(t => t.Tickets).Where(t => t.TicketStatus.Name == ticketStatus.Name).Count());
+            }
+            return Json(data);
+        }
+
+
+        public JsonResult GetTicketsAssignedToDevs()
+        {
+            var data = new TicketsAssignedToDevs();
+
+            var mgrId = User.Identity.GetUserId();
+            var mgrProjects = projHelper.ListUserProjects(mgrId);
+            var devs = new List<ApplicationUser>();
+            var developers = new List<ApplicationUser>();
+            foreach (var project in mgrProjects.ToList())
+            {
+                devs.AddRange(projHelper.UsersInRoleOnProject(project.Id, SystemRole.Developer).Distinct());
+            }
+
+            developers = devs.Distinct().ToList();
+
+            foreach (var dev in developers.ToList())
+            {
+                var value = db.Tickets.Where(t => t.AssignedToUserId == dev.Id).Count();
+                data.Labels.Add(dev.FirstName);
                 data.Values.Add(value);
             }
             return Json(data);
