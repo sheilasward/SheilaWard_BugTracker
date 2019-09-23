@@ -21,462 +21,450 @@
 </section>
 
 <!-- Main content -->
-<section class="content">
+<section class="row content">
     <div class="col-md-6">
-        <div class="row" style="margin-right:1px;">
-            <div class="box box-primary box-solid">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Ticket Information</h3>
+        <div class="box box-primary box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Ticket Information</h3>
 
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                    <!-- /.box-tools -->
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body">
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        TITLE:
+                    </div>
+                    <div class="col-md-9">
+                        @Model.Title
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        DESCRIPTION:
+                    </div>
+                    <div class="col-md-9">
+                        @Model.Description
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        TYPE:
+                    </div>
+                    <div class="col-md-9">
+                        @Model.TicketType.Name
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        PRIORITY:
+                    </div>
+                    <div class="col-md-9">
+                        @Model.TicketPriority.Name
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        STATUS:
+                    </div>
+                    <div class="col-md-9">
+                        @Model.TicketStatus.Name
+                    </div>
+                </div>
+
+               @if (@Model.AssignedToUser != null)
+                {
                     <div class="row">
                         <div class="col-md-3">
-                            TITLE:
+                            ASSIGNED TO:
                         </div>
                         <div class="col-md-9">
-                            @Model.Title
+                            @Model.AssignedToUser.FullName
                         </div>
                     </div>
+                }
+
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+
+        <div class="box box-warning box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Developer on Ticket</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="col-md-4">
+                    <h3>@Model.AssignedToUser.FirstName  @Model.AssignedToUser.LastName</h3>
+                    <div class="avatar"><img src="@Model.AssignedToUser.AvatarUrl" class="img-responsive" style="max-width:150px" /></div>
+                </div>
+                <div class="col-md-8" style="margin-top: 20px;">
+                    Full Name: @Model.AssignedToUser.FirstName  @Model.AssignedToUser.LastName <br />
+                    Display Name: @Model.AssignedToUser.DisplayName <br />
+                    Email: @Model.AssignedToUser.Email <br />
+                    Phone: @Model.AssignedToUser.PhoneNumber <br />
+                    Projects: <br />
+                   @foreach (var project in @ViewBag.DevProjects)
+                    {
+                        <span> &emsp; @project.Name</span><br />
+                    }
+
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+ 
+        <div class="box box-primary box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Ticket Attachment(s)</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+
+               @if (decisionHelper.TicketIsEditableByUser(Model))
+                {
+                    using (Html.BeginForm("Create", "TicketAttachments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("TicketId", Model.Id)
+                        <div class="row">
+                            <div class="col-md-12">
+                                @Html.TextBox("AttachmentTitle", null, new { @class = "form-control cell-fill-input", placeholder = "Title" })
+                            </div>
+                        </div><br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                @Html.TextArea("AttachmentDescription", new { @class = "form-control cell-fill-textarea", rows = 5, cols = 150, placeholder = "Description" })
+                            </div>
+                        </div><br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="file" name="Attachment" />
+                            </div>
+                        </div><br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-default">Add Attachment</button>
+                            </div>
+                        </div>
+                    }
+                }
+
+               @foreach (var attachment in Model.TicketAttachments)
+                {
+                    <hr class="hr-primary" />
                     <div class="row">
-                        <div class="col-md-3">
-                            DESCRIPTION:
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <img src="@ImageHelpers.GetIconPath(attachment.AttachmentUrl)" class="img-responsive" />
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a target="_blank" href="@attachment.AttachmentUrl">@Path.GetFileNameWithoutExtension(attachment.AttachmentUrl)</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-9">
-                            @Model.Description
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            TYPE:
-                        </div>
-                        <div class="col-md-9">
-                            @Model.TicketType.Name
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            PRIORITY:
-                        </div>
-                        <div class="col-md-9">
-                            @Model.TicketPriority.Name
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            STATUS:
-                        </div>
-                        <div class="col-md-9">
-                            @Model.TicketStatus.Name
-                        </div>
-                    </div>
-                    @{
-                        if (@Model.AssignedToUser != null)
-                        {
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-12">On @attachment.Created.ToString("MMM d, yyyy"), @attachment.User.FirstName @attachment.User.LastName attached the following:</div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-3">
-                                    ASSIGNED TO:
+                                    Attachment:
                                 </div>
                                 <div class="col-md-9">
-                                    @Model.AssignedToUser.FullName
+                                    @attachment.Title
                                 </div>
                             </div>
-                        }
-                    }
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-        </div>
-
-        <div class="row" style="margin-right:1px;">
-            <div class="box box-warning box-solid">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Developer on Ticket</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                    <!-- /.box-tools -->
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div class="col-md-4">
-                        <h3>@Model.AssignedToUser.FirstName  @Model.AssignedToUser.LastName</h3>
-                        <div class="avatar"><img src="@Model.AssignedToUser.AvatarUrl" class="img-responsive" style="max-width:150px" /></div>
-                    </div>
-                    <div class="col-md-8" style="margin-top: 20px;">
-                        Full Name: @Model.AssignedToUser.FirstName  @Model.AssignedToUser.LastName <br />
-                        Display Name: @Model.AssignedToUser.DisplayName <br />
-                        Email: @Model.AssignedToUser.Email <br />
-                        Phone: @Model.AssignedToUser.PhoneNumber <br />
-                        Projects: <br />
-                        @foreach (var project in @ViewBag.DevProjects)
-                        {
-                            <span> &emsp; @project.Name</span><br />
-                        }
-
-                    </div>
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-        </div>
-
-        <div class="row" style="margin-right:1px;">
-            <div class="box box-primary box-solid">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Ticket Attachment(s)</h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                    <!-- /.box-tools -->
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-
-                    @if (decisionHelper.TicketIsEditableByUser(Model))
-                    {
-                        using (Html.BeginForm("Create", "TicketAttachments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            @Html.Hidden("TicketId", Model.Id)
                             <div class="row">
-                                <div class="col-md-12">
-                                    @Html.TextBox("AttachmentTitle", null, new { @class = "form-control cell-fill-input", placeholder = "Title" })
+                                <div class="col-md-3">
+                                    Description:
                                 </div>
-                            </div><br />
-                            <div class="row">
-                                <div class="col-md-12">
-                                    @Html.TextArea("AttachmentDescription", new { @class = "form-control cell-fill-textarea", rows = 5, cols = 150, placeholder = "Description" })
-                                </div>
-                            </div><br />
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <input type="file" name="Attachment" />
-                                </div>
-                            </div><br />
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <button type="submit" class="btn btn-default">Add Attachment</button>
-                                </div>
-                            </div>
-                        }
-                    }
-
-                    @foreach (var attachment in Model.TicketAttachments)
-                    {
-                        <hr class="hr-primary" />
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <img src="@ImageHelpers.GetIconPath(attachment.AttachmentUrl)" class="img-responsive" />
-
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <a target="_blank" href="@attachment.AttachmentUrl">@Path.GetFileNameWithoutExtension(attachment.AttachmentUrl)</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="row">
-                                    <div class="col-md-12">On @attachment.Created.ToString("MMM d, yyyy"), @attachment.User.FirstName @attachment.User.LastName attached the following:</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        Attachment:
-                                    </div>
-                                    <div class="col-md-9">
-                                        @attachment.Title
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        Description:
-                                    </div>
-                                    <div class="col-md-9">
-                                        @attachment.Description
-                                    </div>
+                                <div class="col-md-9">
+                                    @attachment.Description
                                 </div>
                             </div>
                         </div>
-                    }
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-        </div>
-
-        <div class="row" style="margin-right:1px;">
-            <div class="box box-primary box-solid">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Ticket History</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
                     </div>
-                    <!-- /.box-tools -->
-                </div>
-                <!-- /.box-header -->
+                }
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+ 
+        <div class="box box-primary box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Ticket History</h3>
 
-                <div class="box-body" style="background-color: rgb(236,239,244)">
-                    <ul class="timeline">
-                        <!-- timeline time label -->
-                        <li class="time-label">
-                            <span class="bg-red">
-                                @Model.Created.ToString("MMM d, yyyy")
-                            </span>
-                        </li>
-                        <!-- /.timeline-label -->
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+
+            <div class="box-body" style="background-color: rgb(236,239,244)">
+                <ul class="timeline">
+                    <!-- timeline time label -->
+                    <li class="time-label">
+                        <span class="bg-red">
+                            @Model.Created.ToString("MMM d, yyyy")
+                        </span>
+                    </li>
+                    <!-- /.timeline-label -->
+                    <!-- timeline item -->
+                    <li>
+                        <!-- timeline icon -->
+                        <i class="fa fa-bug bg-green"></i>
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o"></i> @Model.Created.ToString("hh:mmtt")</span>
+
+                            <div class="timeline-header">TICKET CREATED</div>
+
+                            <div class="timeline-body">
+                                Ticket "@Model.Title" was created by @Model.OwnerUser.FullName
+                            </div>
+                        </div>
+                    </li>
+
+                   @foreach (var history in ViewBag.History)
+                    {
+                        if (prevHistory.Year.Equals(history.DateChanged.Year) &&
+                            prevHistory.Month.Equals(history.DateChanged.Month) &&
+                            prevHistory.Day.Equals(history.DateChanged.Day))
+                        {
+                        }
+                        else
+                        {
+                            <!-- timeline time label -->
+                            prevHistory = history.DateChanged;
+                            <li class="time-label">
+                                <span class="bg-red">
+                                    @prevHistory.ToString("MMM d, yyyy")
+                                </span>
+                            </li>
+                            <!-- /.timeline-label -->
+                        }
                         <!-- timeline item -->
                         <li>
                             <!-- timeline icon -->
-                            <i class="fa fa-bug bg-green"></i>
+                            <i class="fa fa-ticket bg-green"></i>
                             <div class="timeline-item">
-                                <span class="time"><i class="fa fa-clock-o"></i> @Model.Created.ToString("hh:mmtt")</span>
+                                <span class="time"><i class="fa fa-clock-o"></i> @history.DateChanged.ToString("hh:mmtt")</span>
 
-                                <div class="timeline-header">TICKET CREATED</div>
+                                <div class="timeline-header">TICKET CHANGED</div>
 
                                 <div class="timeline-body">
-                                    Ticket "@Model.Title" was created by @Model.OwnerUser.FullName
+                                    @history.Property was changed from " @history.OldValue " to " @history.NewValue " by @history.User.FullName
                                 </div>
                             </div>
                         </li>
+                    }
 
-                        @foreach (var history in ViewBag.History)
-                        {
-                            if (prevHistory.Year.Equals(history.DateChanged.Year) &&
-                                prevHistory.Month.Equals(history.DateChanged.Month) &&
-                                prevHistory.Day.Equals(history.DateChanged.Day))
-                            {
-                            }
-                            else
-                            {
-                                <!-- timeline time label -->
-                                prevHistory = history.DateChanged;
-                                <li class="time-label">
-                                    <span class="bg-red">
-                                        @prevHistory.ToString("MMM d, yyyy")
-                                    </span>
-                                </li>
-                                <!-- /.timeline-label -->
-                            }
-                            <!-- timeline item -->
-                            <li>
-                                <!-- timeline icon -->
-                                <i class="fa fa-ticket bg-green"></i>
-                                <div class="timeline-item">
-                                    <span class="time"><i class="fa fa-clock-o"></i> @Model.Created.ToString("hh:mmtt")</span>
-
-                                    <div class="timeline-header">TICKET CHANGED</div>
-
-                                    <div class="timeline-body">
-                                        @history.Property was changed from " @history.OldValue " to " @history.NewValue " by @history.User.FullName
-                                    </div>
-                                </div>
-                            </li>
-                        }
-
-                        <!-- END timeline item -->
-                        <li class="time-label">
-                            <span class="bg-red">
-                                @DateTime.Now.ToString("MMM d, yyyy")
-                            </span>
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.box-body -->
+                    <!-- END timeline item -->
+                    <li class="time-label">
+                        <span class="bg-red">
+                            @DateTime.Now.ToString("MMM d, yyyy")
+                        </span>
+                    </li>
+                </ul>
             </div>
-            <!-- /.box -->
+            <!-- /.box-body -->
         </div>
+        <!-- /.box -->
     </div>
 
     <div class="col-md-6">
-        <div class="row" style="margin-left:1px;">
-            <div class="box box-success box-solid">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Project Information</h3>
+        <div class="box box-success box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Project Information</h3>
 
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                    <!-- /.box-tools -->
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div class="row">
-                        <div class="col-md-3">
-                            TITLE:
-                        </div>
-                        <div class="col-md-9">
-                            @Model.Project.Name
-                        </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        TITLE:
                     </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            DESCRIPTION:
-                        </div>
-                        <div class="col-md-9">
-                            @Model.Project.Description
-                        </div>
+                    <div class="col-md-9">
+                        @Model.Project.Name
                     </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            CREATED:
-                        </div>
-                        <div class="col-md-9">
-                            @Model.Project.Created.ToString("MMMM d, yyyy hh:mmtt")
-                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        DESCRIPTION:
                     </div>
-                    <hr class="hr-success" />
-                    <div class="row">
-                        <div class="col-md-3">
-                            ACTIVE TICKETS:
-                        </div>
-                        <div class="col-md-9">
-                            @foreach (var ticket in @Model.Project.Tickets.Where(t => t.TicketStatus.Name == "New/Unassigned" || t.TicketStatus.Name == "Active/Assigned"))
+                    <div class="col-md-9">
+                        @Model.Project.Description
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        CREATED:
+                    </div>
+                    <div class="col-md-9">
+                        @Model.Project.Created.ToString("MMMM d, yyyy hh:mmtt")
+                    </div>
+                </div>
+                <hr class="hr-success" />
+                <div class="row">
+                    <div class="col-md-3">
+                        ACTIVE TICKETS:
+                    </div>
+                    <div class="col-md-9">
+                        @foreach (var ticket in @Model.Project.Tickets.Where(t => t.TicketStatus.Name == "New/Unassigned" || t.TicketStatus.Name == "Active/Assigned"))
+                        {
+                            @ticket.Title <br />
+                        }
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+ 
+        <div class="box box-warning box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Project Team</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                @{
+                    var count = 0;
+                    foreach (var manager in @ViewBag.TeamPMs)
+                    {
+                        count++;
+                        <div class="row">
+                            @if (count == 1)
                             {
-                                @ticket.Title <br />
+                                <div class="col-md-3">
+                                    MANAGER(S):
+                                </div>
                             }
-                        </div>
-                    </div>
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-        </div>
-
-        <div class="row" style="margin-left:1px;">
-            <div class="box box-warning box-solid">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Project Team</h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                    <!-- /.box-tools -->
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    @{
-                        var count = 0;
-                        foreach (var manager in @ViewBag.TeamPMs)
-                        {
-                            count++;
-                            <div class="row">
-                                @if (count == 1)
-                                {
-                                    <div class="col-md-3">
-                                        MANAGER(S):
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="col-md-3">
-                                        &nbsp;
-                                    </div>
-                                }
+                            else
+                            {
                                 <div class="col-md-3">
-                                    @manager.FullName
+                                    &nbsp;
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="avatar"><img src="@manager.AvatarUrl" class="img-responsive" style="max-width:100px" /></div>
-                                </div>
-                                <div class="col-md-3">
-                                    @manager.PhoneNumber
-                                </div>
+                            }
+                            <div class="col-md-3">
+                                @manager.FullName
                             </div>
-                            <hr class="hr-warning" />
-                        }
-                    }
-
-                    <div class="row">
-                        <div class="col-md-3">
-                            SUBMITTER:
-                        </div>
-                        <div class="col-md-3">
-                            @Model.OwnerUser.FullName
-                        </div>
-                        <div class="col-md-3">
-                            <div class="avatar"><img src="@Model.OwnerUser.AvatarUrl" class="img-responsive" style="max-width:100px" /></div>
-                        </div>
-                        <div class="col-md-3">
-                            @Model.OwnerUser.PhoneNumber
-                        </div>
-                    </div>
-                    <hr class="hr-warning" />
-
-                    @{
-                        count = 0;
-                        foreach (var dev in @ViewBag.TeamDevs)
-                        {
-                            count++;
-                            <div class="row">
-                                @if (count == 1)
-                                {
-                                    <div class="col-md-3">
-                                        DEVELOPER(S):
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="col-md-3">
-                                        &nbsp;
-                                    </div>
-                                }
-                                <div class="col-md-3">
-                                    @dev.FullName
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="avatar"><img src="@dev.AvatarUrl" class="img-responsive" style="max-width:100px" /></div>
-                                </div>
-                                <div class="col-md-3">
-                                    @dev.PhoneNumber
-                                </div>
+                            <div class="col-md-3">
+                                <div class="avatar"><img src="@manager.AvatarUrl" class="img-responsive" style="max-width:100px" /></div>
                             </div>
-                            <br />
-                        }
+                            <div class="col-md-3">
+                                @manager.PhoneNumber
+                            </div>
+                        </div>
+                        <hr class="hr-warning" />
                     }
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-        </div>
+                }
 
-        <div class="row" style="margin-left:1px;">
-            <div class="box box-primary box-solid">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Ticket Comment(s)</h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
+                <div class="row">
+                    <div class="col-md-3">
+                        SUBMITTER:
                     </div>
-                    <!-- /.box-tools -->
+                    <div class="col-md-3">
+                        @Model.OwnerUser.FullName
+                    </div>
+                    <div class="col-md-3">
+                        <div class="avatar"><img src="@Model.OwnerUser.AvatarUrl" class="img-responsive" style="max-width:100px" /></div>
+                    </div>
+                    <div class="col-md-3">
+                        @Model.OwnerUser.PhoneNumber
+                    </div>
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body">
+                <hr class="hr-warning" />
+                @{
+                    count = 0;
+                    foreach (var dev in @ViewBag.TeamDevs)
+                    {
+                        count++;
+                        <div class="row">
+                            @if (count == 1)
+                            {
+                                <div class="col-md-3">
+                                    DEVELOPER(S):
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-md-3">
+                                    &nbsp;
+                                </div>
+                            }
+                            <div class="col-md-3">
+                                @dev.FullName
+                            </div>
+                            <div class="col-md-3">
+                                <div class="avatar"><img src="@dev.AvatarUrl" class="img-responsive" style="max-width:100px" /></div>
+                            </div>
+                            <div class="col-md-3">
+                                @dev.PhoneNumber
+                            </div>
+                        </div>
+                        <br />
+                    }
+                }
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
 
-                    @using (Html.BeginForm("Create", "TicketComments", FormMethod.Post))
+        <div class="box box-primary box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Ticket Comment(s)</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+               @if (decisionHelper.TicketIsEditableByUser(Model))
+                {
+
+                    using (Html.BeginForm("Create", "TicketComments", FormMethod.Post))
                     {
                         @Html.AntiForgeryToken()
                         @Html.Hidden("TicketId", Model.Id)
@@ -492,7 +480,7 @@
                         </div>
                     }
 
-                    @foreach (var comment in Model.TicketComments)
+                    foreach (var comment in Model.TicketComments)
                     {
                         <hr class="hr-primary" />
                         <div class="row">
@@ -505,7 +493,7 @@
                                         @comment.Comment
                                     </div>
                                 </div>
-                                @if (comment.AuthorId == ViewBag.CurrentUser)
+                               @if (comment.AuthorId == ViewBag.CurrentUser)
                                 {
                                     <br />
                                     <div class="row">
@@ -520,30 +508,31 @@
                             </div>
                         </div>
                     }
-                </div>
+                }
             </div>
-        </div>
-        <div class="row" style="margin-left:1px;">
-            <div class="box box-danger box-solid">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Notification(s)</h3>
 
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                    <!-- /.box-tools -->
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    NOTIFICATION BADGE/LABEL
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
         </div>
+
+        <div class="box box-danger box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Notification(s)</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                NOTIFICATION BADGE/LABEL
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
     </div>
+
 </section>
 
 @section scripts {

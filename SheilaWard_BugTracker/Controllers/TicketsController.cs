@@ -168,7 +168,6 @@ namespace SheilaWard_BugTracker.Controllers
                 newTicket.TicketStatusId = ticket.TicketStatusId;
                 newTicket.TicketTypeId = ticket.TicketTypeId;
                 newTicket.TicketPriorityId = ticket.TicketPriorityId;
-                newTicket.AssignedToUserId = ticket.AssignedToUserId;
                 newTicket.Title = ticket.Title;
                 newTicket.Description = ticket.Description;
                 newTicket.PercentComplete = ticket.PercentComplete;
@@ -177,15 +176,16 @@ namespace SheilaWard_BugTracker.Controllers
                     newTicket.TicketStatusId = db.TicketStatuses.AsNoTracking().FirstOrDefault(t => t.Name == "Completed").Id;
                 }
                 newTicket.Updated = DateTimeOffset.Now;
-                if (newTicket.TicketStatusId == db.TicketStatuses.AsNoTracking().FirstOrDefault(t => t.Name == "Withdrawn").Id)
+                if ((newTicket.TicketStatusId == db.TicketStatuses.AsNoTracking().FirstOrDefault(t => t.Name == "Withdrawn").Id) ||
+                    (newTicket.TicketStatusId == db.TicketStatuses.AsNoTracking().FirstOrDefault(t => t.Name == "Inactive").Id))
                 {
                     newTicket.AssignedToUserId = null;
                 }
 
                 // Boolean Variables to automatically set status
                 var noChange = (oldTicket.AssignedToUserId == newTicket.AssignedToUserId);
-                var assignment = (string.IsNullOrEmpty(oldTicket.AssignedToUserId));
-                var unassignment = (string.IsNullOrEmpty(newTicket.AssignedToUserId));
+                var assignment = (string.IsNullOrEmpty(oldTicket.AssignedToUserId) && (!string.IsNullOrEmpty(newTicket.AssignedToUserId)));
+                var unassignment = (string.IsNullOrEmpty(newTicket.AssignedToUserId) && (!string.IsNullOrEmpty(oldTicket.AssignedToUserId)) && (newTicket.TicketStatus.Name != "Withdrawn"));
 
                 var ActiveStatusId = db.TicketStatuses.FirstOrDefault(ts => ts.Name == "Active/Assigned").Id;
                 var InactiveStatusId = db.TicketStatuses.FirstOrDefault(ts => ts.Name == "Inactive").Id;

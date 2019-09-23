@@ -84,6 +84,7 @@ namespace SheilaWard_BugTracker.Helpers
 
                 if (oldValue != newValue)
                 {
+                    if (property == "PercentComplete" && newTicket.PercentComplete == 100) CompleteNotification(newTicket);
                     messageBody.AppendLine(new String('-', 45));
                     messageBody.AppendLine($"A change was made to Property: {property}.");
                     messageBody.AppendLine($"The old value was: {oldValue.ToString()}");
@@ -135,6 +136,54 @@ namespace SheilaWard_BugTracker.Helpers
                 RecipientId = recipient.Id,
                 SenderId = HttpContext.Current.User.Identity.GetUserId(),
                 NotificationBody = $"Please acknowledge that you have read this notification by marking it as 'READ'.",
+                TicketId = ticket.Id
+            };
+
+            db.TicketNotifications.Add(notification);
+            db.SaveChanges();
+        }
+
+        private void CompleteNotification(Ticket ticket)
+        {
+            var project = ticket.Project;
+            var managers = projHelper.UsersInRoleOnProject(project.Id, SystemRole.ProjectManager).ToList();
+            foreach (var manager in managers)
+            {
+                var notification = new TicketNotification
+                {
+                    TicketId = ticket.Id,
+                    Created = DateTime.Now,
+                    Subject = $"Ticket has been marked complete",
+                    RecipientId = manager.Id,
+                    SenderId = HttpContext.Current.User.Identity.GetUserId(),
+                    NotificationBody = $"Ticket with title '{ticket.Title}' is now complete, and can be archived.",
+                    IsRead = false
+                };
+
+                db.TicketNotifications.Add(notification);
+                db.SaveChanges();
+            }
+        }
+
+        public void NotifyDevTA(TicketAttachment ticketAttachment)
+        {
+            var ticketId = ticketAttachment.TicketId;
+            var ticket = db.Tickets.Find(ticketId);
+            var messageBody = new StringBuilder();
+            messageBody.AppendLine($"Ticket Title:  {ticket.Title}");
+            messageBody.AppendLine(new String('-', 45));
+            messageBody.AppendLine($"Attachment Title:  {ticketAttachment.Title}");
+            messageBody.AppendLine($"Attachment Description:  {ticketAttachment.Description}");
+            messageBody.AppendLine(@ImageHelpers.GetIconPath(ticketAttachment.AttachmentUrl));
+            
+            var notification = new TicketNotification
+            {
+                Created = DateTime.Now,
+                Subject = $"A new Attachment was uploaded on {DateTime.Now.ToString("M/d/yyyy mm:hhtt")}",
+                IsRead = false,
+                RecipientId = ticket.AssignedToUserId,
+                SenderId = HttpContext.Current.User.Identity.GetUserId(),
+                NotificationBody = messageBody.ToString(),
                 TicketId = ticket.Id
             };
 

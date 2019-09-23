@@ -55,5 +55,21 @@ namespace SheilaWard_BugTracker.Helpers
                     return false;
             }
         }
+
+        public bool UserCanEditPercentComplete(Ticket ticket)
+        {
+            switch (currentRole)
+            {
+                case SystemRole.Admin:
+                    return true;
+                case SystemRole.ProjectManager:
+                    return currentUser.Projects.SelectMany(t => t.Tickets).Select(t => t.Id).Contains(ticket.Id);
+                case SystemRole.Developer:
+                    return ticket.AssignedToUserId == currentUser.Id;
+                case SystemRole.Submitter:
+                default:
+                    return false;
+            }
+        }
     }
 }

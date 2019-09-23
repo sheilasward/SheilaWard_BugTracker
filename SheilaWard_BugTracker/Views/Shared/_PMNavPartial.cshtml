@@ -79,9 +79,10 @@
                 <i class="fa fa-circle-o"></i>
                 <span>Not Active</span>
                 <span class="pull-right-container">
-                    <small data-toggle="tooltip" title="Inactive" class="label pull-right bg-purple">@ticketHelper.GetTicketCount("Inactive")</small>
-                    <small data-toggle="tooltip" title="Completed" class="label pull-right bg-red">@ticketHelper.GetTicketCount("Completed")</small>
-                    <small data-toggle="tooltip" title="Archived" class="label pull-right bg-blue">@ticketHelper.GetTicketCount("Archived")</small>
+                    <small data-toggle="tooltip" title="Inactive" class="label pull-right bg-red">@ticketHelper.GetTicketCount("Inactive")</small>
+                    <small data-toggle="tooltip" title="Withdrawn" class="label pull-right bg-blue">@ticketHelper.GetTicketCount("Withdrawn")</small><br />
+                    <small data-toggle="tooltip" title="Completed" class="label pull-right bg-aqua">@ticketHelper.GetTicketCount("Completed")</small>
+                    <small data-toggle="tooltip" title="Archived" class="label pull-right bg-yellow">@ticketHelper.GetTicketCount("Archived")</small>
                 </span>
             </a>
         </li>
@@ -93,7 +94,6 @@
                 <i class="fa fa-bell-o"></i>
                 <span>My Notifications</span>
                 <span class="pull-right-container">
-                    <small data-toggle="tooltip" title="All Notifications" class="label pull-right bg-white">@notfHelper.GetAllUserNotificationCount()</small>
                     <small data-toggle="tooltip" title="Read Notifications" class="label pull-right bg-green">@notfHelper.GetReadUserNotificationCount()</small>
                     <small data-toggle="tooltip" title="Unread Notifications" class="label pull-right bg-yellow">@notfHelper.GetNewUserNotificationCount()</small>
                 </span>

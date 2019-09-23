@@ -17,6 +17,7 @@ namespace SheilaWard_BugTracker.Controllers
     public class TicketAttachmentsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private NotificationHelper notfHelper = new NotificationHelper();
 
         // GET: TicketAttachments
         public ActionResult Index()
@@ -84,6 +85,10 @@ namespace SheilaWard_BugTracker.Controllers
 
                 db.TicketAttachments.Add(ticketAttachment);
                 db.SaveChanges();
+
+                // Now call the NotificationHelper to send a notification to the developer
+                notfHelper.NotifyDevTA(ticketAttachment);
+
                 return RedirectToAction("Dashboard", "Tickets", new { id = ticketAttachment.TicketId });
             }
 
