@@ -28,10 +28,6 @@
         Dashboard
         <small>Control panel</small>
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
-    </ol>
 </section>
 
 <!-- Main content -->
@@ -117,7 +113,7 @@
                 <div class="icon">
                     <i class="ion ion-ios-bell"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="@Url.Action("MyNotifications", "TicketNotifications")" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
         </div>
         <!-- ./col -->
@@ -329,18 +325,19 @@
 
     <div class="row">
         <div class="col-md-4">
-            <canvas id="myChart" height="150"></canvas>
+            <canvas id="myChart" height="200"></canvas>
         </div>
 
         <!-- DONUT CHART -->
         <div class="col-md-4">
-            <canvas id="pieChart" style="height:150px"></canvas>
+            <canvas id="pieChart" style="height:200px"></canvas>
         </div>
 
         <div class="col-md-4">
-            <canvas id="myDevs" height="150"></canvas>
+            <canvas id="myActiveDevs" height="200"></canvas>
         </div>
     </div>
+
 </section>
 
 @section scripts
@@ -449,21 +446,28 @@
     </script>
    
     <script>
-        $.post('@Url.Action("GetTicketStatusData", "Charts")').then(function (response) {
+        $.post('@Url.Action("GetTicketsPercentDone", "Charts")').then(function (response) {
             var ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: response.Labels,
                 datasets: [{
-                    label: 'My Ticket Statuses',
+                    label: '% Done',
                     data: response.Values,
                     backgroundColor: [
                         'rgb(60,141,188)',
                         'rgb(243,156,17)',
                         'rgb(0,166,90)',
                         'rgb(221,76,57)',
-                        'rgb(153, 102, 255)'
+                        'rgb(210,214,223)',
+                        'rgb(0,192,239)',
+                        'rgb(60,141,188)',
+                        'rgb(243,156,17)',
+                        'rgb(0,166,90)',
+                        'rgb(221,76,57)',
+                        'rgb(210,214,223)',
+                        'rgb(0,192,239)'
                     ]
                 }]
             },
@@ -474,6 +478,10 @@
                             beginAtZero: true
                         }
                     }]
+                },
+                title: {
+                        display: true,
+                        text: 'My Active Tickets'
                 }
             }
         });
@@ -488,7 +496,7 @@
                 data: {
                     labels: response.Labels,
                     datasets: [{
-                        label: 'My Ticket Statuses',
+                        label: '',
                         data: response.Values,
                         backgroundColor: [
                             'rgb(60,141,188)',
@@ -506,7 +514,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Chart.js Doughnut Chart'
+                        text: 'My Ticket Statuses'
                     },
                     animation: {
                         animateScale: true,
@@ -522,35 +530,33 @@
 
     <script>
         $.post('@Url.Action("GetTicketsAssignedToDevs", "Charts")').then(function (response) {
-            var ctx = document.getElementById('myDevs').getContext('2d');
-            var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: response.Labels,
-                datasets: [{
-                    label: '# Tickets Assigned to My Developers',
-                    data: response.Values,
-                    backgroundColor: [
-                        'rgb(60,141,188)',
-                        'rgb(243,156,17)',
-                        'rgb(0,166,90)',
-                        'rgb(221,76,57)',
-                        'rgb(0,192,239)',
-                        'rgb(153, 102, 255)',
-                        'rgb(210,214,223)'
-                    ]
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
+            var ctx = document.getElementById('myActiveDevs').getContext('2d');
+            var myActiveDevs = new Chart(ctx, {
+                type: 'bar',
+                data:
+                {
+                    labels: response.Labels,
+                    datasets: [
+                        {
+                            label: "Active",
+                            backgroundColor: "rgb(60,141,188)",
+                            data: response.ValueActive
+                        },
+                        {
+                            label: "Completed",
+                            backgroundColor: "rgb(0,166,90)",
+                            data: response.ValueComplete
+                        }]
+                },
+                options:
+                {
+                    title:
+                    {
+                        display: true,
+                        text: '# Tickets Assigned To My Developers'
+                    }
                 }
-            }
+            });
         });
-    });
     </script>
 }

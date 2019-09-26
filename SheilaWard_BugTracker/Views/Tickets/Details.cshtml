@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Details";
+    var stat = @ViewBag.Stats;
 }
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -97,6 +98,6 @@
         </dl>
     </div>
     <p>
-        @Html.ActionLink("Back to List", "Index", "Tickets", new { proj = "MyTickets", stat = "InProg" })
+        <a href="@Url.Action("Index", "Tickets", new { proj = "MyTickets", stat = stat})">Back to Ticket List</a>
     </p>
 </section>

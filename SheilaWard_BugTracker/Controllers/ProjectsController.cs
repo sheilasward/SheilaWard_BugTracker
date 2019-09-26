@@ -13,6 +13,7 @@ using SheilaWard_BugTracker.ViewModels;
 
 namespace SheilaWard_BugTracker.Controllers
 {
+    [RequireHttps]
     public class ProjectsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

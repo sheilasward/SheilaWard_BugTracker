@@ -11,6 +11,7 @@ using SheilaWard_BugTracker.Models;
 
 namespace SheilaWard_BugTracker.Controllers
 {
+    [RequireHttps]
     public class MembersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

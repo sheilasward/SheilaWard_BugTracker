@@ -13,6 +13,7 @@ using SheilaWard_BugTracker.Enumerations;
 
 namespace SheilaWard_BugTracker.Controllers
 {
+    [RequireHttps]
     public class TicketsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -42,7 +43,7 @@ namespace SheilaWard_BugTracker.Controllers
 
         [Authorize]
         // GET: Tickets/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, string stat)
         {
             if (id == null)
             {
@@ -53,12 +54,13 @@ namespace SheilaWard_BugTracker.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.Stats = stat;
             return View(ticket);
         }
 
         // GET: Dashboard
         [Authorize(Roles = "Admin, ProjectManager, Submitter, Developer")]
-        public ActionResult Dashboard(int id)
+        public ActionResult Dashboard(int id, string stat)
         {
             var ticket = db.Tickets.Find(id);
             if (ticket == null)
@@ -66,6 +68,7 @@ namespace SheilaWard_BugTracker.Controllers
                 return HttpNotFound();
             }
             var project = ticket.Project;
+            ViewBag.Stats = stat;
             ViewBag.TeamPMs = projHelper.UsersInRoleOnProject(project.Id, SystemRole.ProjectManager).ToList();
             ViewBag.TeamSubs = projHelper.UsersInRoleOnProject(project.Id, SystemRole.Submitter).ToList();
             ViewBag.TeamDevs = projHelper.UsersInRoleOnProject(project.Id, SystemRole.Developer).ToList();
@@ -147,6 +150,7 @@ namespace SheilaWard_BugTracker.Controllers
             else
             {
                 TempData["Message"] = "YOU ARE NOT AUTHORIZED TO EDIT THIS TICKET BASED ON YOUR ASSIGNED ROLE.";
+                ViewBag.Stats = stat;
                 return RedirectToAction("Index", "Tickets");
             }
         }
@@ -248,7 +252,7 @@ namespace SheilaWard_BugTracker.Controllers
         // GET: AssignToTkt (Assign Developers to Tickets) - Admins can access this for all Developers.
         // PMs can access this for Developers only on the Project Manager's projects.
         [Authorize(Roles = "Admin, ProjectManager")]
-        public ActionResult AssignToTkt(int? Id)
+        public ActionResult AssignToTkt(int? Id, string stat)
         {
             if (Id == null)
             {
@@ -260,13 +264,22 @@ namespace SheilaWard_BugTracker.Controllers
                 return HttpNotFound();
             }
 
-            var mgrId = User.Identity.GetUserId();
-            var manager = db.Users.Find(mgrId);
-            var mgrName = manager.FullName;
-
-            ViewBag.Manager = mgrName;
-            ViewBag.AssignedToUserId = new SelectList(projHelper.UsersInRoleOnProject(ticket.ProjectId, SystemRole.Developer), "Id", "FullName", ticket.AssignedToUserId);
-            return View(ticket);
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+            var userName = user.FullName;
+            if (roleHelper.IsUserInSystemRole(userId, SystemRole.Admin) || roleHelper.IsUserInSystemRole(userId, SystemRole.ProjectManager))
+            {
+                ViewBag.Manager = userName;
+                ViewBag.AssignedToUserId = new SelectList(projHelper.UsersInRoleOnProject(ticket.ProjectId, SystemRole.Developer), "Id", "FullName", ticket.AssignedToUserId);
+                ViewBag.Stats = stat;
+                return View(ticket);
+            }
+            else
+            {
+                TempData["Message"] = "YOU ARE NOT AUTHORIZED TO ASSIGN USERS TO THIS TICKET BASED ON YOUR ASSIGNED ROLE.";
+                ViewBag.Stats = stat;
+                return RedirectToAction("Index", "Tickets");
+            }
         }
 
         // POST: AssignToTkt

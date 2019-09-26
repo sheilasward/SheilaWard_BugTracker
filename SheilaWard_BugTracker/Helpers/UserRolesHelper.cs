@@ -24,6 +24,9 @@ namespace SheilaWard_BugTracker.Helpers
         }
         public ICollection<string> ListUserRoles(string userId)
         {
+            if (userManager.FindById(userId) == null){
+                return new List<string>();
+            }
             return userManager.GetRoles(userId);
         }
         

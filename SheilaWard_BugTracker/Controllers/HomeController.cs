@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace SheilaWard_BugTracker.Controllers
 {
+    [RequireHttps]
     public class HomeController : Controller
     {
         public ActionResult Register()

@@ -9,24 +9,6 @@
        ApplicationDbContext db = new ApplicationDbContext();
     }
 
-    @*<style>
-        ul li.current > a > i,
-        ul li a:hover > i,
-        ul li a:focus > i,
-        ul li a:active > i {
-            color: red;
-        }
-
-       
-    </style>*@
-
-    <style>
-         .theBug {
-
-            color: red;
-        }
-    </style>
-
     <ul id="sidebar-items" class="sidebar-menu" data-widget="tree">
         <li class="header">ADMINISTRATOR NAVIGATION</li>
         <li class="current">
@@ -54,10 +36,11 @@
         <li><hr /></li>
 
         <li>
-            <a href="#">
+            <span class="viewManageTickets">
+                <span>&emsp;</span>
                 <i class="fa fa-bug"></i>
                 <span> View/Manage Tickets</span>
-            </a>
+            </span>
         </li>
 
         <li class="">

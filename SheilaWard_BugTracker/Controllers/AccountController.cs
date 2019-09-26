@@ -17,6 +17,7 @@ using System.Net.Mail;
 
 namespace SheilaWard_BugTracker.Controllers
 {
+    [RequireHttps]
     [Authorize]
     public class AccountController : Controller
     {

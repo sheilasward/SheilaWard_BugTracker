@@ -68,3 +68,33 @@ textarea {
     width: 500px;
     margin: 7% auto;
 }
+
+.login-page,
+.register-page {
+    height: auto;
+    /*background: #d2d6de;*/
+    background-image: url("/Content/images/quantum7.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.skin-blue .sidebar .viewManageTickets,
+.skin-black .sidebar .viewManageTickets,
+.skin-purple .sidebar .viewManageTickets,
+.skin-green .sidebar .viewManageTickets,
+.skin-red .sidebar .viewManageTickets,
+.skin-yellow .sidebar .viewManageTickets {
+    color: #b8c7ce;
+}
+
+.skin-blue-light viewManageTickets,
+.skin-black-light viewManageTickets,
+.skin-purple-light viewManageTickets,
+.skin-green-light viewManageTickets,
+.skin-red-light viewManageTickets,
+.skin-yellow-light viewManageTickets
+{
+    color: #444;
+}
+

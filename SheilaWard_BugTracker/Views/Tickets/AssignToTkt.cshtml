@@ -3,6 +3,7 @@
 
 @{
     ViewBag.Title = "AssignToTkt";
+    var stat = ViewBag.Stats;
 }
 
 <!-- Content Header (Page header) -->
@@ -15,39 +16,44 @@
 <section class="content">
 
     <div class="form-horizontal sm-left-padding">
-        
-        @using (Html.BeginForm())
+       @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
 
-            <div class="form-horizontal">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                @Html.HiddenFor(model => model.Id)
-                <dl class="dl-horizontal">
-                    <dt>@Html.DisplayName("Project")</dt>
-                    <dd>@Html.DisplayFor(model => model.Project.Name)</dd>
-                    <dt>@Html.DisplayName("Ticket")</dt>
-                    <dd>@Html.DisplayFor(model => model.Title)</dd>
-                    <dt>@Html.DisplayName("Manager")</dt>
-                    <dd>@ViewBag.Manager</dd>
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.TicketTypeId)
+            @Html.HiddenFor(model => model.TicketPriorityId)
+            @Html.HiddenFor(model => model.TicketStatusId)
+            @Html.HiddenFor(model => model.Title)
+            @Html.HiddenFor(model => model.Description)
 
-                    <dt>@Html.DisplayName("Assign To Developer")</dt>
-                    <dd>
-                        @Html.DropDownList("AssignedToUserId", null, "-- NONE --", htmlAttributes: new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.AssignedToUserId, "", new { @class = "text-danger" })
-                    </dd>
-                </dl>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Save" class="btn btn-default" />
-                    </div>
+            <dl class="dl-horizontal">
+                <dt>@Html.DisplayName("Project")</dt>
+                <dd>@Html.DisplayFor(model => model.Project.Name)</dd>
+                <dt>@Html.DisplayName("Ticket")</dt>
+                <dd>@Html.DisplayFor(model => model.Title)</dd>
+                <dt>@Html.DisplayName("Manager")</dt>
+                <dd>@ViewBag.Manager</dd>
+
+                <dt>@Html.DisplayName("Assign To Developer")</dt>
+                <dd>
+                    @Html.DropDownList("AssignedToUserId", null, "-- NONE --", htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.AssignedToUserId, "", new { @class = "text-danger" })
+                </dd>
+            </dl>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
                 </div>
-
             </div>
-        }
-        <div>
-            @Html.ActionLink("Back to Ticket List", "Index")
+
         </div>
+        }
+    <div>
+        <a href="@Url.Action("Index", "Tickets", new { proj = "MyTickets", stat = stat})">Back to Ticket List</a>
+    </div>
 
     </div>
 </section>

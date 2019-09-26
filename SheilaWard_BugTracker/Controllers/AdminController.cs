@@ -9,7 +9,8 @@ using System.Web;
 using System.Web.Mvc;
 
 namespace SheilaWard_BugTracker.Controllers
-{ 
+{
+    [RequireHttps]
     public class AdminController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

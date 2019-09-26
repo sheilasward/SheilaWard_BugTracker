@@ -27,11 +27,11 @@
 <section class="content-header">
     @{
         
-        if (ViewBag.Stats == "All")
+        if (stat == "All" || stat == null)
         {
             <h2>List of Tickets - All</h2>
         }
-        else if (ViewBag.Stats == "InProg")
+        else if (stat == "InProg")
         {
             <h2>List of Tickets - In Progress</h2>
         }
@@ -175,11 +175,11 @@
                             }
 
                         }
-                        @Html.ActionLink("Dashboard", "Dashboard", new { id = item.Id })
+                        @Html.ActionLink("Dashboard", "Dashboard", new { id = item.Id, stat = stat })
                     }
                     else
                     {
-                        @Html.ActionLink("Details", "Details", new { id = item.Id })<br />
+                        @Html.ActionLink("Details", "Details", new { id = item.Id, stat = stat })<br />
                     }
                 </td>
             </tr>

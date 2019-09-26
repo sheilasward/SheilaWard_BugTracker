@@ -76,22 +76,9 @@
             }
 
             <div class="social-auth-links text-center">
-                <p>- OR -</p>
-                <div class="row">
-                    <div class="col-md-6">
-                        <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
-                            <i class="fa fa-facebook"></i> Sign up using
-                            Facebook
-                        </a>
-                    </div>
-                    <div class="col-md-6">
-                        <a href="#" class="btn btn-block btn-social btn-google btn-flat">
-                            <i class="fa fa-google-plus"></i> Sign up using
-                            Google+
-                        </a>
-                    </div>
-                </div>
+                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
             </div>
+            
             <!-- /.social-auth-links -->
 
             @Html.ActionLink("I forgot my password", "ForgotPassword", "Account")

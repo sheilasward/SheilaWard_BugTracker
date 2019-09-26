@@ -60,7 +60,7 @@
         ul.sidebar-menu li a:hover > i,
         ul.sidebar-menu li a:focus > i,
         ul.sidebar-menu li a:active > i {
-            color: red;
+            color: rgb(221,76,57);
         }
     </style>
 
@@ -76,6 +76,10 @@
         var userId = User.Identity.GetUserId();
         var db = new ApplicationDbContext();
         var user = db.Users.Find(userId);
+        if (user == null)
+        {
+            user = new ApplicationUser();
+        }
         var roleHelper = new UserRolesHelper();
         var userRole = @roleHelper.ListUserRoles(user.Id).FirstOrDefault();
         var notfHelper = new NotificationHelper();
@@ -383,7 +387,7 @@
             <div class="pull-right hidden-xs">
                 <b>Version</b> 2.4.13
             </div>
-            <strong>Copyright &copy; 2014-2019 <a href="//adminlte.io">BugTRAKKER</a>.</strong> All rights
+            <strong>Copyright &copy; 2019 <a href="https://sheilawardportfolio.azurewebsites.net" target="_blank">BugTRAKKER by Sheila Ward</a>.</strong> All rights
             reserved.
         </footer>
 
@@ -710,9 +714,8 @@
             $(function () {
                 $("aside.main-sidebar > section > ul > li > a").each(function () {
                     var var1 = $(this).attr("href");
-                    var var2 = window.location.pathname;
-                    var thisvar = $(this);
-                    if ($(this).attr("href") == window.location.pathname) {
+                    var var2 = window.location.pathname + window.location.search;
+                    if (var1 == var2) {
                         $(this).closest("li").addClass("current");
                     }
                     else {

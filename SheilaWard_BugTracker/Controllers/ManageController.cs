@@ -10,6 +10,7 @@ using SheilaWard_BugTracker.Models;
 
 namespace SheilaWard_BugTracker.Controllers
 {
+    [RequireHttps]
     [Authorize]
     public class ManageController : Controller
     {

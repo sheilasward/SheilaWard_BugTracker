@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web.Configuration;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -35,7 +36,7 @@ namespace SheilaWard_BugTracker
                         validateInterval: TimeSpan.FromMinutes(30),
                         regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                 }
-            });            
+            });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Enables the application to temporarily store user information when they are verifying the second factor in the two-factor authentication process.
@@ -55,15 +56,16 @@ namespace SheilaWard_BugTracker
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: WebConfigurationManager.AppSettings["AppId"],
+               appSecret: WebConfigurationManager.AppSettings["AppSecret"]
+            );
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = WebConfigurationManager.AppSettings["ClientId"],
+                ClientSecret = WebConfigurationManager.AppSettings["ClientSecret"]
+            });
         }
     }
 }

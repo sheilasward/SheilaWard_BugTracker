@@ -5,6 +5,7 @@
     ViewBag.Title = "Dashboard";
     var decisionHelper = new TicketDecisionHelper();
     var prevHistory = @Model.Created;
+    var stat = @ViewBag.Stats;
 }
 
 <!-- Content Header (Page header) -->
@@ -14,7 +15,7 @@
             <h2>Ticket Dashboard:  @Model.Title</h2>
         </div>
         <div class="col-md-2" style="margin-top:20px;">
-            <a href="@Url.Action("Index", "Tickets", new { proj = "MyTickets", stat = "InProg"})">Back to Ticket List</a>
+            <a href="@Url.Action("Index", "Tickets", new { proj = "MyTickets", stat = stat})">Back to Ticket List</a>
         </div>
     </div>
     <hr />
