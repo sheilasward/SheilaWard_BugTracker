@@ -73,23 +73,8 @@
             <div class="small-box bg-yellow">
                 <div class="inner">
                     @{
-                        ICollection<Project> myProjects = projectHelper.ListUserProjects(userId);
-                        ICollection<ApplicationUser> UsersOnProjects = new List<ApplicationUser>();
-                        ICollection<ApplicationUser> UsersOnThisProject = new List<ApplicationUser>();
-                        int userCount = 0;
-                        foreach (var project in myProjects)
-                        {
-                            UsersOnThisProject = projectHelper.UsersOnProject(project.Id);
-                            foreach (var user in UsersOnThisProject)
-                            {
-                                if (!UsersOnProjects.Contains(user))
-                                {
-                                    UsersOnProjects.Add(user);
-                                    userCount++;
-                                }
-                            }
-                        }
-                        <h3>@userCount</h3>
+                        var usersOnMyProjectsCount = projectHelper.UsersOnMyProjectsCount(userId);
+                        <h3>@usersOnMyProjectsCount</h3>
                     }
 
 
@@ -98,7 +83,7 @@
                 <div class="icon">
                     <i class="ion ion-person"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="@Url.Action("UsersOnMyProjects", "Admin")" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
         </div>
         <!-- ./col -->
@@ -181,18 +166,7 @@
                                 <i class="fa fa-trash-o"></i>
                             </div>
                         </li>
-                        <li>
-                            <span class="handle">
-                                <i class="fa fa-ellipsis-v"></i>
-                                <i class="fa fa-ellipsis-v"></i>
-                            </span>
-                            <input type="checkbox" value="">
-                            <span class="text">Let theme shine like a star</span>
-                            <small class="label label-success"><i class="fa fa-clock-o"></i> 3 days</small>
-                            <div class="tools">
-                                <i class="fa fa-trash-o"></i>
-                            </div>
-                        </li>
+ 
                         <li>
                             <span class="handle">
                                 <i class="fa fa-ellipsis-v"></i>
@@ -205,28 +179,27 @@
                                 <i class="fa fa-trash-o"></i>
                             </div>
                         </li>
-                        <li>
-                            <span class="handle">
-                                <i class="fa fa-ellipsis-v"></i>
-                                <i class="fa fa-ellipsis-v"></i>
-                            </span>
-                            <input type="checkbox" value="">
-                            <span class="text">Let theme shine like a star</span>
-                            <small class="label label-default"><i class="fa fa-clock-o"></i> 1 month</small>
-                            <div class="tools">
-                                 <i class="fa fa-trash-o"></i>
-                            </div>
-                        </li>
+
                     </ul>
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer clearfix no-border">
                     <form>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <input id="to-do-text" required type="text" placeholder=" Type new To-Do" />
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <input id="to-do-due" type="text" placeholder=" When Due?" />
+                        </div>
+                        <div class="col-md-3">
+                            <select id="bg-color" class="label-default">
+                                <option value="label-default" class="">Default</option>
+                                <option value="label-danger" class="label-danger">Red</option>
+                                <option value="label-info" class="label-info">Aqua</option>
+                                <option value="label-primary" class="label-primary">Blue</option>
+                                <option value="label-success" class="label-success">Green</option>
+                                <option value="label-warning" class="label-warning">Yellow</option>
+                            </select>
                         </div>
                         <div class="col-md-2">
                             <button id="addToDo" type="button" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Add item</button>
@@ -413,6 +386,7 @@
 
     <script>
         // jQuery UI sortable for the todo list
+        var dueColor = "label-default";
         $('.todo-list').sortable({
             placeholder: 'sort-highlight',
             handle: '.handle',
@@ -441,7 +415,13 @@
             $("#to-do-text").val("");
             var todoDue = $("#to-do-due").val();
             $("#to-do-due").val("");
-            $('ul.todo-list').append('<li><span class="handle"><i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i></span><input type="checkbox" value=""><span class="text">' + todoText + '</span><small class="label label-info"><i class="fa fa-clock-o"></i>&nbsp;' + todoDue + '</small><div class="tools"><i class="fa fa-trash-o"></i></div></li>');
+            $('ul.todo-list').append('<li><span class="handle"><i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span><input type="checkbox" value=""><span class="text">' + todoText + '</span><small class="label ' + dueColor + '"><i class="fa fa-clock-o"></i>&nbsp;' + todoDue + '</small><div class="tools"><i class="fa fa-trash-o"></i></div></li>');
+        });
+
+        $('#bg-color').on('change', function () {
+            $('#bg-color').removeClass();
+            $('#bg-color').addClass(this.value);
+            dueColor = this.value;
         });
     </script>
    

@@ -7352,6 +7352,7 @@
     <Content Include="Scripts\jquery-datatable\skin\bootstrap\images\Sorting icons.psd" />
     <Content Include="Views\Tickets\Chart.cshtml" />
     <Content Include="Views\Shared\_PMCharts.cshtml" />
+    <Content Include="Views\Admin\UsersOnMyProjects.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\bower_components\moment\moment.d.ts" />

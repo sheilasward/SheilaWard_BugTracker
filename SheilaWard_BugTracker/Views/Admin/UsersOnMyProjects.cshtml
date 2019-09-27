@@ -1,0 +1,54 @@
+﻿@using SheilaWard_BugTracker.Models
+@using SheilaWard_BugTracker.Helpers
+@model ICollection<ApplicationUser>
+@{
+    ViewBag.Title = "UsersOnMyProjects";
+    var roleHelper = new UserRolesHelper();
+    var projectHelper = new ProjectsHelper();
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h2>Users on My Projects</h2>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <table id="js-exportable" class="table table-bordered table-striped table-hover dataTable js-exportable">
+        <thead>
+            <tr>
+                <th>@Html.DisplayName("Avatar")</th>
+                <th>@Html.DisplayName("Name")</th>
+                <th>@Html.DisplayName("Email")</th>
+                <th>@Html.DisplayName("Phone")</th>
+                <th>@Html.DisplayName("Current Role")</th>
+                <th>@Html.DisplayName("Current Projects")</th>
+            </tr>
+        </thead>
+        <tbody>
+           @foreach (var user in Model)
+           {
+                <tr>
+                    <td style="width:50px; height: 50px;"><img src="@user.AvatarUrl" class="img-responsive" /></td>
+                    <td>@Html.DisplayFor(model => user.FullName)</td>
+                    <td>@Html.DisplayFor(model => user.Email)</td>
+                    <td>@Html.DisplayFor(model => user.PhoneNumber)</td>
+
+                    <td>@roleHelper.ListUserRoles(user.Id).FirstOrDefault()</td>
+                    <td>
+                        @foreach (var project in @user.Projects)
+                        {
+                            @project.Name  <br />
+                        }
+                    </td>
+                </tr>
+           }
+        </tbody>
+    </table>
+
+    @Html.ActionLink("Back To Dashboard", "Dashboard", "Home")
+</section>
+
+@section Scripts {
+}
+

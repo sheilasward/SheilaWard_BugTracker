@@ -1,4 +1,5 @@
-﻿using SheilaWard_BugTracker.Helpers;
+﻿using Microsoft.AspNet.Identity;
+using SheilaWard_BugTracker.Helpers;
 using SheilaWard_BugTracker.Models;
 using SheilaWard_BugTracker.ViewModels;
 using System;
@@ -73,6 +74,15 @@ namespace SheilaWard_BugTracker.Controllers
                 }
             }
             return RedirectToAction("UserIndex");
+        }
+
+        [Authorize(Roles = "Admin, ProjectManager, Submitter, Developer")]
+        // GET: UsersOnMyProjects - accessed from Main Dashboard by all users with roles.
+        public ActionResult UsersOnMyProjects()
+        {
+            var userId = User.Identity.GetUserId();
+            var usersOnProjects = projectHelper.UsersOnMyProjects(userId);
+            return View(usersOnProjects);
         }
     }
 }

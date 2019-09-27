@@ -56,11 +56,18 @@
                         </div>
                         <div class="box-body">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <img src="~/Avatars/kartunix(1).png" class="img-responsive" />
                                 </div>
-                                <div class="col-sm-6 text-left">
+                                <div class="col-sm-8 text-left">
                                     <h4>Privileges:</h4>
+                                    <ul>
+                                        <li>Has highest privileges.</li>
+                                        <li>Can do everything except create tickets.</li>
+                                        <li>Automatically added to every project.</li>
+                                        <li>Only one who can assign a user to a role.</li>
+                                        <li>Only one who can see all notifications.</li>
+                                    </ul>
 
                                 </div>
                             </div>
@@ -79,6 +86,44 @@
                     </div>
                 </div>
 
+                <!-- Begin Demo Submitter Box -->
+                <div class="col-lg-6 text-center">
+                    <div class="box box-success box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Demo Submitter Role</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <img src="~/Avatars/kartunix(3).png" class="img-responsive" />
+                                </div>
+                                <div class="col-sm-8 text-left">
+                                    <h4>Privileges:</h4>
+                                    <ul>
+                                        <li>Process begins with the Submitter.</li>
+                                        <li>Is the only one who can create a ticket.</li>
+                                        <li>Only creates tickets for projects he/she is on.</li>
+                                        <li>Is the "Owner" of every ticket he/she creates.</li>
+                                        <li>Notifies Project Manager(s) of the new ticket.</li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            @using (Html.BeginForm("Login", "Account"))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("key", "DemoSubmitter")
+                                <button class="btn btn-sm btn-success" type="submit">
+                                    Sign in as Demo Submitter
+                                </button>
+                            }
+                        </div>
+                        <br />
+                    </div>
+                </div>
+
                 <!-- Begin Demo Project Manager Box -->
                 <div class="col-lg-6 text-center">
                     <div class="box box-primary box-solid">
@@ -87,11 +132,18 @@
                         </div>
                         <div class="box-body">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <img src="~/Avatars/kartunix(2).png" class="img-responsive" />
                                 </div>
-                                <div class="col-sm-6 text-left">
+                                <div class="col-sm-8 text-left">
                                     <h4>Privileges:</h4>
+                                    <ul>
+                                        <li>Receives notification of a new ticket.</li>
+                                        <li>Assigns tickets to Developers on his/her projects.</li>
+                                        <li>Has many of the same privileges as Administrator.</li>
+                                        <li>Scope of privileges limited to his/her projects.</li>
+                                        <li>Archives Projects and Tickets when complete.</li>
+                                    </ul>
 
                                 </div>
                             </div>
@@ -118,11 +170,18 @@
                         </div>
                         <div class="box-body">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <img src="~/Avatars/kartunix(4).png" class="img-responsive" />
                                 </div>
-                                <div class="col-sm-6 text-left">
+                                <div class="col-sm-8 text-left">
                                     <h4>Privileges:</h4>
+                                    <ul>
+                                        <li>Does coding and testing on tickets.</li>
+                                        <li>Responsible for updating "% Done" on each ticket.</li>
+                                        <li>Sends notification to Project Manager when ticket complete.</li>
+                                        <li>Scope of privileges limited to his/her tickets.</li>
+                                        <li>Reports to the Project Manager(s) who assigned the tickets.</li>
+                                    </ul>
 
                                 </div>
                             </div>
@@ -141,36 +200,7 @@
                     </div>
                 </div>
 
-                <!-- Begin Demo Submitter Box -->
-                <div class="col-lg-6 text-center">
-                    <div class="box box-success box-solid">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Demo Submitter Role</h3>
-                        </div>
-                        <div class="box-body">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <img src="~/Avatars/kartunix(3).png" class="img-responsive" />
-                                </div>
-                                <div class="col-sm-6 text-left">
-                                    <h4>Privileges:</h4>
 
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            @using (Html.BeginForm("Login", "Account"))
-                            {
-                                @Html.AntiForgeryToken()
-                                @Html.Hidden("key", "DemoSubmitter")
-                                <button class="btn btn-sm btn-success" type="submit">
-                                    Sign in as Demo Submitter
-                                </button>
-                            }
-                        </div>
-                        <br />
-                    </div>
-                </div>
 
                 @*<div class="row">
             <div class="col-md-offset-1 col-md-4">

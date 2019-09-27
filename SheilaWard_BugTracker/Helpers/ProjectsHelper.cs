@@ -81,5 +81,47 @@ namespace SheilaWard_BugTracker.Helpers
         {
             return db.Users.Where(u => u.Projects.All(p => p.Id != projectId)).ToList();
         }
+
+        public ICollection<ApplicationUser> UsersOnMyProjects(string userId)
+        {
+            ICollection<Project> myProjects = ListUserProjects(userId);
+            ICollection<ApplicationUser> UsersOnProjects = new List<ApplicationUser>();
+            ICollection<ApplicationUser> UsersOnThisProject = new List<ApplicationUser>();
+            int userCount = 0;
+            foreach (var project in myProjects)
+            {
+                UsersOnThisProject = UsersOnProject(project.Id);
+                foreach (var user in UsersOnThisProject)
+                {
+                    if (!UsersOnProjects.Contains(user))
+                    {
+                        UsersOnProjects.Add(user);
+                        userCount++;
+                    }
+                }
+            }
+            return (UsersOnProjects.ToList());
+        }
+
+        public int UsersOnMyProjectsCount(string userId)
+        {
+            ICollection<Project> myProjects = ListUserProjects(userId);
+            ICollection<ApplicationUser> UsersOnProjects = new List<ApplicationUser>();
+            ICollection<ApplicationUser> UsersOnThisProject = new List<ApplicationUser>();
+            int userCount = 0;
+            foreach (var project in myProjects)
+            {
+                UsersOnThisProject = UsersOnProject(project.Id);
+                foreach (var user in UsersOnThisProject)
+                {
+                    if (!UsersOnProjects.Contains(user))
+                    {
+                        UsersOnProjects.Add(user);
+                        userCount++;
+                    }
+                }
+            }
+            return (userCount);
+        }
     }
 }
