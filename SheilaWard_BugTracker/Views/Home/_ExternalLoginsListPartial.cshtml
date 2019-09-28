@@ -2,9 +2,10 @@
 @using Microsoft.Owin.Security
 
 @{
-    var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+            var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+}
 
-    if (loginProviders.Count() != 0)
+    @if (loginProviders.Count() != 0)
     {
         using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = Model.ReturnUrl }))
         {
@@ -18,23 +19,20 @@
                         if (i == 0)
                         {
                             <div class="col-md-6">
-                                <button type="submit" class="btn btn-block btn-social btn-facebook btn-flat" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType"><i class="fa fa-facebook"></i> Sign in using Facebook</button>
+                                <button type="submit" class="btn btn-block btn-social btn-google btn-flat" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType"><i class="fa fa-google-plus"></i> Sign in using Google+</button>
                             </div>
-                            i++;
                         }
                         if (i == 1)
                         {
                             <div class="col-md-6">
-                                <button type="submit" class="btn btn-block btn-social btn-google btn-flat" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType"><i class="fa fa-google-plus"></i> Sign in using Google+</button>
+                                <button type="submit" class="btn btn-block btn-social btn-facebook btn-flat" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType"><i class="fa fa-facebook"></i> Sign in using Facebook</button>
                             </div>
-                            i++;
                         }
-
+                        i++;
                     }
-
                 }
             </div>
         }
     }
-}
+
 
