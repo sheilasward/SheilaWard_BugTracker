@@ -1,13 +1,12 @@
-﻿    @using SheilaWard_BugTracker.Helpers;
-    @using SheilaWard_BugTracker.Models;
+﻿@using SheilaWard_BugTracker.Helpers;
+@using SheilaWard_BugTracker.Models;
 
-    @{
-        
-       var ticketHelper = new TicketDecisionHelper();
-       var projectHelper = new ProjectsHelper();
-       var notfHelper = new NotificationHelper();
-       ApplicationDbContext db = new ApplicationDbContext();
-    }
+@{
+    var ticketHelper = new TicketDecisionHelper();
+    var projectHelper = new ProjectsHelper();
+    var notfHelper = new NotificationHelper();
+    ApplicationDbContext db = new ApplicationDbContext();
+}
 
     <ul id="sidebar-items" class="sidebar-menu" data-widget="tree">
         <li class="header">ADMINISTRATOR NAVIGATION</li>
@@ -79,7 +78,6 @@
                 </span>
             </a>
         </li>
-
         <li><hr /></li>
 
         <li>

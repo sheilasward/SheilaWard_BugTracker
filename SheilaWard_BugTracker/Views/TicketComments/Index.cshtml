@@ -7,20 +7,19 @@
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
-    <h2>List of Ticket Comments</h2>
-    </hr>
+    <h2>Ticket Comments</h2>
 </section>
 
 <!-- Main content -->
 <section class="content">
-    <table class="table searchTbl">
+    <table id="js-exportable" class="table table-bordered table-striped table-hover dataTable js-exportable">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayName("Author")
+                    @Html.DisplayName("Ticket Title")
                 </th>
                 <th>
-                    @Html.DisplayName("Ticket Title")
+                    @Html.DisplayName("Comment Author")
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Comment)
@@ -35,10 +34,10 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Author.FullName)
+                        @Html.DisplayFor(modelItem => item.Ticket.Title)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Ticket.Title)
+                        @Html.DisplayFor(modelItem => item.Author.FullName)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Comment)
@@ -49,6 +48,5 @@
                 </tr>
             }
         </tbody>
-
     </table>
 </section>

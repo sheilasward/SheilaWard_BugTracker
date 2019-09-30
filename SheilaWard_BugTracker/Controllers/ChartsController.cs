@@ -68,6 +68,19 @@ namespace SheilaWard_BugTracker.Controllers
             return Json(data);
         }
 
+        public JsonResult GetTicketPriorityData()
+        {
+            var data = new ChartJSChartData();
+            var userTickets = ticketHelper.ListOfUsersTickets();
+
+            foreach (var ticketPriority in userTickets.Select(t => t.TicketPriority).Distinct().ToList())
+            {
+                data.Labels.Add(ticketPriority.Name);
+                data.Values.Add(userTickets.Where(t => t.TicketPriority.Name == ticketPriority.Name).Count());
+            }
+            return Json(data);
+        }
+
         public JsonResult GetTicketsPercentDone()
         {
             var data = new ChartJSChartData();
@@ -90,7 +103,7 @@ namespace SheilaWard_BugTracker.Controllers
 
         public JsonResult GetTicketsAssignedToDevs()
         {
-            var data = new ChartJSGroupedBarData();
+            var data = new ChartJSGroupedBarData1();
 
             var mgrId = User.Identity.GetUserId();
             var mgrProjects = projHelper.ListUserProjects(mgrId);
@@ -113,6 +126,40 @@ namespace SheilaWard_BugTracker.Controllers
             }
             return Json(data);
         }
+
+        //public JsonResult GetTicketsCompletedByDevs()
+        //{
+        //    List<string> month = new List<string>();
+        //    var month4 = DateTime.Today;
+        //    var month3 = DateTime.Today.AddMonths(-1);
+        //    var month2 = DateTime.Today.AddMonths(-2);
+        //    var month1 = DateTime.Today.AddMonths(-4);
+        //    month.Add(month1);
+        //    month.Add(month2);
+        //    month.Add(month3);
+        //    month.Add(month4);
+
+        //    var data = new ChartJSLineChart();
+
+        //    var userTickets = ticketHelper.ListOfUsersTickets();
+
+        //    foreach (var ticket in userTickets.ToList())
+        //    {
+        //        if (ticket.TicketStatus.Name == "Archived" || ticket.TicketStatus.Name == "Completed")
+        //        {
+        //            var lastUpdated = ticket.Updated.GetValueOrDefault();
+        //            if (lastUpdated.Month)
+        //            var valueDateComplete = ticket.TicketStatus.Name;
+        //            var valuePriority = ticket.TicketPriority.Name;
+        //            var valueType = ticket.TicketType.Name;
+        //            data.Labels.Add(month1);
+        //            data.ValueStatus.Add(valueStatus);
+        //        }
+
+        //    }
+
+        //    return Json(data);
+        //}
     }
 
 }

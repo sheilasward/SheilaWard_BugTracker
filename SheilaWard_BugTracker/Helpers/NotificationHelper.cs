@@ -191,6 +191,33 @@ namespace SheilaWard_BugTracker.Helpers
             db.SaveChanges();
         }
 
+        public void NewTicketComment(TicketComment ticketComment)
+        {
+            var ticketId = ticketComment.TicketId;
+            var ticket = db.Tickets.Find(ticketId);
+            var commentAuthorId = ticketComment.AuthorId;
+            var commentAuthor = db.Users.Find(ticketComment.AuthorId).FullName;
+            var messageBody = new StringBuilder();
+            messageBody.AppendLine($"Ticket Title:  {ticket.Title}");
+            messageBody.AppendLine(new String('-', 45));
+            messageBody.AppendLine($"Author:  {db.Users.Find(ticketComment.AuthorId).FullName}");
+            messageBody.AppendLine($"Comment:  {ticketComment.Comment}");
+ 
+            var notification = new TicketNotification
+            {
+                Created = DateTime.Now,
+                Subject = $"A new comment was written on {DateTime.Now.ToString("M/d/yyyy mm:hhtt")}",
+                IsRead = false,
+                RecipientId = ticket.AssignedToUserId,
+                SenderId = HttpContext.Current.User.Identity.GetUserId(),
+                NotificationBody = messageBody.ToString(),
+                TicketId = ticket.Id
+            };
+
+            db.TicketNotifications.Add(notification);
+            db.SaveChanges();
+        }
+
         public int GetNewUserNotificationCount()
         {
             var userId = HttpContext.Current.User.Identity.GetUserId();

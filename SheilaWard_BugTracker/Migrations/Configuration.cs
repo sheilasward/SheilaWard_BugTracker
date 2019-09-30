@@ -294,26 +294,40 @@ namespace SheilaWard_BugTracker.Migrations
             projHelper.AddUserToProject(sheilaId, bugTrackerProjectId);
             projHelper.AddUserToProject(sheilaId, yelpCampProjectId);
 
+            // Assign Demo Admin to projects
+            projHelper.AddUserToProject(adminId, portfolioProjectId);
+            projHelper.AddUserToProject(adminId, blogProjectId);
+            projHelper.AddUserToProject(adminId, bugTrackerProjectId);
+            projHelper.AddUserToProject(adminId, yelpCampProjectId);
+
             // Assign Angie to projects
             projHelper.AddUserToProject(angieId, blogProjectId);
-
-            // Assign Ares to projects
-            projHelper.AddUserToProject(aresId, blogProjectId);
-
-            // Assign Teresa to projects
-            projHelper.AddUserToProject(teresaId, blogProjectId);
-            projHelper.AddUserToProject(teresaId, bugTrackerProjectId);
-
-            // Assign Sarvesh to projects
-            projHelper.AddUserToProject(sarveshId, portfolioProjectId);
-
-            // Assign Sherri to projects
-            projHelper.AddUserToProject(sherriId, portfolioProjectId);
 
             // Assign Dave to projects
             projHelper.AddUserToProject(daveId, bugTrackerProjectId);
             projHelper.AddUserToProject(daveId, yelpCampProjectId);
 
+            // Assign Demo PM to projects
+            projHelper.AddUserToProject(PMId, bugTrackerProjectId);
+            projHelper.AddUserToProject(PMId, portfolioProjectId);
+
+            // Assign Teresa to projects
+            projHelper.AddUserToProject(teresaId, blogProjectId);
+            projHelper.AddUserToProject(teresaId, bugTrackerProjectId);
+
+            // Assign Sherri to projects
+            projHelper.AddUserToProject(sherriId, portfolioProjectId);
+
+            // Assign Demo Submitter to projects
+            projHelper.AddUserToProject(submitterId, yelpCampProjectId);
+            projHelper.AddUserToProject(submitterId, portfolioProjectId);
+
+            // Assign Ares to projects
+            projHelper.AddUserToProject(aresId, blogProjectId);
+        
+            // Assign Sarvesh to projects
+            projHelper.AddUserToProject(sarveshId, portfolioProjectId);
+            
             // Assign Lee to projects
             projHelper.AddUserToProject(leeId, bugTrackerProjectId);
 
@@ -323,6 +337,9 @@ namespace SheilaWard_BugTracker.Migrations
             // Assign Cooley to projects
             projHelper.AddUserToProject(cooleyId, portfolioProjectId);
             projHelper.AddUserToProject(cooleyId, blogProjectId);
+
+            // Assign Demo Developer to projects
+            projHelper.AddUserToProject(DevId, bugTrackerProjectId);
             #endregion
 
             #region Ticket Priorities, Statuses, & Types (require Foreign Keys)

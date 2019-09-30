@@ -63,6 +63,10 @@ textarea {
     border-color: rgb(0,166,90);
 }
 
+.hr-danger {
+    border-color: #dd4b39;
+}
+
 .login-box,
 .register-box {
     width: 500px;

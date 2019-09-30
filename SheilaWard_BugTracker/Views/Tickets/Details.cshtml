@@ -84,7 +84,7 @@
             </dt>
 
             <dd>
-                @Model.Created.ToString("MM/dd/yyyy hh:mmtt")
+                @Model.Created.ToString("M/d/yyyy h:mmtt")
             </dd>
 
             <dt>
@@ -92,7 +92,10 @@
             </dt>
 
             <dd>
-                 @Html.DisplayFor(model => model.Updated)
+                @if (@Model.Updated.GetValueOrDefault().ToString("MM/dd/yyyy hh:mmtt") != "01/01/0001 12:00AM")
+                {
+                    @Model.Updated.GetValueOrDefault().ToString("M/d/yyyy h:mmtt")
+                }
             </dd>
 
         </dl>

@@ -6782,14 +6782,9 @@
     <Content Include="Views\Tickets\Details.cshtml" />
     <Content Include="Views\Tickets\Edit.cshtml" />
     <Content Include="Views\Tickets\Index.cshtml" />
-    <Content Include="Views\TicketAttachments\Create.cshtml" />
     <Content Include="Views\TicketAttachments\Delete.cshtml" />
-    <Content Include="Views\TicketAttachments\Details.cshtml" />
-    <Content Include="Views\TicketAttachments\Edit.cshtml" />
     <Content Include="Views\TicketAttachments\Index.cshtml" />
-    <Content Include="Views\TicketComments\Create.cshtml" />
     <Content Include="Views\TicketComments\Delete.cshtml" />
-    <Content Include="Views\TicketComments\Details.cshtml" />
     <Content Include="Views\TicketComments\Edit.cshtml" />
     <Content Include="Views\TicketComments\Index.cshtml" />
     <Content Include="Views\TicketHistories\Create.cshtml" />
@@ -7353,6 +7348,7 @@
     <Content Include="Views\Tickets\Chart.cshtml" />
     <Content Include="Views\Shared\_PMCharts.cshtml" />
     <Content Include="Views\Admin\UsersOnMyProjects.cshtml" />
+    <Content Include="Views\Home\DashboardCopy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\bower_components\moment\moment.d.ts" />

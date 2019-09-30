@@ -58,7 +58,7 @@ namespace SheilaWard_BugTracker.Controllers
             return View(ticket);
         }
 
-        // GET: Dashboard
+        // GET: Tickets/Dashboard
         [Authorize(Roles = "Admin, ProjectManager, Submitter, Developer")]
         public ActionResult Dashboard(int id, string stat)
         {

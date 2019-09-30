@@ -1,11 +1,14 @@
 ﻿@using SheilaWard_BugTracker.Models
 @using SheilaWard_BugTracker.Helpers
+@using SheilaWard_BugTracker.Enumerations
 @model Ticket
 @{
     ViewBag.Title = "Dashboard";
     var decisionHelper = new TicketDecisionHelper();
+    var rolesHelper = new UserRolesHelper();
     var prevHistory = @Model.Created;
     var stat = @ViewBag.Stats;
+    var currentUser = ViewBag.CurrentUser;
 }
 
 <!-- Content Header (Page header) -->
@@ -464,7 +467,6 @@
             <div class="box-body">
                @if (decisionHelper.TicketIsEditableByUser(Model))
                 {
-
                     using (Html.BeginForm("Create", "TicketComments", FormMethod.Post))
                     {
                         @Html.AntiForgeryToken()
@@ -480,43 +482,44 @@
                             </div>
                         </div>
                     }
+                }
 
-                    foreach (var comment in Model.TicketComments)
-                    {
-                        <hr class="hr-primary" />
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="row">
-                                    <div class="col-md-12">On @comment.Created.ToString("MMM d, yyyy"), @comment.Author.FullName commented:</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        @comment.Comment
-                                    </div>
-                                </div>
-                               @if (comment.AuthorId == ViewBag.CurrentUser)
-                                {
-                                    <br />
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <button class="btn btn-sm btn-warning">Edit Comment</button>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <button class="btn btn-sm btn-danger">Delete Comment</button>
-                                        </div>
-                                    </div>
-                                }
+               @foreach (var comment in Model.TicketComments)
+                {
+                    <hr class="hr-primary" />
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-12">On @comment.Created.ToString("MMM d, yyyy"), @comment.Author.FullName commented:</div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    @comment.Comment
+                                </div>
+                            </div>
+                           @if (decisionHelper.TicketIsEditableByUser(Model))
+                            {
+                                if (comment.AuthorId == currentUser || User.IsInRole("Admin"))
+                                {
+                                    using (Html.BeginForm("Delete", "TicketComments", new { id = comment.Id, stat = ViewBag.Stats }, FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <br />
+                                        @Html.ActionLink("Edit", "Edit", "TicketComments", new { id = comment.Id, stat = stat }, new { @class = "btn btn-small btn-warning" })
+                                       <span>&emsp;</span>
+                                        <button type="submit" class="btn btn-small btn-primary" onclick="return confirm('Are you sure you want to delete this comment?')">Delete</button>
+                                    }
+                                }
+                            }
                         </div>
-                    }
+                    </div>
                 }
             </div>
-
         </div>
 
         <div class="box box-danger box-solid">
             <div class="box-header with-border">
-                <h3 class="box-title">Notification(s)</h3>
+                <h3 class="box-title">Unread Ticket Notification(s)</h3>
 
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse">
@@ -527,13 +530,43 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                NOTIFICATION BADGE/LABEL
-            </div>
+               @{ 
+                   var firstNotification = true;
+               }
+               @foreach (var notification in Model.TicketNotifications)
+                {
+                    if (!notification.IsRead)
+                    {
+                        if(firstNotification)
+                        {
+                            firstNotification = false;
+                        }
+                        else
+                        {
+                           <hr class="hr-danger" />
+                        }
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-12">On @notification.Created.ToString("MMM d, yyyy"), notification was sent:</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        From: @notification.Sender.FullName <br />
+                                        To: @notification.Recipient.FullName  <br />
+                                        Message: <br />
+                                        <pre>@notification.NotificationBody</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
             <!-- /.box-body -->
-        </div>
+            </div>
         <!-- /.box -->
+        </div>
     </div>
-
 </section>
 
 @section scripts {

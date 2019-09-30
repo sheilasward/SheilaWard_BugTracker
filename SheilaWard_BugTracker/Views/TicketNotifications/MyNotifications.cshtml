@@ -15,11 +15,13 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="row">
+
         <div class="col-md-10">
             <h2>Ticket Notifications</h2>
         </div>
+
         <div class="col-md-1">
-            @using (Html.BeginForm("MarkAllRead", "TicketNotifications"))
+           @using (Html.BeginForm("MarkAllRead", "TicketNotifications"))
             {
                 @Html.AntiForgeryToken()
                 <button type="submit" class="btn btn-sm btn-primary" style="margin-top:20px;">Mark All Read</button>
@@ -27,32 +29,29 @@
 
         </div>
         <div class="col-md-1">
-            @using (Html.BeginForm("DeleteRead", "TicketNotifications"))
+           @using (Html.BeginForm("DeleteRead", "TicketNotifications"))
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <button type="submit" class="btn btn-sm btn-danger" style="margin-top:20px;">Delete All Read</button>
             }
-
         </div>
+
     </div>
 </section>
-<hr />
+
 
 <!-- Main content -->
 <section class="content">
-    <table class="table searchTbl">
+    <table id="js-exportable" class="table table-bordered table-striped table-hover dataTable js-exportable">
         <thead>
             <tr>
                 @*<th>
-                        @Html.DisplayName("Recipient")
-                    </th>*@
+                    @Html.DisplayName("Recipient")
+                </th>*@
                 <th>
                     @Html.DisplayName("Sender")
                 </th>
-                @*<th>
-                        @Html.DisplayName("Owner/User")
-                    </th>*@
                 <th>
                     @Html.DisplayName("Created")
                 </th>
@@ -62,38 +61,19 @@
                 <th>
                     @Html.DisplayName("Notification Body")
                 </th>
-                @*<th>
-                        @Html.DisplayName("Message")
-                </th>*@
-            <th>
-                @*<div class="row">
-                    <div class="col-md-6">
-                        @using (Html.BeginForm("MarkAllRead", "TicketNotifications"))
-                        {
-                            @Html.AntiForgeryToken()
-                            <button id="update" type="submit" class="btn btn-sm btn-primary">Mark All Read</button>
-                        }
-                    </div>
-                    <div class="col-md-6">
-                        @using (Html.BeginForm("DeleteRead", "TicketNotifications"))
-                        {
-                            @Html.AntiForgeryToken()
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <button type="submit" class="btn btn-sm btn-danger">Delete All Read</button>
-                        }
-                    </div>
-                 </div>*@
-                @Html.DisplayName("Read?")
-            </th>
+                <th>
+                    @Html.DisplayName("Read?")
+                </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+
+           @foreach (var item in Model)
             {
                 <tr>
                     @*<td>
-                            @Html.DisplayFor(modelItem => item.Recipient.FullName)
+                        @Html.DisplayFor(modelItem => item.Recipient.FullName)
                     </td>*@
                     <td>
                         @Html.DisplayFor(modelItem => item.Sender.FullName)
@@ -110,7 +90,7 @@
                         </pre>
                     </td>
                     <td>
-                        @if (item.IsRead)
+                       @if (item.IsRead)
                         {
                             @Html.CheckBoxFor(modelItem => item.IsRead, new { @checked = "checked", disabled = "disabled" })
                         }
@@ -121,19 +101,15 @@
                                 @Html.AntiForgeryToken()
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                 <button type="submit" class="btn-square">
-                                    @*@Html.CheckBoxFor(modelItem => item.IsRead)*@
                                 </button>
                             }
-                            
                         }
-                        @*@Html.DisplayFor(modelItem => item.IsRead)*@
                     </td>
                     <td>
                         @if (item.IsRead)
                         {
                             @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                         }
-
                     </td>
                 </tr>
             }

@@ -1,57 +1,61 @@
-﻿@model IEnumerable<SheilaWard_BugTracker.Models.TicketAttachment>
+﻿@using SheilaWard_BugTracker.Helpers
+@model IEnumerable<SheilaWard_BugTracker.Models.TicketAttachment>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h2>Ticket Attachments</h2>
+</section>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Ticket.OwnerUserId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Created)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AttachmentUrl)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ticket.OwnerUserId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Created)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AttachmentUrl)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
-</table>
+<!-- Main content -->
+<section class="content">
+    <table id="js-exportable" class="table table-bordered table-striped table-hover dataTable js-exportable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayName("Ticket Title")
+                </th>
+                <th>
+                    @Html.DisplayName("Attachment Author")
+                </th>
+                <th>
+                    @Html.DisplayName("Attachment Description")
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Created)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AttachmentUrl)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ticket.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @item.Created.ToString("MM/dd/yyyy hh:mm")
+                    </td>
+                    <td>
+                        <img src="@ImageHelpers.GetIconPath(item.AttachmentUrl)" style="width:80px; height: 80px;"  /><br />
+                        @*<img src="@item.AttachmentUrl" style="width:60px; height: 60px;" />*@
+                        <a target="_blank" href="@item.AttachmentUrl">@Path.GetFileNameWithoutExtension(item.AttachmentUrl)</a>
+                        @*@Html.DisplayFor(modelItem => item.AttachmentUrl)*@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
