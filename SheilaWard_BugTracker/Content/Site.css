@@ -51,6 +51,11 @@ textarea {
     color: white;
 }
 
+.label-white {
+    background-color: white;
+    color: gray;
+}
+
 .hr-warning {
     border-color: rgb(243,156,17);
 }
@@ -100,5 +105,15 @@ textarea {
 .skin-yellow-light viewManageTickets
 {
     color: #444;
+}
+
+.bg-color {
+    margin-right: 0;
+    padding-right: 0;
+}
+
+.addToDo {
+    margin-left: 0;
+    padding-left: 0;
 }
 

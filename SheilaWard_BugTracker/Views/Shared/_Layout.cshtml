@@ -26,6 +26,12 @@
     <link rel="stylesheet" href="~/Content/bower_components/fullcalendar/dist/fullcalendar.min.css">
     <link rel="stylesheet" href="~/Content/bower_components/fullcalendar/dist/fullcalendar.print.min.css" media="print">
 
+    <!-- flatpickr -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    @*<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/flatpickr.css">*@
+    @*<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/confirmDate/confirmDate.css">*@
+    @*<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/monthSelect/style.css">*@
+    
     <!-- Theme style -->
     <link href="~/Content/dist/css/AdminLTE.min.css" rel="stylesheet" />
 
@@ -55,8 +61,6 @@
     <!-- JQuery DataTable Css -->
     <link href="~/Scripts/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
     <link href="~/Content/style.css" rel="stylesheet" />
-    @*<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css" />*@
-
     <link href="~/Content/jquery.dataTables.css" rel="stylesheet" />
 
     <style>
@@ -67,11 +71,6 @@
             color: rgb(221,76,57);
         }
     </style>
-
-    <!-- CDN for Morris Charts -->
-    @*<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">*@
-
-
 
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -464,8 +463,27 @@
         <script src="~/Content/bower_components/moment/moment.js"></script>
         <script src="~/Content/bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
 
+        <!-- flatpickr -->
+        @*<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>*@
+        @*<script>
+            var base_url = 'https:\/\/flatpickr.js.org\/';
+            var repo_id = 'flatpickr\/flatpickr';
+        </script>*@
+        @*<script src="https://flatpickr.js.org/javascripts/application.js"></script>*@
+        @*<script src="https://flatpickr.js.org/init.js"></script>*@
+        <script src="//cdn.jsdelivr.net/npm/flatpickr@latest/dist/flatpickr.js"></script>  <!-- doesn't work without this! -->
+        <script src="//cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/confirmDate/confirmDate.js"></script>   <!-- need this for time! -->
+        <script src="//cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/weekSelect/weekSelect.js"></script>   <!-- need this for time! -->
+        <script src="//cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/rangePlugin.js"></script>   <!-- need this for time! -->
+        <script src="//cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/minMaxTimePlugin.js"></script>  <!-- need this for time! -->
+        <script src="//cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/monthSelect/index.js"></script>  <!-- this one gets time! -->
+        <script src="//flatpickr.js.org/flatpickr.js"></script>  <!-- this shows calendar - gets date! -->
+        @*<script src="https://flatpickr.js.org/themer.js"></script>*@
+        @*<script src="https://flatpickr.js.org/javascripts/modernizr.js"></script>*@
+        
         <!-- Sweet Alert -->
-        <script src="//cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+        @*<script src="//cdn.jsdelivr.net/npm/sweetalert2@8"></script>*@
+        <script src="~/Scripts/sweetalert2.js"></script>
 
         <!-- Jquery DataTable Plugin Js -->
         <script src="~/Scripts/jquery-datatable/jquery.dataTables.js"></script>
@@ -513,7 +531,7 @@
             });
         </script>
 
-        
+
 
 
         @RenderSection("scripts", required: false)

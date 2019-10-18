@@ -185,6 +185,7 @@
     <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Controllers\TicketStatusController.cs" />
     <Compile Include="Controllers\TicketTypesController.cs" />
+    <Compile Include="Controllers\ToDoesController.cs" />
     <Compile Include="Enumerations\SystemRole.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -211,6 +212,7 @@
     <Compile Include="Models\TicketPriority.cs" />
     <Compile Include="Models\TicketStatus.cs" />
     <Compile Include="Models\TicketType.cs" />
+    <Compile Include="Models\ToDo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\EmailModel.cs" />
@@ -6715,6 +6717,7 @@
     <Content Include="Images\xlsx.ico" />
     <Content Include="Images\zip.png" />
     <Content Include="Scripts\adminlte.min.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Chart.bundle.js" />
     <Content Include="Scripts\dataTables.bootstrap.js" />
@@ -6742,6 +6745,7 @@
     <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\jquery.slimscroll.min.js" />
     <Content Include="Scripts\site.js" />
+    <Content Include="Scripts\sweetalert2.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -6819,6 +6823,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Attachments\" />
     <Folder Include="Views\Charts\" />
+    <Folder Include="Views\ToDo\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

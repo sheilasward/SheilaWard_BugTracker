@@ -39,12 +39,14 @@ namespace SheilaWard_BugTracker.Models
         public virtual ICollection<TicketAttachment> TicketAttachments { get; set; }
         public virtual ICollection<TicketComment> TicketComments { get; set; }
         public virtual ICollection<TicketHistory> TicketHistories { get; set; }
+        public virtual ICollection<ToDo> ToDoes { get; set; }
         public ApplicationUser()
         {
             Projects = new HashSet<Project>();
             TicketAttachments = new HashSet<TicketAttachment>();
             TicketComments = new HashSet<TicketComment>();
             TicketHistories = new HashSet<TicketHistory>();
+            ToDoes = new HashSet<ToDo>();
 
         }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
@@ -69,7 +71,7 @@ namespace SheilaWard_BugTracker.Models
         }
 
         public DbSet<Project> Projects { get; set; }
-        
+        public DbSet<ToDo> ToDoes { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketPriority> TicketPriorities { get; set; }
         public DbSet<TicketStatus> TicketStatuses { get; set; }

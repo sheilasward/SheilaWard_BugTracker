@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNet.Identity;
 @using SheilaWard_BugTracker.Helpers;
 @using SheilaWard_BugTracker.Models;
+@model ToDo
 
 @{
 
@@ -10,18 +11,6 @@
     ApplicationDbContext db = new ApplicationDbContext();
     var userId = User.Identity.GetUserId();
 }
-
-<style>
-    .chartHR {
-        border: 5px solid;
-        border-radius: 5px;
-        background: linear-gradient(black, red);
-    }
-
-    .chart250 {
-        height: 275px;
-    }
-</style>
 
 <section class="content-header">
     <h1>
@@ -42,8 +31,6 @@
                         var ticketCount = @ticketHelper.GetTicketCount("New/Unassigned") + @ticketHelper.GetTicketCount("Active/Assigned");
                         <h3>@ticketCount</h3>
                     }
-
-
                     <p>TICKETS IN PROGRESS</p>
                 </div>
                 <div class="icon">
@@ -76,8 +63,6 @@
                         var usersOnMyProjectsCount = projectHelper.UsersOnMyProjectsCount(userId);
                         <h3>@usersOnMyProjectsCount</h3>
                     }
-
-
                     <p>USERS ON MY PROJECTS</p>
                 </div>
                 <div class="icon">
@@ -135,6 +120,7 @@
     </div>
     <br />
     <hr class="hr-primary" />
+    <br />
 
     <!-- Main row -->
     <div class="row">
@@ -157,94 +143,82 @@
 
                     <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
                     <ul class="todo-list">
-                        <li>
-                            <!-- drag handle -->
-                            <span class="handle">
-                                <i class="fa fa-ellipsis-v"></i>
-                                <i class="fa fa-ellipsis-v"></i>
-                            </span>
-                            <!-- checkbox -->
-                            <input type="checkbox" value="">
-                            <!-- todo text -->
-                            <span class="text">Design a nice theme</span>
-                            <!-- Emphasis label -->
-                            <small class="label label-danger"><i class="fa fa-clock-o"></i> 2 mins</small>
-                            <!-- General tools such as edit or delete-->
-                            <div class="tools">
-                                <i class="fa fa-trash-o"></i>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="handle">
-                                <i class="fa fa-ellipsis-v"></i>
-                                <i class="fa fa-ellipsis-v"></i>
-                            </span>
-                            <input type="checkbox" value="">
-                            <span class="text">Make the theme responsive</span>
-                            <small class="label label-info"><i class="fa fa-clock-o"></i> 4 hours</small>
-                            <div class="tools">
-                                <i class="fa fa-trash-o"></i>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="handle">
-                                <i class="fa fa-ellipsis-v"></i>
-                                <i class="fa fa-ellipsis-v"></i>
-                            </span>
-                            <input type="checkbox" value="">
-                            <span class="text">Let theme shine like a star</span>
-                            <small class="label label-warning"><i class="fa fa-clock-o"></i> 1 day</small>
-                            <div class="tools">
-                                <i class="fa fa-trash-o"></i>
-                            </div>
-                        </li>
+                        @if (ViewBag.ToDoList != null)
+                        {
+                            foreach (var toDo in ViewBag.ToDoList)
+                            {
+                                <li>
+                                    <!-- drag handle -->
+                                    <span class="handle">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                        <i class="fa fa-ellipsis-v"></i>
+                                    </span>
 
-                        <li>
-                            <span class="handle">
-                                <i class="fa fa-ellipsis-v"></i>
-                                <i class="fa fa-ellipsis-v"></i>
-                            </span>
-                            <input type="checkbox" value="">
-                            <span class="text">Check your messages and notifications</span>
-                            <small class="label label-primary"><i class="fa fa-clock-o"></i> 1 week</small>
-                            <div class="tools">
-                                <i class="fa fa-trash-o"></i>
-                            </div>
-                        </li>
+                                    <!-- checkbox -->
+                                    @if (toDo.GrayedOut)
+                                    {
+                                        <input class="chkbox" type="checkbox" value="checked">
+                                    }
+                                    else
+                                    {
+                                        <input class="chkbox" type="checkbox" value="">
+                                    }
+                                    <!-- todo text -->
+                                    <span class="text">@toDo.Task</span>
+                                    <!-- Emphasis label -->
+                                    <small class="label @toDo.Color"><i class="fa fa-clock-o"></i> @toDo.WordDiff</small>
+                                    <!-- General tools such as edit or delete-->
+                                    <div class="tools">
+                                        @using (Html.BeginForm("Delete", "ToDoes", new { id = @toDo.Id }, FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.Hidden("UserId", userId)
+                                            <i class="fa fa-trash-o"></i>
+                                        }
+                                    </div>
+                                </li>
+                            }
+                        }
 
                     </ul>
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer clearfix no-border">
-                    <form>
+                   @using (Html.BeginForm("Create", "ToDoes", FormMethod.Post, new { id = "createToDo" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("UserId", userId)
+                    <div class="row">
                         <div class="col-md-4">
-                            <input id="to-do-text" required type="text" placeholder=" Type new To-Do" />
+                            <input style="height:35px;" id="to-do-text" required name="Task" type="text" placeholder=" Type new To-Do" />
                         </div>
-                        <div class="col-md-3">
-                            <input id="to-do-due" type="text" placeholder=" When Due?" />
+                        <div class="col-md-4">
+                            <input style="height:35px;" class="flatpickr flatpickr-input" type="datetime" name="Due" data-id="datetime" id="datetime" placeholder=" When Due?" readonly="readonly">
                         </div>
-                        <div class="col-md-3">
-                            <select id="bg-color" class="label-default">
-                                <option value="label-default" class="">Default</option>
-                                <option value="label-danger" class="label-danger">Red</option>
-                                <option value="label-info" class="label-info">Aqua</option>
-                                <option value="label-primary" class="label-primary">Blue</option>
-                                <option value="label-success" class="label-success">Green</option>
-                                <option value="label-warning" class="label-warning">Yellow</option>
-                            </select>
+
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <select id="bg-color" class="label-default" name="Color" style="height:35px; border: 1px solid gray;">
+                                    <option value="label-default" class="">Default</option>
+                                    <option value="label-danger" class="label-danger">Red</option>
+                                    <option value="label-info" class="label-info">Aqua</option>
+                                    <option value="label-primary" class="label-primary">Blue</option>
+                                    <option value="label-success" class="label-success">Green</option>
+                                    <option value="label-warning" class="label-warning">Yellow</option>
+                                </select>
+                                <button id="addToDo" class="btn-primary" style="height:35px; border:1px solid gray; margin-right:0;"> Add item</button>
+                            </div>
                         </div>
-                        <div class="col-md-2">
-                            <button id="addToDo" type="button" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Add item</button>
-                        </div>
-                    </form>
+                    </div>
+                    }
                 </div>
             </div>
             <!-- /.box -->
         </div>
         <!-- /.Left Column-->
+
         <!-- Right Column -->
         <div class="col-md-7">
-
             <div class="col-lg-3">
                 <div class="box box-primary box-solid">
                     <div class="box-header with-border">
@@ -310,7 +284,7 @@
                             </ul>
                         </div>
                         <!-- /btn-group -->
-                        <div class="input-group">
+                        <div class="input-group" style="width: 100%;">
                             <input id="new-event" type="text" class="form-control" placeholder="Event Title">
 
                             <div class="input-group-btn">
@@ -323,7 +297,6 @@
                 </div>
             </div>
             <!-- /.col -->
-
 
             <div class="col-lg-9">
                 <!-- Calendar -->
@@ -446,6 +419,7 @@
         });
 
         $('.todo-list').on("click", ".fa-trash-o", function (e) {
+            $(this).closest("form").submit(); 
             $(this).closest("li").fadeOut(500, function () {
                 $(this).remove();
             });
@@ -453,11 +427,13 @@
         });
 
         $('#addToDo').click(function () {
+            $('#createToDo').submit();
             var todoText = $("#to-do-text").val();
             $("#to-do-text").val("");
             var todoDue = $("#to-do-due").val();
             $("#to-do-due").val("");
             $('ul.todo-list').append('<li><span class="handle"><i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span><input type="checkbox" value=""><span class="text">' + todoText + '</span><small class="label ' + dueColor + '"><i class="fa fa-clock-o"></i>&nbsp;' + todoDue + '</small><div class="tools"><i class="fa fa-trash-o"></i></div></li>');
+            
         });
 
         $('#bg-color').on('change', function () {
@@ -518,12 +494,12 @@
                 },
                 //Random default events
                 events: [
-                    {
-                        title: 'All Day Event',
-                        start: new Date(y, m, 1),
-                        backgroundColor: '#f56954', //red
-                        borderColor: '#f56954' //red
-                    },
+                    //{
+                    //    title: 'All Day Event',
+                    //    start: new Date(y, m, 1),
+                    //    backgroundColor: '#f56954', //red
+                    //    borderColor: '#f56954' //red
+                    //},
                     {
                         title: 'Long Event',
                         start: new Date(y, m, d - 5),
@@ -785,7 +761,17 @@
         });
     </script>
 
-    <script>
+    @*<script>
+        $("#datetime").click(function () {
+            var today = new Date();
+            var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            var currDateTime = date + ' ' + time;
+            
+        });
+    </script>*@
+
+
         @*$.post('@Url.Action("GetTicketsCompletedByDevs", "Charts")').then(function (response) {*@
         //new Chart(document.getElementById("line-chart"), {
         //    type: 'line',
@@ -819,5 +805,5 @@
         //    }
         //});
 
-    </script>
+
 }
