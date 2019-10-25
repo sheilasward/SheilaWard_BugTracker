@@ -37,7 +37,7 @@
         }
         else
         {
-            <h2>List of Tickets - Completed</h2>
+            <h2>List of Tickets - Not Active</h2>
         }
     }
 
@@ -155,14 +155,14 @@
                     @item.Created.ToString("MM/dd/yyyy hh:mmtt")
                 </td>
                 <td>
-                    @if (item.Updated.GetValueOrDefault().ToString("MM/dd/yyyy hh:mmtt") != "01/01/0001 12:00AM")
+                   @if (item.Updated.GetValueOrDefault().ToString("MM/dd/yyyy hh:mmtt") != "01/01/0001 12:00AM")
                     {
                         @item.Updated.GetValueOrDefault().ToString("MM/dd/yyyy hh:mmtt")
                     }
                 </td>
 
                 <td>
-                    @if (linkHelper.UserCanEditTicketPriorityTypeTitleDescription(item))
+                   @if (linkHelper.UserCanEditTicketPriorityTypeTitleDescription(item))
                     {
                         @Html.ActionLink("Edit", "Edit", new { id = item.Id, stat = stat })<br />
 
@@ -173,9 +173,11 @@
                             {
                                 @Html.ActionLink("Archive", "Archive", new { id = item.Id })<br />
                             }
-
                         }
-                        @Html.ActionLink("Dashboard", "Dashboard", new { id = item.Id, stat = stat })
+                        if (item.AssignedToUserId != null)
+                        {
+                            @Html.ActionLink("Dashboard", "Dashboard", new { id = item.Id, stat = stat })
+                        }
                     }
                     else
                     {

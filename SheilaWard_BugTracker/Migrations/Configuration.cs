@@ -270,12 +270,14 @@ namespace SheilaWard_BugTracker.Migrations
             DateTime P2Date = new DateTime(2019, 06, 23, 17, 06, 25, 32);
             DateTime P3Date = new DateTime(2019, 08, 04, 16, 23, 24, 22);
             DateTime P4Date = new DateTime(2019, 04, 12, 10, 45, 17, 26);
+            DateTime P5Date = new DateTime(2019, 09, 23, 18, 04, 24, 06);
             context.Projects.AddOrUpdate(
                 p => p.Name,
                     new Project { Name = "Coder Foundry Blog", Description = "Blog exercise", Created = new DateTimeOffset(P1Date.Year, P1Date.Month, P1Date.Day, P1Date.Hour, P1Date.Minute, P1Date.Second, P1Date.Millisecond, new TimeSpan(2, 0, 0)) },
                     new Project { Name = "Portfolio Project", Description = "My Portfolio created during Coder Foundry", Created = new DateTimeOffset(P2Date.Year, P2Date.Month, P2Date.Day, P2Date.Hour, P2Date.Minute, P2Date.Second, P2Date.Millisecond, new TimeSpan(2, 0, 0)) },
                     new Project { Name = "Bug Tracker Project", Description = "System to track tickets in an IT system - can be bugs, or requests for enhancements or documentation", Created = new DateTimeOffset(P3Date.Year, P3Date.Month, P3Date.Day, P3Date.Hour, P3Date.Minute, P3Date.Second, P3Date.Millisecond, new TimeSpan(2, 0, 0)) },
-                    new Project { Name = "YelpCamp Project", Description = "Create a new Blog in which multiple people can write posts", Created = new DateTimeOffset(P4Date.Year, P4Date.Month, P4Date.Day, P4Date.Hour, P4Date.Minute, P4Date.Second, P4Date.Millisecond, new TimeSpan(2, 0, 0)) }
+                    new Project { Name = "YelpCamp Project", Description = "Create a new Blog in which multiple people can write posts", Created = new DateTimeOffset(P4Date.Year, P4Date.Month, P4Date.Day, P4Date.Hour, P4Date.Minute, P4Date.Second, P4Date.Millisecond, new TimeSpan(2, 0, 0)) },
+                    new Project { Name = "Financial Portal", Description = "Keep up with your bills and track your budget", Created = new DateTimeOffset(P5Date.Year, P5Date.Month, P5Date.Day, P5Date.Hour, P5Date.Minute, P5Date.Second, P5Date.Millisecond, new TimeSpan(2, 0, 0)) }
             );
             context.SaveChanges();
             #endregion
@@ -285,6 +287,7 @@ namespace SheilaWard_BugTracker.Migrations
             var bugTrackerProjectId = context.Projects.FirstOrDefault(p => p.Name == "Bug Tracker Project").Id;
             var portfolioProjectId = context.Projects.FirstOrDefault(p => p.Name == "Portfolio Project").Id;
             var yelpCampProjectId = context.Projects.FirstOrDefault(p => p.Name == "YelpCamp Project").Id;
+            var financialPortalProjectId = context.Projects.FirstOrDefault(p => p.Name == "Financial Portal").Id;
 
             var projHelper = new ProjectsHelper();
 
@@ -293,12 +296,14 @@ namespace SheilaWard_BugTracker.Migrations
             projHelper.AddUserToProject(sheilaId, blogProjectId);
             projHelper.AddUserToProject(sheilaId, bugTrackerProjectId);
             projHelper.AddUserToProject(sheilaId, yelpCampProjectId);
+            projHelper.AddUserToProject(sheilaId, financialPortalProjectId);
 
             // Assign Demo Admin to projects
             projHelper.AddUserToProject(adminId, portfolioProjectId);
             projHelper.AddUserToProject(adminId, blogProjectId);
             projHelper.AddUserToProject(adminId, bugTrackerProjectId);
             projHelper.AddUserToProject(adminId, yelpCampProjectId);
+            projHelper.AddUserToProject(adminId, financialPortalProjectId);
 
             // Assign Angie to projects
             projHelper.AddUserToProject(angieId, blogProjectId);
@@ -311,6 +316,7 @@ namespace SheilaWard_BugTracker.Migrations
             // Assign Demo PM to projects
             projHelper.AddUserToProject(PMId, bugTrackerProjectId);
             projHelper.AddUserToProject(PMId, portfolioProjectId);
+            projHelper.AddUserToProject(PMId, financialPortalProjectId);
 
             // Assign Teresa to projects
             projHelper.AddUserToProject(teresaId, blogProjectId);
@@ -322,13 +328,16 @@ namespace SheilaWard_BugTracker.Migrations
             // Assign Demo Submitter to projects
             projHelper.AddUserToProject(submitterId, yelpCampProjectId);
             projHelper.AddUserToProject(submitterId, portfolioProjectId);
+            projHelper.AddUserToProject(submitterId, financialPortalProjectId);
 
             // Assign Ares to projects
             projHelper.AddUserToProject(aresId, blogProjectId);
-        
+            projHelper.AddUserToProject(aresId, financialPortalProjectId);
+
             // Assign Sarvesh to projects
             projHelper.AddUserToProject(sarveshId, portfolioProjectId);
-            
+            projHelper.AddUserToProject(sarveshId, financialPortalProjectId);
+
             // Assign Lee to projects
             projHelper.AddUserToProject(leeId, bugTrackerProjectId);
 
@@ -341,6 +350,8 @@ namespace SheilaWard_BugTracker.Migrations
 
             // Assign Demo Developer to projects
             projHelper.AddUserToProject(DevId, bugTrackerProjectId);
+            projHelper.AddUserToProject(DevId, portfolioProjectId);
+            projHelper.AddUserToProject(DevId, financialPortalProjectId);
             #endregion
 
             #region Ticket Priorities, Statuses, & Types (require Foreign Keys)
@@ -381,43 +392,109 @@ namespace SheilaWard_BugTracker.Migrations
             DateTime T5Date = new DateTime(2019, 06, 25, 18, 16, 23, 34);
             DateTime T6Date = new DateTime(2019, 08, 19, 20, 08, 37, 52);
             DateTime T7Date = new DateTime(2019, 08, 21, 18, 55, 43, 16);
+            DateTime T8Date = new DateTime(2019, 10, 23, 18, 55, 43, 16);
+            DateTime T9Date = new DateTime(2019, 10, 23, 19, 17, 26, 12);
+            DateTime T10Date = new DateTime(2019, 10, 18, 11, 57, 13, 19);
+            DateTime U1Date = new DateTime(2019, 09, 21, 10, 45, 23, 14);
+            DateTime U2Date = new DateTime(2019, 09, 17, 14, 22, 52, 05);
+            DateTime U3Date = new DateTime(2019, 10, 01, 16, 08, 19, 36);
+            DateTime U6Date = new DateTime(2019, 10, 03, 08, 45, 34, 18);
+            DateTime U7Date = new DateTime(2019, 10, 04, 14, 04, 43, 05);
             context.Tickets.AddOrUpdate(
                 p => p.Title,
                     new Ticket
                     {
+                        ProjectId = financialPortalProjectId,
+                        OwnerUserId = submitterId,
+                        Title = "Highlight links when active",
+                        Description = "On the Household Dashboard, all links are active",
+                        PercentComplete = 20,
+                        Created = new DateTimeOffset(T10Date.Year, T10Date.Month, T10Date.Day, T10Date.Hour, T10Date.Minute, T10Date.Second, T10Date.Millisecond, new TimeSpan(2, 0, 0)),
+                        TicketPriorityId = context.TicketPriorities.FirstOrDefault(t => t.Name == "Urgent").Id,
+                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "New/Unassigned").Id,
+                        TicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Defect").Id
+                    },
+                    new Ticket
+                    {
+                        ProjectId = blogProjectId,
+                        OwnerUserId = submitterId,
+                        AssignedToUserId = aresId,
+                        Title = "Add Blog Information in Configuration File",
+                        Description = "Blog Information was lost when database deleted, but images of blogs exist",
+                        PercentComplete = 20,
+                        Created = new DateTimeOffset(T9Date.Year, T9Date.Month, T9Date.Day, T9Date.Hour, T9Date.Minute, T9Date.Second, T9Date.Millisecond, new TimeSpan(2, 0, 0)),
+                        TicketPriorityId = context.TicketPriorities.FirstOrDefault(t => t.Name == "Urgent").Id,
+                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "Active/Assigned").Id,
+                        TicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Defect").Id
+                    },
+                    new Ticket
+                    {
+                        ProjectId = portfolioProjectId,
+                        OwnerUserId = submitterId,
+                        AssignedToUserId = leeId,
+                        Title = "Add button to clear input on Javascript Exercises",
+                        Description = "Values in input forms do not clear out and we need a button to do that.",
+                        PercentComplete = 40,
+                        Created = new DateTimeOffset(T8Date.Year, T8Date.Month, T8Date.Day, T8Date.Hour, T8Date.Minute, T8Date.Second, T8Date.Millisecond, new TimeSpan(2, 0, 0)),
+                        TicketPriorityId = context.TicketPriorities.FirstOrDefault(t => t.Name == "Urgent").Id,
+                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "Active/Assigned").Id,
+                        TicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Defect").Id
+                    },
+                    new Ticket
+                    {
                         ProjectId = bugTrackerProjectId,
-                        OwnerUserId = teresaId,
+                        OwnerUserId = submitterId,
+                        AssignedToUserId = DevId,
                         Title = "Make Icons turn red when active",
                         Description = "Make the Icons in the left navigation turn red when active",
-                        PercentComplete = 90,
+                        PercentComplete = 100,
                         Created = new DateTimeOffset(T1Date.Year, T1Date.Month, T1Date.Day, T1Date.Hour, T1Date.Minute, T1Date.Second, T1Date.Millisecond, new TimeSpan(2, 0, 0)),
+                        Updated = new DateTimeOffset(U1Date.Year, U1Date.Month, U1Date.Day, U1Date.Hour, U1Date.Minute, U1Date.Second, U1Date.Millisecond, new TimeSpan(2, 0, 0)),
                         TicketPriorityId = context.TicketPriorities.FirstOrDefault(t => t.Name == "Low").Id,
-                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "New/Unassigned").Id,
+                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "Archived").Id,
                         TicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Enhancement").Id,
+                        Archived = true
                     },
                     new Ticket
                     {
                         ProjectId = bugTrackerProjectId,
-                        OwnerUserId = teresaId,
+                        OwnerUserId = submitterId,
+                        AssignedToUserId = DevId,
                         Title = "Add Buttons for Table Downloads",
                         Description = "Add Copy, CSV, Excel, PDF, and Print buttons for tables",
-                        PercentComplete = 80,
+                        PercentComplete = 100,
                         Created = new DateTimeOffset(T2Date.Year, T2Date.Month, T2Date.Day, T2Date.Hour, T2Date.Minute, T2Date.Second, T2Date.Millisecond, new TimeSpan(2, 0, 0)),
+                        Updated = new DateTimeOffset(U2Date.Year, U2Date.Month, U2Date.Day, U2Date.Hour, U2Date.Minute, U2Date.Second, U2Date.Millisecond, new TimeSpan(2, 0, 0)),
                         TicketPriorityId = context.TicketPriorities.FirstOrDefault(t => t.Name == "Medium").Id,
-                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "New/Unassigned").Id,
+                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "Completed").Id,
                         TicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Enhancement").Id,
                     },
                     new Ticket
                     {
                         ProjectId = bugTrackerProjectId,
-                        OwnerUserId = teresaId,
+                        OwnerUserId = submitterId,
+                        AssignedToUserId = cooleyId,
                         Title = "Add Functionality to Edit Projects View",
                         Description = "On Edit Projects, give Admin/PM ability to assign people to projects",
+                        PercentComplete = 100,
+                        Created = new DateTimeOffset(T3Date.Year, T3Date.Month, T3Date.Day, T3Date.Hour, T3Date.Minute, T3Date.Second, T3Date.Millisecond, new TimeSpan(2, 0, 0)),
+                        Updated = new DateTimeOffset(U3Date.Year, U3Date.Month, U3Date.Day, U3Date.Hour, U3Date.Minute, U3Date.Second, U3Date.Millisecond, new TimeSpan(2, 0, 0)),
+                        TicketPriorityId = context.TicketPriorities.FirstOrDefault(t => t.Name == "None").Id,
+                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "Completed").Id,
+                        TicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Enhancement").Id,
+                    },
+                    new Ticket
+                    {
+                        ProjectId = bugTrackerProjectId,
+                        OwnerUserId = submitterId,
+                        AssignedToUserId = DevId,
+                        Title = "Edit Configuration File for Demo Day",
+                        Description = "Expand Seed Method to include data showing demo users and various priorities, statuses and types",
                         PercentComplete = 60,
                         Created = new DateTimeOffset(T3Date.Year, T3Date.Month, T3Date.Day, T3Date.Hour, T3Date.Minute, T3Date.Second, T3Date.Millisecond, new TimeSpan(2, 0, 0)),
                         TicketPriorityId = context.TicketPriorities.FirstOrDefault(t => t.Name == "None").Id,
-                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "New/Unassigned").Id,
-                        TicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Enhancement").Id,
+                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "Active/Assigned").Id,
+                        TicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Documentation").Id,
                     },
                     new Ticket
                     {
@@ -436,7 +513,7 @@ namespace SheilaWard_BugTracker.Migrations
                     {
                         ProjectId = portfolioProjectId,
                         OwnerUserId = sherriId,
-                        AssignedToUserId = sarveshId,
+                        AssignedToUserId = DevId,
                         Title = "Separate JavaScript Exercises",
                         Description = "Bobby wants the Javascript Exercises put in a different section than the Bug Tracker and the Blog.  He also wants them separated out into: Math, Factorial, Fizz-Buzz, and Palindrome.",
                         PercentComplete = 70,
@@ -454,8 +531,9 @@ namespace SheilaWard_BugTracker.Migrations
                         Description = "Add a list of all users on a particular project to that project's Detail page.",
                         PercentComplete = 25,
                         Created = new DateTimeOffset(T6Date.Year, T6Date.Month, T6Date.Day, T6Date.Hour, T6Date.Minute, T6Date.Second, T6Date.Millisecond, new TimeSpan(2, 0, 0)),
+                        Updated = new DateTimeOffset(U6Date.Year, U6Date.Month, U6Date.Day, U6Date.Hour, U6Date.Minute, U6Date.Second, U6Date.Millisecond, new TimeSpan(2, 0, 0)),
                         TicketPriorityId = context.TicketPriorities.FirstOrDefault(t => t.Name == "Medium").Id,
-                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "Active/Assigned").Id,
+                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "Withdrawn").Id,
                         TicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Enhancement").Id,
                     },
                     new Ticket
@@ -467,8 +545,9 @@ namespace SheilaWard_BugTracker.Migrations
                         Description = "Add a list of all tickets on a particular project to that project's Detail page.",
                         PercentComplete = 45,
                         Created = new DateTimeOffset(T7Date.Year, T7Date.Month, T7Date.Day, T7Date.Hour, T7Date.Minute, T7Date.Second, T7Date.Millisecond, new TimeSpan(2, 0, 0)),
+                        Updated = new DateTimeOffset(U7Date.Year, U7Date.Month, U7Date.Day, U7Date.Hour, U7Date.Minute, U7Date.Second, U7Date.Millisecond, new TimeSpan(2, 0, 0)),
                         TicketPriorityId = context.TicketPriorities.FirstOrDefault(t => t.Name == "Medium").Id,
-                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "Active/Assigned").Id,
+                        TicketStatusId = context.TicketStatuses.FirstOrDefault(t => t.Name == "Inactive").Id,
                         TicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Enhancement").Id,
                     }
             );

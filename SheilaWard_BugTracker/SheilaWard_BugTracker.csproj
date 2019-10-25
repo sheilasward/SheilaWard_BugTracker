@@ -220,6 +220,7 @@
     <Compile Include="ViewModels\UserProfileViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Attachments\bug-icon-9-22-2019-80646-pm.JPG" />
     <Content Include="Avatars\AngieSmith.jpg" />
     <Content Include="Avatars\AresEller.jpg" />
     <Content Include="Avatars\bitmoji160747120.png" />
@@ -6821,7 +6822,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Attachments\" />
     <Folder Include="Views\Charts\" />
     <Folder Include="Views\ToDo\" />
   </ItemGroup>

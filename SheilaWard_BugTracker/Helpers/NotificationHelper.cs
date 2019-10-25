@@ -97,13 +97,18 @@ namespace SheilaWard_BugTracker.Helpers
                 message.AppendLine($"Changes were made to '{newTicket.Title}' on {newTicket.Updated.GetValueOrDefault().ToString("MMM d, yyyy")}");
                 message.AppendLine(messageBody.ToString());
                 var senderId = HttpContext.Current.User.Identity.GetUserId();
+                var recipientId = newTicket.AssignedToUserId;
+                if (recipientId == null)
+                {
+                    recipientId = newTicket.OwnerUserId;
+                }
 
                 var notification = new TicketNotification
                 {
                     TicketId = newTicket.Id,
                     Created = DateTime.Now,
                     Subject = $"Ticket with title '{newTicket.Title}' has changed",
-                    RecipientId = newTicket.AssignedToUserId,
+                    RecipientId = recipientId,
                     SenderId = senderId,
                     NotificationBody = message.ToString(),
                     IsRead = false

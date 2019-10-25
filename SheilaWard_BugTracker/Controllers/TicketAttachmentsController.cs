@@ -20,11 +20,11 @@ namespace SheilaWard_BugTracker.Controllers
         private NotificationHelper notfHelper = new NotificationHelper();
 
         // GET: TicketAttachments
-        //public ActionResult Index()
-        //{
-        //    var ticketAttachments = db.TicketAttachments.Include(t => t.Ticket).Include(t => t.User);
-        //    return View(ticketAttachments.ToList());
-        //}
+        public ActionResult Index()
+        {
+            var ticketAttachments = db.TicketAttachments.Include(t => t.Ticket).Include(t => t.User);
+            return View(ticketAttachments.ToList());
+        }
 
         //// GET: TicketAttachments/Details/5
         //public ActionResult Details(int? id)

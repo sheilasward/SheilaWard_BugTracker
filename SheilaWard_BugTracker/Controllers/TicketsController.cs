@@ -180,16 +180,18 @@ namespace SheilaWard_BugTracker.Controllers
                     newTicket.TicketStatusId = db.TicketStatuses.AsNoTracking().FirstOrDefault(t => t.Name == "Completed").Id;
                 }
                 newTicket.Updated = DateTimeOffset.Now;
-                if ((newTicket.TicketStatusId == db.TicketStatuses.AsNoTracking().FirstOrDefault(t => t.Name == "Withdrawn").Id) ||
-                    (newTicket.TicketStatusId == db.TicketStatuses.AsNoTracking().FirstOrDefault(t => t.Name == "Inactive").Id))
+                if (newTicket.TicketStatusId == db.TicketStatuses.AsNoTracking().FirstOrDefault(t => t.Name == "Withdrawn").Id)
                 {
                     newTicket.AssignedToUserId = null;
                 }
 
+                newTicket.TicketStatus = db.TicketStatuses.Find(newTicket.TicketStatusId);
+
                 // Boolean Variables to automatically set status
                 var noChange = (oldTicket.AssignedToUserId == newTicket.AssignedToUserId);
                 var assignment = (string.IsNullOrEmpty(oldTicket.AssignedToUserId) && (!string.IsNullOrEmpty(newTicket.AssignedToUserId)));
-                var unassignment = (string.IsNullOrEmpty(newTicket.AssignedToUserId) && (!string.IsNullOrEmpty(oldTicket.AssignedToUserId)) && (newTicket.TicketStatus.Name != "Withdrawn"));
+                var unassignment = (string.IsNullOrEmpty(newTicket.AssignedToUserId) && (!string.IsNullOrEmpty(oldTicket.AssignedToUserId)) && 
+                    (newTicket.TicketStatus.Name != "Withdrawn"));
 
                 var ActiveStatusId = db.TicketStatuses.FirstOrDefault(ts => ts.Name == "Active/Assigned").Id;
                 var InactiveStatusId = db.TicketStatuses.FirstOrDefault(ts => ts.Name == "Inactive").Id;
